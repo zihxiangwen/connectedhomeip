@@ -72,6 +72,7 @@ static const struct time_test_vector test_vector_system_time_us[] = {
 
 void test_os_sleep_ms(uint64_t millisecs)
 {
+#if 0
     struct timespec sleep_time;
     int s = millisecs / 1000;
 
@@ -80,10 +81,12 @@ void test_os_sleep_ms(uint64_t millisecs)
     sleep_time.tv_nsec = millisecs * 1000000;
 
     nanosleep(&sleep_time, nullptr);
+#endif
 }
 
 void test_os_sleep_us(uint64_t microsecs)
 {
+#if 0
     struct timespec sleep_time;
     int s = microsecs / 1000000;
 
@@ -92,6 +95,7 @@ void test_os_sleep_us(uint64_t microsecs)
     sleep_time.tv_nsec = microsecs * 1000;
 
     nanosleep(&sleep_time, nullptr);
+#endif
 }
 
 // =================================

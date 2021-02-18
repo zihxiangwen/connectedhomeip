@@ -119,7 +119,7 @@ static void PostInjectionCallbackFn(nl::FaultInjection::Manager * aManager, nl::
     uint16_t numargs = aFaultRecord->mNumArguments;
     uint16_t i;
 
-    printf("***** Injecting fault %s_%s, instance number: %u; reboot: %s", aManager->GetName(), aManager->GetFaultNames()[aId],
+    printf("***** Injecting fault %s_%s, instance number: %lu; reboot: %s", aManager->GetName(), aManager->GetFaultNames()[aId],
            aFaultRecord->mNumTimesChecked, aFaultRecord->mReboot ? "yes" : "no");
     if (numargs)
     {
@@ -127,7 +127,7 @@ static void PostInjectionCallbackFn(nl::FaultInjection::Manager * aManager, nl::
 
         for (i = 0; i < numargs; i++)
         {
-            printf(" %d", aFaultRecord->mArguments[i]);
+            printf(" %ld", aFaultRecord->mArguments[i]);
         }
     }
 
@@ -141,7 +141,7 @@ static bool PrintFaultInjectionMaxArgCbFn(nl::FaultInjection::Manager & mgr, nl:
 
     if (gFaultInjectionOptions.PrintFaultCounters && aFaultRecord->mNumArguments)
     {
-        printf("FI_instance_params: %s_%s_s%u maxArg: %u;\n", mgr.GetName(), faultName, aFaultRecord->mNumTimesChecked,
+        printf("FI_instance_params: %s_%s_s%lu maxArg: %lu;\n", mgr.GetName(), faultName, aFaultRecord->mNumTimesChecked,
                aFaultRecord->mArguments[0]);
     }
 

@@ -88,7 +88,7 @@ static void CheckInetErrorStr(nlTestSuite * inSuite, void * inContext)
     Inet::RegisterLayerErrorFormatter();
 
     // For each defined error...
-    for (int err : sContext)
+    for (long unsigned int err : sContext)
     {
         const char * errStr = ErrorStr(err);
         char expectedText[9];

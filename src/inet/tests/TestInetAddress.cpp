@@ -669,7 +669,7 @@ void CheckAddressQuartet(nlTestSuite * inSuite, const uint32_t & inFirstAddressQ
 
     if (!lResult)
     {
-        fprintf(stdout, "Address quartet %zu mismatch: actual 0x%08x, expected: 0x%08x\n", inWhich, inFirstAddressQuartet,
+        fprintf(stdout, "Address quartet %zu mismatch: actual 0x%08lx, expected: 0x%08lx\n", inWhich, inFirstAddressQuartet,
                 inSecondAddressQuartet);
     }
 }

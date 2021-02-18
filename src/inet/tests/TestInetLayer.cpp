@@ -499,7 +499,7 @@ exit:
 
 static void PrintReceivedStats(const TransferStats & aStats)
 {
-    printf("%u/%u received\n", aStats.mReceive.mActual, aStats.mReceive.mExpected);
+    printf("%lu/%lu received\n", aStats.mReceive.mActual, aStats.mReceive.mExpected);
 }
 
 static bool HandleDataReceived(const PacketBufferHandle & aBuffer, bool aCheckBuffer, uint8_t aFirstValue)
@@ -903,7 +903,7 @@ void DriveSend()
 
             sTestState.mStats.mTransmit.mActual += lSendSize;
 
-            printf("%u/%u transmitted to %s\n", sTestState.mStats.mTransmit.mActual, sTestState.mStats.mTransmit.mExpected,
+            printf("%lu/%lu transmitted to %s\n", sTestState.mStats.mTransmit.mActual, sTestState.mStats.mTransmit.mExpected,
                    sDestinationString);
         }
     }

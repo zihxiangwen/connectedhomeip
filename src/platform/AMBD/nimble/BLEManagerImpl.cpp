@@ -329,7 +329,7 @@ bool BLEManagerImpl::SendIndication(BLE_CONNECTION_OBJECT conId, const ChipBleUU
 
     VerifyOrExit(IsSubscribed(conId), err = CHIP_ERROR_INVALID_ARGUMENT);
 
-    ESP_LOGD(TAG, "Sending indication for CHIPoBLE TX characteristic (con %u, len %u)", conId, data->DataLength());
+    //ESP_LOGD(TAG, "Sending indication for CHIPoBLE TX characteristic (con %u, len %u)", conId, data->DataLength());
 
     om = ble_hs_mbuf_from_flat(data->Start(), data->DataLength());
     if (om == NULL)
@@ -438,7 +438,7 @@ void BLEManagerImpl::DriveBLEState(void)
             }
 
             // Start advertising.  This is also an asynchronous step.
-            ESP_LOGD(TAG, "NimBLE start advertising...");
+            //ESP_LOGD(TAG, "NimBLE start advertising...");
             err = StartAdvertising();
             if (err != CHIP_NO_ERROR)
             {
@@ -521,7 +521,7 @@ exit:
 
 void BLEManagerImpl::bleprph_on_reset(int reason)
 {
-    ESP_LOGE(TAG, "Resetting state; reason=%d\n", reason);
+    //ESP_LOGE(TAG, "Resetting state; reason=%d\n", reason);
 }
 
 void BLEManagerImpl::bleprph_on_sync(void)
@@ -530,21 +530,21 @@ void BLEManagerImpl::bleprph_on_sync(void)
 
     SetFlag(sInstance.mFlags, kFlag_ESPBLELayerInitialized);
     SetFlag(sInstance.mFlags, kFlag_GATTServiceStarted);
-    ESP_LOGI(TAG, "BLE host-controller synced");
+    //ESP_LOGI(TAG, "BLE host-controller synced");
 
     uint8_t own_addr_type = BLE_OWN_ADDR_PUBLIC;
 
     rc = ble_hs_id_infer_auto(0, &own_addr_type);
     if (rc != 0)
     {
-        ESP_LOGE(TAG, "Error determining address type; rc=%d\n", rc);
+        //ESP_LOGE(TAG, "Error determining address type; rc=%d\n", rc);
         return;
     }
 }
 
 void BLEManagerImpl::bleprph_host_task(void * param)
 {
-    ESP_LOGD(TAG, "BLE Host Task Started");
+    //ESP_LOGD(TAG, "BLE Host Task Started");
     /* This function will return only when nimble_port_stop() is executed */
     nimble_port_run();
     nimble_port_freertos_deinit();
@@ -661,7 +661,7 @@ void BLEManagerImpl::HandleRXCharWrite(struct ble_gatt_char_context * param)
     CHIP_ERROR err    = CHIP_NO_ERROR;
     uint16_t data_len = 0;
 
-    ESP_LOGI(TAG, "Write request received for CHIPoBLE RX characteristic con %u %u", param->conn_handle, param->attr_handle);
+    //ESP_LOGI(TAG, "Write request received for CHIPoBLE RX characteristic con %u %u", param->conn_handle, param->attr_handle);
 
     // Copy the data to a packet buffer.
     data_len               = OS_MBUF_PKTLEN(param->ctxt->om);
@@ -926,7 +926,7 @@ int BLEManagerImpl::ble_svr_gap_event(struct ble_gap_event * event, void * arg)
         break;
 
     case BLE_GAP_EVENT_ADV_COMPLETE:
-        ESP_LOGD(TAG, "BLE_GAP_EVENT_ADV_COMPLETE event");
+        //ESP_LOGD(TAG, "BLE_GAP_EVENT_ADV_COMPLETE event");
         break;
 
     case BLE_GAP_EVENT_SUBSCRIBE:
@@ -943,7 +943,7 @@ int BLEManagerImpl::ble_svr_gap_event(struct ble_gap_event * event, void * arg)
         break;
 
     case BLE_GAP_EVENT_MTU:
-        ESP_LOGD(TAG, "BLE_GAP_EVENT_MTU = %d channel id = %d", event->mtu.value, event->mtu.channel_id);
+        //ESP_LOGD(TAG, "BLE_GAP_EVENT_MTU = %d channel id = %d", event->mtu.value, event->mtu.channel_id);
         break;
 
     default:

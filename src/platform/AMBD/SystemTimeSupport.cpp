@@ -92,7 +92,7 @@ Error SetClock_RealTime(uint64_t newCurTime)
     {
         return (errno == EPERM) ? CHIP_SYSTEM_ERROR_ACCESS_DENIED : MapErrorPOSIX(errno);
     }
-#if CHIP_PROGRESS_LOGGING
+#if 0//CHIP_PROGRESS_LOGGING
     {
         uint16_t year;
         uint8_t month, dayOfMonth, hour, minute, second;

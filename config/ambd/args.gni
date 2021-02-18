@@ -15,7 +15,7 @@
 # Options from standalone-chip.mk that differ from configure defaults. These
 # options are used from examples/.
 
-chip_device_platform = "esp32"
+chip_device_platform = "ambd"
 
 chip_project_config_include = ""
 chip_system_project_config_include = ""

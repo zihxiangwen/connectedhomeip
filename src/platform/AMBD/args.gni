@@ -14,7 +14,7 @@
 
 import("//build_overrides/chip.gni")
 
-chip_device_platform = "esp32"
+chip_device_platform = "ambd"
 
 lwip_platform = "external"
 mbedtls_target = "//mbedtls:mbedtls"
