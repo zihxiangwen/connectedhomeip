@@ -28,7 +28,7 @@
 #include <support/TimeUtils.h>
 #include <support/logging/CHIPLogging.h>
 
-#include <esp_timer.h>
+//#include <esp_timer.h>
 
 namespace chip {
 namespace System {
@@ -37,21 +37,28 @@ namespace Layer {
 
 uint64_t GetClock_Monotonic(void)
 {
-    return (uint64_t)::esp_timer_get_time();
+    //return (uint64_t)::esp_timer_get_time();
+    printf("TODO : GetClock_Monotonic \n");
+    return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
 }
 
 uint64_t GetClock_MonotonicMS(void)
 {
-    return (uint64_t)::esp_timer_get_time() / 1000;
+    //return (uint64_t)::esp_timer_get_time() / 1000;
+    printf("TODO : GetClock_MonotonicMS \n");
+    return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
 }
 
 uint64_t GetClock_MonotonicHiRes(void)
 {
-    return (uint64_t)::esp_timer_get_time();
+    //return (uint64_t)::esp_timer_get_time();
+    printf("TODO : GetClock_MonotonicHiRes \n");
+    return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
 }
 
 Error GetClock_RealTime(uint64_t & curTime)
 {
+#if 0
     struct timeval tv;
     int res = gettimeofday(&tv, NULL);
     if (res != 0)
@@ -64,10 +71,15 @@ Error GetClock_RealTime(uint64_t & curTime)
     }
     curTime = (tv.tv_sec * UINT64_C(1000000)) + tv.tv_usec;
     return CHIP_SYSTEM_NO_ERROR;
+#else
+    printf("TODO : GetClock_RealTime \n");
+    return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
+#endif
 }
 
 Error GetClock_RealTimeMS(uint64_t & curTime)
 {
+#if 0
     struct timeval tv;
     int res = gettimeofday(&tv, NULL);
     if (res != 0)
@@ -80,10 +92,15 @@ Error GetClock_RealTimeMS(uint64_t & curTime)
     }
     curTime = (tv.tv_sec * UINT64_C(1000)) + (tv.tv_usec / 1000);
     return CHIP_SYSTEM_NO_ERROR;
+#else
+    printf("TODO : GetClock_RealTimeMS \n");
+    return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
+#endif
 }
 
 Error SetClock_RealTime(uint64_t newCurTime)
 {
+#if 0
     struct timeval tv;
     tv.tv_sec  = static_cast<time_t>(newCurTime / UINT64_C(1000000));
     tv.tv_usec = static_cast<long>(newCurTime % UINT64_C(1000000));
@@ -92,7 +109,7 @@ Error SetClock_RealTime(uint64_t newCurTime)
     {
         return (errno == EPERM) ? CHIP_SYSTEM_ERROR_ACCESS_DENIED : MapErrorPOSIX(errno);
     }
-#if 0//CHIP_PROGRESS_LOGGING
+#if CHIP_PROGRESS_LOGGING
     {
         uint16_t year;
         uint8_t month, dayOfMonth, hour, minute, second;
@@ -104,6 +121,10 @@ Error SetClock_RealTime(uint64_t newCurTime)
     }
 #endif // CHIP_PROGRESS_LOGGING
     return CHIP_SYSTEM_NO_ERROR;
+#else
+   printf("TODO : SetClock_RealTime \n");
+    return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
+#endif
 }
 
 } // namespace Layer

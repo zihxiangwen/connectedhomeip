@@ -30,9 +30,9 @@
 #ifdef LOG_LOCAL_LEVEL
 #undef LOG_LOCAL_LEVEL
 #endif
-#define LOG_LOCAL_LEVEL ESP_LOG_VERBOSE
+#define LOG_LOCAL_LEVEL 0//ESP_LOG_VERBOSE
 
-#include "esp_log.h"
+//#include "esp_log.h"
 
 using namespace ::chip;
 using namespace ::chip::DeviceLayer::Internal;

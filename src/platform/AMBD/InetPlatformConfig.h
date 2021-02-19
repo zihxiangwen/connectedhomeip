@@ -30,8 +30,8 @@
 
 // ==================== Platform Adaptations ====================
 
-#define INET_CONFIG_ERROR_TYPE esp_err_t
-#define INET_CONFIG_NO_ERROR ESP_OK
+#define INET_CONFIG_ERROR_TYPE int32_t
+#define INET_CONFIG_NO_ERROR 0
 #define INET_CONFIG_ERROR_MIN 1000000
 #define INET_CONFIG_ERROR_MAX 1000999
 
@@ -40,9 +40,9 @@
 // NOTE: Values that are mapped to CONFIG_ #defines are settable via the ESP-IDF Kconfig mechanism.
 
 #ifndef INET_CONFIG_NUM_TCP_ENDPOINTS
-#define INET_CONFIG_NUM_TCP_ENDPOINTS CONFIG_NUM_TCP_ENDPOINTS
+#define INET_CONFIG_NUM_TCP_ENDPOINTS 4
 #endif // INET_CONFIG_NUM_TCP_ENDPOINTS
 
 #ifndef INET_CONFIG_NUM_UDP_ENDPOINTS
-#define INET_CONFIG_NUM_UDP_ENDPOINTS CONFIG_NUM_UDP_ENDPOINTS
+#define INET_CONFIG_NUM_UDP_ENDPOINTS 4
 #endif // INET_CONFIG_NUM_UDP_ENDPOINTS
