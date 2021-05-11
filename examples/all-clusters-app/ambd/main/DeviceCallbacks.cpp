@@ -69,7 +69,7 @@ void DeviceCallbacks::DeviceEventCallback(const ChipDeviceEvent * event, intptr_
 }
 
 void DeviceCallbacks::PostAttributeChangeCallback(EndpointId endpointId, ClusterId clusterId, AttributeId attributeId, uint8_t mask,
-                                                  uint16_t manufacturerCode, uint8_t type, uint8_t size, uint8_t * value)
+                                                  uint16_t manufacturerCode, uint8_t type, uint16_t size, uint8_t * value)
 {
     printf("[%s] PostAttributeChangeCallback - Cluster ID: 0x%04x, EndPoint ID: 0x%02x, Attribute ID: 0x%04x\r\n", TAG, clusterId,
                   endpointId, attributeId);
