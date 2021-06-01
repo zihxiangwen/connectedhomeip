@@ -29,8 +29,8 @@
 //#include "Globals.h"
 //#include "LEDWidget.h"
 //#include "WiFiWidget.h"
-#include "gen/attribute-id.h"
-#include "gen/cluster-id.h"
+#include <app/common/gen/attribute-id.h> //Base0528
+#include <app/common/gen/cluster-id.h> //Base0528
 #include <app/Command.h>
 #include <app/server/Mdns.h>
 #include <app/util/basic-types.h>
