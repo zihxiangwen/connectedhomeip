@@ -9,7 +9,7 @@ control.
     -   [Supported Device](#supported-device)
     -   [Building the Example Application](#building-the-example-application)
     -   [Commissioning and cluster control](#commissioning-and-cluster-control)
-        -   [Commissioning](#Commissioning)
+        -   [Commissioning](#commissioning)
         -   [Cluster control](#cluster-control)
 
 ---
@@ -26,8 +26,7 @@ Building the example application requires the use of [Ameba-D SDK](https://githu
 
 -   Clone Ameba-D SDK and checkout base0531_gn branch
 
-          $ mkdir ${path-to-connectedhomeip}/../ambd_sdk
-          $ cd ambd_sdk/
+          $ cd ${path-to-connectedhomeip}/..
           $ git clone https://github.com/hank820/ambd_sdk_with_chip.git
           $ git checkout base0531_gn
 
@@ -39,7 +38,7 @@ Building the example application requires the use of [Ameba-D SDK](https://githu
 
 -   To build the demo application
 
-          $ cd ${path-to-connectedhomeip}/../ambd_sdk/ambd_sdk_with_chip/project/realtek_amebaD_va0_example/GCC-RELEASE/project_lp
+          $ cd ${path-to-connectedhomeip}/../ambd_sdk_with_chip/project/realtek_amebaD_va0_example/GCC-RELEASE/project_lp
           $ make all
           $ cd ../project_hp
           $ make -C asdk lib_all
