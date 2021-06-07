@@ -22,13 +22,13 @@ The CHIP demo application is supported on [Ameba-D](https://www.amebaiot.com/en/
 
 ## Building the Example Application
 
-Building the example application requires the use of [Ameba-D SDK](https://github.com/hank820/ambd_sdk_with_chip).
+Building the example application requires the use of [Ameba-D SDK](https://github.com/hank820/ambd_sdk_with_chip_non_NDA).
 
--   Clone Ameba-D SDK and checkout base0531_gn branch
+-   Clone Ameba-D SDK and checkout master branch
 
           $ cd ${path-to-connectedhomeip}/..
-          $ git clone https://github.com/hank820/ambd_sdk_with_chip.git
-          $ git checkout base0531_gn
+          $ git clone https://github.com/hank820/ambd_sdk_with_chip_non_NDA.git
+          $ git checkout master
 
 -   To download and setup building environment
 
