@@ -20,7 +20,7 @@
 /**
  *    @file
  *          Provides implementations of the CHIP System Layer platform
- *          time/clock functions that are suitable for use on the ESP32 platform.
+ *          time/clock functions that are suitable for use on the AmebaD platform.
  */
 /* this file behaves like a config.h, comes first */
 #include <platform/internal/CHIPDeviceLayerInternal.h>
@@ -28,10 +28,9 @@
 #include <support/TimeUtils.h>
 #include <support/logging/CHIPLogging.h>
 
-//#include <esp_timer.h>
 #include <time.h>
 #include "task.h"
-//#include "rtc_api.h"
+
 extern void rtc_init(void);
 extern time_t rtc_read(void);
 extern void rtc_write(time_t t);
@@ -106,33 +105,10 @@ Error GetClock_RealTimeMS(uint64_t & curTime)
 
 Error SetClock_RealTime(uint64_t newCurTime)
 {
-#if 1
     rtc_init();
     rtc_write(newCurTime);
 
     return CHIP_SYSTEM_NO_ERROR;
-#else // for reference
-    struct timeval tv;
-    tv.tv_sec  = static_cast<time_t>(newCurTime / UINT64_C(1000000));
-    tv.tv_usec = static_cast<long>(newCurTime % UINT64_C(1000000));
-    int res    = settimeofday(&tv, NULL);
-    if (res != 0)
-    {
-        return (errno == EPERM) ? CHIP_SYSTEM_ERROR_ACCESS_DENIED : MapErrorPOSIX(errno);
-    }
-#if CHIP_PROGRESS_LOGGING
-    {
-        uint16_t year;
-        uint8_t month, dayOfMonth, hour, minute, second;
-        SecondsSinceEpochToCalendarTime(tv.tv_sec, year, month, dayOfMonth, hour, minute, second);
-        ChipLogProgress(DeviceLayer,
-                        "Real time clock set to %ld (%04" PRId16 "/%02" PRId8 "/%02" PRId8 " %02" PRId8 ":%02" PRId8 ":%02" PRId8
-                        " UTC)",
-                        tv.tv_sec, year, month, dayOfMonth, hour, minute, second);
-    }
-#endif // CHIP_PROGRESS_LOGGING
-    return CHIP_SYSTEM_NO_ERROR;
-#endif
 }
 
 } // namespace Layer

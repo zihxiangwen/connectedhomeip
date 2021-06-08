@@ -33,7 +33,6 @@
 #ifdef LOG_LOCAL_LEVEL
 #undef LOG_LOCAL_LEVEL
 #endif
-#define LOG_LOCAL_LEVEL ESP_LOG_VERBOSE
 
 namespace chip {
 namespace Logging {
@@ -41,24 +40,6 @@ namespace Platform {
 
 void LogV(const char * module, uint8_t category, const char * msg, va_list v)
 {
-    // if (IsCategoryEnabled(category))
-    // {
-    //     enum
-    //     {
-    //         kMaxTagLen = 7 + chip::Logging::kMaxModuleNameLen
-    //     };
-    //     char tag[kMaxTagLen + 1];
-    //     size_t tagLen;
-    //     char formattedMsg[CHIP_DEVICE_CONFIG_LOG_MESSAGE_MAX_SIZE];
-
-    //     strcpy(tag, "chip[");
-    //     tagLen = strlen(tag);
-    //     GetModuleName(tag + tagLen, chip::Logging::kMaxModuleNameLen + 1, module);
-    //     tagLen        = strlen(tag);
-    //     tag[tagLen++] = ']';
-    //     tag[tagLen]   = 0;
-    //
-    //    vsnprintf(formattedMsg, sizeof(formattedMsg), msg, v);
         char tag[11];
 
         snprintf(tag, sizeof(tag), "chip[%s]", module);
@@ -80,10 +61,8 @@ void LogV(const char * module, uint8_t category, const char * msg, va_list v)
             printf("%s %s\r\n", tag, formattedMsg);
             break;
         }
-    //}
 }
 
 } // namespace Platform
 } // namespace Logging
-
 } // namespace chip

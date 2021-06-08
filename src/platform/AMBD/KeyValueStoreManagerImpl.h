@@ -18,8 +18,9 @@
 
 /**
  *    @file
- *          Platform-specific key value storage implementation for K32W
+ *          Platform-specific key value storage implementation for AmebaD
  */
+/* this file behaves like a config.h, comes first */
 
 #pragma once
 
@@ -60,17 +61,6 @@ private:
  * that are common to all platforms.
  */
 inline KeyValueStoreManager & KeyValueStoreMgr(void)
-{
-    return KeyValueStoreManagerImpl::sInstance;
-}
-
-/**
- * Returns the platform-specific implementation of the KeyValueStoreManager singleton object.
- *
- * Chip applications can use this to gain access to features of the KeyValueStoreManager
- * that are specific to the ESP32 platform.
- */
-inline KeyValueStoreManagerImpl & KeyValueStoreMgrImpl(void)
 {
     return KeyValueStoreManagerImpl::sInstance;
 }

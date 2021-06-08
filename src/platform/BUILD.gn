@@ -489,8 +489,6 @@ if (chip_device_platform != "none" && chip_device_platform != "external") {
         "AMBD/ServiceProvisioning.h",
         "AMBD/SoftwareUpdateManagerImpl.h",
         "AMBD/SystemTimeSupport.cpp",
-        "AMBD/bluedroid/BLEManagerImpl.cpp",
-        "AMBD/nimble/BLEManagerImpl.cpp",
         "FreeRTOS/SystemTimeSupport.cpp",
       ]
 

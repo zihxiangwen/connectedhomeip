@@ -20,7 +20,7 @@
 /**
  *    @file
  *          Provides an implementation of the ConfigurationManager object
- *          for the ESP32 platform.
+ *          for the AmebaD platform.
  */
 
 #pragma once
@@ -38,7 +38,7 @@ class NetworkProvisioningServerImpl;
 }
 
 /**
- * Concrete implementation of the ConfigurationManager singleton object for the ESP32 platform.
+ * Concrete implementation of the ConfigurationManager singleton object for the AmebaD platform.
  */
 class ConfigurationManagerImpl final : public ConfigurationManager,
                                        public Internal::GenericConfigurationManagerImpl<ConfigurationManagerImpl>,
@@ -92,7 +92,7 @@ inline ConfigurationManager & ConfigurationMgr(void)
  * Returns the platform-specific implementation of the ConfigurationManager singleton object.
  *
  * Chip applications can use this to gain access to features of the ConfigurationManager
- * that are specific to the ESP32 platform.
+ * that are specific to the AmebaD platform.
  */
 inline ConfigurationManagerImpl & ConfigurationMgrImpl(void)
 {

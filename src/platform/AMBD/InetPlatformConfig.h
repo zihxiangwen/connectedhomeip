@@ -20,7 +20,7 @@
 /**
  *    @file
  *          Platform-specific configuration overrides for the CHIP Inet
- *          Layer on the ESP32 platform.
+ *          Layer on the AmebaD platform.
  *
  */
 
@@ -36,7 +36,7 @@
 
 // ==================== General Configuration Overrides ====================
 
-// NOTE: Values that are mapped to CONFIG_ #defines are settable via the ESP-IDF Kconfig mechanism.
+// NOTE: Values that are mapped to CONFIG_ #defines are settable via the Kconfig mechanism.
 
 #ifndef INET_CONFIG_NUM_TCP_ENDPOINTS
 #define INET_CONFIG_NUM_TCP_ENDPOINTS 4

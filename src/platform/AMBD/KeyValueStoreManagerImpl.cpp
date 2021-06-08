@@ -18,9 +18,9 @@
 
 /**
  *    @file
- *          Platform-specific key value storage implementation for K32W
+ *          Platform-specific key value storage implementation for AmebaD
  */
-
+/* this file behaves like a config.h, comes first */
 #include <platform/KeyValueStoreManager.h>
 
 namespace chip {
