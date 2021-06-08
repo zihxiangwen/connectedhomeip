@@ -20,7 +20,7 @@
 /**
  *    @file
  *          Provides the implementation of the Device Layer ConfigurationManager object
- *          for the ESP32.
+ *          for the AmebaD.
  */
 /* this file behaves like a config.h, comes first */
 #include <platform/internal/CHIPDeviceLayerInternal.h>

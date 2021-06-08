@@ -20,7 +20,7 @@
 /**
  *    @file
  *          Provides an implementation of the PlatformManager object
- *          for the ESP32 platform.
+ *          for the AmebaD platform.
  */
 /* this file behaves like a config.h, comes first */
 #include <platform/internal/CHIPDeviceLayerInternal.h>
@@ -68,22 +68,6 @@ CHIP_ERROR PlatformManagerImpl::_InitChipStack(void)
 
     // TODO Wi-Fi Initialzation currently done through the example app needs to be moved into here.
     // for now we will let this happen that way and assume all is OK
-
-
-    // err = esp_netif_init();
-    // SuccessOrExit(err);
-
-    // Arrange for the ESP event loop to deliver events into the CHIP Device layer.
-    // err = esp_event_loop_create_default();
-    // SuccessOrExit(err);
-
-    // esp_netif_create_default_wifi_ap();
-    // esp_netif_create_default_wifi_sta();
-
-    // esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, PlatformManagerImpl::HandleESPSystemEvent, NULL);
-    // SuccessOrExit(err);
-    // esp_event_handler_register(IP_EVENT, ESP_EVENT_ANY_ID, PlatformManagerImpl::HandleESPSystemEvent, NULL);
-    // SuccessOrExit(err);
 
     chip::Crypto::add_entropy_source(app_entropy_source, NULL, 1);
 

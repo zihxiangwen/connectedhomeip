@@ -20,15 +20,13 @@
 /**
  *    @file
  *          Platform-specific configuration overrides for the CHIP System
- *          Layer on the ESP32 platform.
+ *          Layer on the AmebaD platform.
  *
  */
 
 #pragma once
 
 #include <stdint.h>
-
-//#include "esp_err.h"
 
 namespace chip {
 namespace DeviceLayer {
@@ -56,7 +54,7 @@ struct ChipDeviceEvent;
 
 // ==================== General Configuration Overrides ====================
 
-// NOTE: Values that are mapped to CONFIG_ #defines are settable via the ESP-IDF Kconfig mechanism.
+// NOTE: Values that are mapped to CONFIG_ #defines are settable via the Kconfig mechanism.
 
 #ifndef CHIP_SYSTEM_CONFIG_NUM_TIMERS
 #define CHIP_SYSTEM_CONFIG_NUM_TIMERS 16

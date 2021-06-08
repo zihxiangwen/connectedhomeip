@@ -18,11 +18,6 @@
  *    limitations under the License.
  */
 
-/**
- *    @file
- *          Utilities for interacting with the the ESP32 "NVS" key-value store.
- */
-
 #pragma once
 
 #include <platform/internal/CHIPDeviceLayerInternal.h>
@@ -33,17 +28,11 @@ namespace chip {
 namespace DeviceLayer {
 namespace Internal {
 
-/**
- * Provides functions and definitions for accessing device configuration information on the ESP32.
- *
- * This class is designed to be mixed-in to concrete implementation classes as a means to
- * provide access to configuration information to generic base classes.
- */
 class AMBDConfig
 {
 public:
     struct Key;
-
+ 
     // Maximum length of an NVS key name, as specified in the ESP-IDF documentation.
     static constexpr size_t kMaxConfigKeyNameLength = 15;
 
@@ -96,7 +85,6 @@ public:
     static CHIP_ERROR ClearConfigValue(Key key);
     static bool ConfigValueExists(Key key);
 
-    // NVS Namespace helper functions.
     static CHIP_ERROR EnsureNamespace(const char * ns);
     static CHIP_ERROR ClearNamespace(const char * ns);
 

@@ -26,7 +26,7 @@ namespace DeviceLayer {
 namespace Internal {
 
 /**
- * Concrete implementation of the NetworkProvisioningServer singleton object for the ESP32 platform.
+ * Concrete implementation of the NetworkProvisioningServer singleton object for the AmebaD platform.
  */
 class NetworkProvisioningServerImpl final : public NetworkProvisioningServer,
                                             public GenericNetworkProvisioningServerImpl<NetworkProvisioningServerImpl>
@@ -76,17 +76,6 @@ private:
  * that are common to all platforms.
  */
 inline NetworkProvisioningServer & NetworkProvisioningSvr(void)
-{
-    return NetworkProvisioningServerImpl::sInstance;
-}
-
-/**
- * Returns the platform-specific implementation of the NetworkProvisioningServer singleton object.
- *
- * Internal components can use this to gain access to features of the NetworkProvisioningServer
- * that are specific to the ESP32 platform.
- */
-inline NetworkProvisioningServerImpl & NetworkProvisioningSvrImpl(void)
 {
     return NetworkProvisioningServerImpl::sInstance;
 }

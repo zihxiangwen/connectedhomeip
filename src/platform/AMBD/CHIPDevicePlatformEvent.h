@@ -18,22 +18,15 @@
 /**
  *    @file
  *          Defines platform-specific event types and data for the chip
- *          Device Layer on QPG6100 platforms.
+ *          Device Layer on AmebaD platforms.
  */
 
 #pragma once
 
 #include <platform/CHIPDeviceEvent.h>
 
-//namespace chip {
-//namespace System {
-//class PacketBuffer;
-//}
-//} // namespace chip
-
 namespace chip {
 namespace DeviceLayer {
-
 namespace DeviceEventType {
 
 /**
