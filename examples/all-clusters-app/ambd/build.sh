@@ -23,7 +23,7 @@
 
 CURR_PATH=`test -d ${0%/*} && cd ${0%/*}; pwd`
 CHIP_PATH=${CURR_PATH}/../../..
-AMBD_PATH=${CHIP_PATH}/../ambd_sdk_with_chip_non_NDA
+AMBD_PATH=${CHIP_PATH}/..
 AMBD_LP_PATH=${AMBD_PATH}/project/realtek_amebaD_va0_example/GCC-RELEASE/project_lp
 AMBD_HP_PATH=${AMBD_PATH}/project/realtek_amebaD_va0_example/GCC-RELEASE/project_hp
 AMBD_CHIP_MAIN=${AMBD_HP_PATH}/asdk/make/chip_main
