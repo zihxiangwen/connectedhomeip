@@ -45,7 +45,6 @@ GLOBAL_CFLAGS += -DCHIP_SYSTEM_CONFIG_POSIX_LOCKING=0
 GLOBAL_CFLAGS += -DINET_CONFIG_ENABLE_IPV4=1
 GLOBAL_CFLAGS += -DCHIP_PROJECT=1
 GLOBAL_CFLAGS += -DCHIP_DEVICE_LAYER_TARGET=AMBD
-GLOBAL_CFLAGS += -DCHIP_BYPASS_RENDEZVOUS
 GLOBAL_CFLAGS += -DUSE_ZAP_CONFIG
 GLOBAL_CFLAGS += -DCHIP_HAVE_CONFIG_H
 GLOBAL_CFLAGS += -DLWIP_IPV6_SCOPES=0
@@ -112,6 +111,7 @@ CPPSRC += $(CHIPDIR)/src/app/util/attribute-size.cpp                   #Base0505
 CPPSRC += $(CHIPDIR)/src/app/util/attribute-storage.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/attribute-table.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/attribute-list-byte-span.cpp         #Base0518
+CPPSRC += $(CHIPDIR)/src/app/util/attribute-size-util.cpp              #Base0617
 CPPSRC += $(CHIPDIR)/src/app/util/binding-table.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/CHIPDeviceCallbacksMgr.cpp
 CPPSRC += $(CHIPDIR)/src/app/util/chip-message-send.cpp
@@ -149,7 +149,7 @@ CPPSRC += $(CHIPDIR)/src/app/clusters/descriptor/descriptor.cpp                 
 CPPSRC += $(CHIPDIR)/src/app/clusters/operational-credentials-server/operational-credentials-server.cpp       #Base0429 + #Base0505
 CPPSRC += $(CHIPDIR)/src/app/clusters/ota-server/ota-server.cpp                                               #Base0429
 CPPSRC += $(CHIPDIR)/src/app/clusters/test-cluster-server/test-cluster-server.cpp                             #Base0505
-CPPSRC += $(CHIPDIR)/src/app/clusters/trusted-root-certificates-server/trusted-root-certificates-server.cpp   #Base0518
+#CPPSRC += $(CHIPDIR)/src/app/clusters/trusted-root-certificates-server/trusted-root-certificates-server.cpp   #Base0518 + Base0614
 CPPSRC += $(CHIPDIR)/src/app/clusters/occupancy-sensor-server/occupancy-sensor-server.cpp                     #Base0531
 
 CPPSRC += $(CHIPDIR)/src/app/reporting/reporting-default-configuration.cpp
@@ -159,7 +159,7 @@ CPPSRC += $(CHIPDIR)/src/app/reporting/reporting.cpp
 #Resolved same file name issue. (src/app/util/attribute-size.cpp)
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/gen/attribute-size_copy.cpp                #Base0429 + Base0505
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/gen/CHIPClientCallbacks.cpp
-#CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/gen/call-command-handler.cpp	#Base0608
+#CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/gen/call-command-handler.cpp              #Base0608
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/gen/callback-stub.cpp
 CPPSRC += $(CHIPDIR)/examples/all-clusters-app/all-clusters-common/gen/IMClusterCommandHandler.cpp
 
