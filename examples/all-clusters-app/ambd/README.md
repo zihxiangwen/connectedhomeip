@@ -22,13 +22,13 @@ The CHIP demo application is supported on [Ameba-D](https://www.amebaiot.com/en/
 
 ## Building the Example Application
 
-Building the example application requires the use of [Ameba-D SDK](https://github.com/hank820/ambd_sdk_with_chip).
+Building the example application requires the use of [Ameba-D SDK](https://github.com/hank820/ambd_sdk_with_chip_non_NDA).
 
--   Clone Ameba-D SDK and checkout base0531_gn branch
+-   Clone Ameba-D SDK and checkout master branch
 
           $ cd ${path-to-connectedhomeip}/..
-          $ git clone https://github.com/hank820/ambd_sdk_with_chip.git
-          $ git checkout base0531_gn
+          $ git clone https://github.com/hank820/ambd_sdk_with_chip_non_NDA.git
+          $ git checkout master
 
 -   To download and setup building environment
 
@@ -38,13 +38,10 @@ Building the example application requires the use of [Ameba-D SDK](https://githu
 
 -   To build the demo application
 
-          $ cd ${path-to-connectedhomeip}/../ambd_sdk_with_chip/project/realtek_amebaD_va0_example/GCC-RELEASE/project_lp
-          $ make all
-          $ cd ../project_hp
-          $ make -C asdk lib_all
-          $ make all
+          $ cd ${path-to-connectedhomeip}/examples/all-clusters-app/ambd
+          $ ./build.sh
     
-       The output image files are stored in `project_lp/asdk/image` and `project_hp/asdk/image` folders.
+       The output image files are stored in `project_lp/asdk/image` and `project_hp/asdk/image` folders under Ameba-D SDK.
           
 -   After building the application, **Ameba-D Image Tool** is used to flash it to Ameba-D board.
   1.  Connect your device via USB and open Ameba-D Image Tool.
