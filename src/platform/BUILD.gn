@@ -210,6 +210,11 @@ if (chip_device_platform != "none") {
         "CHIP_DEVICE_LAYER_TARGET_AMEBA=1",
         "CHIP_DEVICE_LAYER_TARGET=Ameba",
       ]
+    } else if (chip_device_platform == "ambd") {
+      defines += [
+        "CHIP_DEVICE_LAYER_TARGET_AMBD=1",
+        "CHIP_DEVICE_LAYER_TARGET=AMBD",
+      ]
     }
   }
 } else {
@@ -324,6 +329,8 @@ if (chip_device_platform != "none") {
       _platform_target = "Tizen"
     } else if (chip_device_platform == "android") {
       _platform_target = "android"
+    } else if (chip_device_platform == "ambd") {
+      _platform_target = "AMBD"
     } else if (chip_device_platform == "external") {
       _platform_target = chip_platform_target
     } else if (chip_device_platform == "p6") {
