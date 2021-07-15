@@ -144,7 +144,7 @@ void DeviceCallbacks::OnOnOffPostAttributeChangeCallback(EndpointId endpointId, 
         return;
 }
 
-void IdentifyTimerHandler(Layer * systemLayer, void * appState, Error error)
+void IdentifyTimerHandler(Layer * systemLayer, void * appState, CHIP_ERROR error)
 {
     // statusLED1.Animate();
 
