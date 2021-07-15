@@ -26,8 +26,8 @@
 
 #include "CHIPDeviceManager.h"
 #include <app/util/af.h>
-//#include "Globals.h"
-//#include "LEDWidget.h"
+#include "Globals.h"
+#include "LEDWidget.h"
 //#include "WiFiWidget.h"
 #include <app/common/gen/attribute-id.h> //Base0528
 #include <app/common/gen/cluster-id.h> //Base0528
@@ -76,9 +76,9 @@ void DeviceCallbacks::PostAttributeChangeCallback(EndpointId endpointId, Cluster
 
     switch (clusterId)
     {
-    // case ZCL_ON_OFF_CLUSTER_ID:
-    //     OnOnOffPostAttributeChangeCallback(endpointId, attributeId, value);
-    //     break;
+     case ZCL_ON_OFF_CLUSTER_ID:
+         OnOnOffPostAttributeChangeCallback(endpointId, attributeId, value);
+         break;
 
     case ZCL_IDENTIFY_CLUSTER_ID:
         OnIdentifyPostAttributeChangeCallback(endpointId, attributeId, value);
@@ -131,17 +131,18 @@ void DeviceCallbacks::PostAttributeChangeCallback(EndpointId endpointId, Cluster
 //     // }
 // }
 
-// void DeviceCallbacks::OnOnOffPostAttributeChangeCallback(EndpointId endpointId, AttributeId attributeId, uint8_t * value)
-// {
-// //     VerifyOrExit(attributeId == ZCL_ON_OFF_ATTRIBUTE_ID, ESP_LOGI(TAG, "Unhandled Attribute ID: '0x%04x", attributeId));
-// //     VerifyOrExit(endpointId == 1 || endpointId == 2, ESP_LOGE(TAG, "Unexpected EndPoint ID: `0x%02x'", endpointId));
+void DeviceCallbacks::OnOnOffPostAttributeChangeCallback(EndpointId endpointId, AttributeId attributeId, uint8_t * value)
+{
+    VerifyOrExit(attributeId == ZCL_ON_OFF_ATTRIBUTE_ID, printf(TAG, "Unhandled Attribute ID: '0x%04x", attributeId));
+    VerifyOrExit(endpointId == 1 || endpointId == 2, printf(TAG, "Unexpected EndPoint ID: `0x%02x'", endpointId));
 
-// //     // At this point we can assume that value points to a bool value.
-// //     endpointId == 1 ? statusLED1.Set(*value) : statusLED2.Set(*value);
+    // At this point we can assume that value points to a bool value.
+    //endpointId == 1 ? statusLED1.Set(*value) : statusLED2.Set(*value);
+    statusLED1.Set(*value);
 
-// // exit:
-// //     return;
-// }
+    exit:
+        return;
+}
 
 void IdentifyTimerHandler(Layer * systemLayer, void * appState, Error error)
 {
