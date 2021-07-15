@@ -1,5 +1,7 @@
 #include <platform_stdlib.h>
 
+#include "Globals.h"
+#include "LEDWidget.h"
 #include "CHIPDeviceManager.h"
 #include "DeviceCallbacks.h"
 #include "Server.h"
@@ -32,6 +34,14 @@ namespace
 
 } // namespace
 
+#ifdef CONFIG_PLATFORM_8721D
+#define STATUS_LED_GPIO_NUM PB_5
+#elif defined(CONFIG_PLATFORM_8710C)
+#define STATUS_LED_GPIO_NUM PA_20
+#else
+#define STATUS_LED_GPIO_NUM NC
+#endif
+
 static DeviceCallbacks EchoCallbacks;
 
 extern "C" void ChipTest(void)
@@ -58,6 +68,8 @@ extern "C" void ChipTest(void)
 
     AppCallbacks callbacks;
     InitServer(&callbacks);
+
+    statusLED1.Init(STATUS_LED_GPIO_NUM);
 
     while(true)
         vTaskDelay( pdMS_TO_TICKS(50) );
