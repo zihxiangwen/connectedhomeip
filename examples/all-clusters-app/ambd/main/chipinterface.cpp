@@ -8,6 +8,7 @@
 
 #include <platform/CHIPDeviceLayer.h>
 #include <support/CHIPMem.h>
+#include "chip_porting.h"
 
 extern "C"{ void * __dso_handle = 0 ;}
 
@@ -49,10 +50,10 @@ extern "C" void ChipTest(void)
     printf("In ChipTest()\r\n");
     CHIP_ERROR err = CHIP_NO_ERROR;
 
+    printf("initPrefr\n");
+    initPref();
 
     CHIPDeviceManager &deviceMgr = CHIPDeviceManager::GetInstance();
-
-
     err = deviceMgr.Init(&EchoCallbacks);
 
     if (err != CHIP_NO_ERROR)

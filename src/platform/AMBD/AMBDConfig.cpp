@@ -343,7 +343,7 @@ CHIP_ERROR AMBDConfig::ClearConfigValue(Key key)
 
     success = deleteKey(_namespace, _name);
     if (!success)
-        printf("deleteKey: %s/%s failed\n", _namespace, _name);
+        printf("%s : %s/%s failed\n",__FUNCTION__, _namespace, _name);
 
     free(_namespace);
     free(_name);
@@ -383,7 +383,7 @@ CHIP_ERROR AMBDConfig::EnsureNamespace(const char * ns)
     }
     strcpy(temp, ns);
 
-    ret = initPref(temp);
+    ret = registerPref(temp);
     if (ret != 0)
     {
         printf("dct_register_module failed\n");

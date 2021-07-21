@@ -95,7 +95,7 @@ CHIP_ERROR KeyValueStoreManagerImpl::_Delete(const char * key)
     char* _key = (char*) malloc(strlen(key) + 1);
 
     strcpy(_key,key);
-    initPref("CHIP_KVS");
+    registerPref("CHIP_KVS");
     if(TRUE == deleteKey("CHIP_KVS",_key))
         err = CHIP_NO_ERROR;
     else
