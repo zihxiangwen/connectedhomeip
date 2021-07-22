@@ -50,7 +50,7 @@ CHIP_ERROR KeyValueStoreManagerImpl::_Get(const char * key, void * value, size_t
     }
 
     strcpy(_key, key);
-    ret = getPref_bin("CHIP_KVS", _key, 5/*kPrefsTypeBinary*/, (uint8_t *) value, read_bytes_size);
+    ret = getPref_bin_new("CHIP_KVS", _key, (uint8_t *) value, value_size, read_bytes_size);
     if(TRUE == ret)
     {
         err = CHIP_NO_ERROR;
@@ -77,7 +77,7 @@ CHIP_ERROR KeyValueStoreManagerImpl::_Put(const char * key, const void * value, 
     }
 
     strcpy(_key,key);
-    ret = setPref("CHIP_KVS", _key, 5/*kPrefsTypeBinary*/, (uint8_t *)value, value_size);
+    ret = setPref_new("CHIP_KVS", _key, (uint8_t *)value, value_size);
     if(TRUE == ret)
         err = CHIP_NO_ERROR;
     else
