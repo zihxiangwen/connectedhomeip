@@ -56,31 +56,16 @@ CHIP_ERROR CHIPDeviceManager::Init(CHIPDeviceManagerCallbacks * cb)
 {
     CHIP_ERROR err;
     mCB = cb;
+    bool Rendezvous_BLE = true; //TBD with self-adjustable way
 
     // Initialize the CHIP stack.
     err = PlatformMgr().InitChipStack();
     SuccessOrExit(err);
 
-    // switch (static_cast<RendezvousInformationFlags>(CONFIG_RENDEZVOUS_MODE))
-    // {
-    // case RendezvousInformationFlags::kBLE:
-    //     ConnectivityMgr().SetBLEAdvertisingEnabled(true);
-    //     break;
-
-    // case RendezvousInformationFlags::kWiFi:
-    //     ConnectivityMgr().SetBLEAdvertisingEnabled(false);
-    //     ConnectivityMgr().SetWiFiAPMode(ConnectivityManager::kWiFiAPMode_Enabled);
-    //     break;
-
-    // case RendezvousInformationFlags::kNone:
-    //     // If rendezvous is bypassed, enable SoftAP so that the device can still
-    //     // be communicated with via its SoftAP as needed.
-    //     ConnectivityMgr().SetWiFiAPMode(ConnectivityManager::kWiFiAPMode_Enabled);
-    //     break;
-
-    // default:
-    //     break;
-    // }
+    if(Rendezvous_BLE)
+    {
+        ConnectivityMgr().SetBLEAdvertisingEnabled(true);
+    }
 
     err = Platform::MemoryInit();
 
