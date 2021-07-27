@@ -1,7 +1,6 @@
 /*
  *
  *    Copyright (c) 2020-2021 Project CHIP Authors
- *    Copyright (c) 2020 Nest Labs, Inc.
  *    All rights reserved.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +19,7 @@
 /**
  *    @file
  *          Provides an implementation of the BLEManager singleton object
- *          for the K32W platforms.
+ *          for the Ameba platforms.
  */
 
 /* this file behaves like a config.h, comes first */
@@ -82,22 +81,37 @@ BLEManagerImpl BLEManagerImpl::sInstance;
 
 CHIP_ERROR BLEManagerImpl::_Init()
 {
+printf("BLEManagerImpl::_Init----------------------------------------------OK\r\n");
     CHIP_ERROR err;
-    printf("BLE init function!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\r\n");
-    err = BleLayer::Init(this, this, &SystemLayer);	
-    printf("Aft init function!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\r\n");
+
+    // Initialize the CHIP BleLayer.
+    err = BleLayer::Init(this, this, &SystemLayer);
+    SuccessOrExit(err);
+
+    mServiceMode = ConnectivityManager::kCHIPoBLEServiceMode_Enabled;
+
+    mFlags.ClearAll().Set(Flags::kAdvertisingEnabled, CHIP_DEVICE_CONFIG_CHIPOBLE_ENABLE_ADVERTISING_AUTOSTART);
+    mFlags.Set(Flags::kFastAdvertisingEnabled);
+
+    PlatformMgr().ScheduleWork(DriveBLEState, 0);
+
+exit:
     return err;
 }
 
 uint16_t BLEManagerImpl::_NumConnections(void)
 {
+printf("BLEManagerImpl::_NumConnections:::::::::::::::\r\n");
     uint16_t numCons = 0;
-    return numCons;
-}
+    for (uint16_t i = 0; i < kMaxConnections; i++)
+    {
+        if (mSubscribedConIds[i] != BLE_CONNECTION_UNINITIALIZED)
+        {
+            numCons++;
+        }
+    }
 
-bool BLEManagerImpl::_IsAdvertisingEnabled(void)
-{
-    return mFlags.Has(Flags::kAdvertisingEnabled);
+    return numCons;
 }
 
 bool BLEManagerImpl::RemoveConnection(uint8_t connectionHandle)
@@ -149,6 +163,8 @@ exit:
 
 CHIP_ERROR BLEManagerImpl::_SetAdvertisingEnabled(bool val)
 {
+printf("BLEManagerImpl::_SetAdvertisingEnabled----------------------------------------------OK \r\n");
+printf("val = %d\r\n",val);
     CHIP_ERROR err = CHIP_NO_ERROR;
 
     VerifyOrExit(mServiceMode != ConnectivityManager::kCHIPoBLEServiceMode_NotSupported, err = CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE);
@@ -183,6 +199,7 @@ CHIP_ERROR BLEManagerImpl::_SetAdvertisingMode(BLEAdvertisingMode mode)
 
 CHIP_ERROR BLEManagerImpl::_GetDeviceName(char * buf, size_t bufSize)
 {
+printf("BLEManagerImpl::_GetDeviceName:::::::::::::::\r\n");
     if (strlen(mDeviceName) >= bufSize)
     {
         return CHIP_ERROR_BUFFER_TOO_SMALL;
@@ -193,17 +210,17 @@ CHIP_ERROR BLEManagerImpl::_GetDeviceName(char * buf, size_t bufSize)
 
 CHIP_ERROR BLEManagerImpl::_SetDeviceName(const char * deviceName)
 {
-    if (mServiceMode == ConnectivityManager::kCHIPoBLEServiceMode_NotSupported)
-    {
-        return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
-    }
+printf("BLEManagerImpl::_SetDeviceName:::::::::::::::\r\n");
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    
+    VerifyOrExit(mServiceMode != ConnectivityManager::kCHIPoBLEServiceMode_NotSupported, err = CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE);
+
     if (deviceName != NULL && deviceName[0] != 0)
     {
         if (strlen(deviceName) >= kMaxDeviceNameLength)
         {
             return CHIP_ERROR_INVALID_ARGUMENT;
         }
-        memset(mDeviceName, 0, kMaxDeviceNameLength);
         strcpy(mDeviceName, deviceName);
         mFlags.Set(Flags::kDeviceNameSet);
         ChipLogProgress(DeviceLayer, "Setting device name to : \"%s\"", deviceName);
@@ -214,48 +231,74 @@ CHIP_ERROR BLEManagerImpl::_SetDeviceName(const char * deviceName)
         mFlags.Clear(Flags::kDeviceNameSet);
     }
 
-    return CHIP_NO_ERROR;
+exit:
+    return err;
 }
 
 void BLEManagerImpl::_OnPlatformEvent(const ChipDeviceEvent * event)
 {
+printf("BLEManagerImpl::_OnPlatformEvent:::::::::::::::\r\n");
     switch (event->Type)
     {
+    // Platform specific events
     case DeviceEventType::kCHIPoBLESubscribe:
-        ChipDeviceEvent connEstEvent;
-
         HandleSubscribeReceived(event->CHIPoBLESubscribe.ConId, &CHIP_BLE_SVC_ID, &ChipUUID_CHIPoBLEChar_TX);
-        connEstEvent.Type = DeviceEventType::kCHIPoBLEConnectionEstablished;
-        PlatformMgr().PostEvent(&connEstEvent);
+        {
+            ChipDeviceEvent connEstEvent;
+            connEstEvent.Type = DeviceEventType::kCHIPoBLEConnectionEstablished;
+            PlatformMgr().PostEvent(&connEstEvent);
+        }
+	break;
+
+    case DeviceEventType::kCHIPoBLEUnsubscribe: {
+            ChipLogProgress(DeviceLayer, "_OnPlatformEvent kCHIPoBLEUnsubscribe");
+            HandleUnsubscribeReceived(event->CHIPoBLEUnsubscribe.ConId, &CHIP_BLE_SVC_ID, &ChipUUID_CHIPoBLEChar_TX);
+        }
         break;
 
-    case DeviceEventType::kCHIPoBLEUnsubscribe:
-        HandleUnsubscribeReceived(event->CHIPoBLEUnsubscribe.ConId, &CHIP_BLE_SVC_ID, &ChipUUID_CHIPoBLEChar_TX);
+    case DeviceEventType::kCHIPoBLEWriteReceived: {
+            ChipLogProgress(DeviceLayer, "_OnPlatformEvent kCHIPoBLEWriteReceived");
+            HandleWriteReceived(event->CHIPoBLEWriteReceived.ConId, &CHIP_BLE_SVC_ID, &ChipUUID_CHIPoBLEChar_RX, PacketBufferHandle::Adopt(event->CHIPoBLEWriteReceived.Data));
+        }
         break;
 
-    case DeviceEventType::kCHIPoBLEWriteReceived:
-        HandleWriteReceived(event->CHIPoBLEWriteReceived.ConId, &CHIP_BLE_SVC_ID, &ChipUUID_CHIPoBLEChar_RX,
-                            PacketBufferHandle::Adopt(event->CHIPoBLEWriteReceived.Data));
+    case DeviceEventType::kCHIPoBLEConnectionError: {
+            ChipLogProgress(DeviceLayer, "_OnPlatformEvent kCHIPoBLEConnectionError");
+            HandleConnectionError(event->CHIPoBLEConnectionError.ConId, event->CHIPoBLEConnectionError.Reason);
+        }
         break;
 
-    case DeviceEventType::kCHIPoBLEConnectionError:
-        HandleConnectionError(event->CHIPoBLEConnectionError.ConId, event->CHIPoBLEConnectionError.Reason);
+    case DeviceEventType::kCHIPoBLEIndicateConfirm: {
+            ChipLogProgress(DeviceLayer, "_OnPlatformEvent kCHIPoBLEIndicateConfirm");
+            HandleIndicationConfirmation(event->CHIPoBLEIndicateConfirm.ConId, &CHIP_BLE_SVC_ID, &ChipUUID_CHIPoBLEChar_TX);
+        }
         break;
 
-    case DeviceEventType::kCHIPoBLEIndicateConfirm:
-        HandleIndicationConfirmation(event->CHIPoBLEIndicateConfirm.ConId, &CHIP_BLE_SVC_ID, &ChipUUID_CHIPoBLEChar_TX);
-        break;
-
-#if CHIP_DEVICE_CONFIG_CHIPOBLE_DISABLE_ADVERTISING_WHEN_PROVISIONED
+    case DeviceEventType::kFabricMembershipChange:
     case DeviceEventType::kServiceProvisioningChange:
-        ChipLogProgress(DeviceLayer, "_OnPlatformEvent kServiceProvisioningChange");
+    case DeviceEventType::kAccountPairingChange:
+    case DeviceEventType::kWiFiConnectivityChange:
 
+// If CHIPOBLE_DISABLE_ADVERTISING_WHEN_PROVISIONED is enabled, when there is a change to the device's provisioning state and device is now fully provisioned, the CHIPoBLE advertising will be disabled.
+#if CHIP_DEVICE_CONFIG_CHIPOBLE_DISABLE_ADVERTISING_WHEN_PROVISIONED
+    if (ConfigurationMgr().IsFullyProvisioned())
+    {
         mFlags.Clear(Flags::kAdvertisingEnabled);
-        PlatformMgr().ScheduleWork(DriveBLEState, 0);
-        break;
+        ChipLogProgress(DeviceLayer, "CHIPoBLE advertising disabled because device is fully provisioned");
+    }
 #endif // CHIP_DEVICE_CONFIG_CHIPOBLE_DISABLE_ADVERTISING_WHEN_PROVISIONED
+    ChipLogProgress(DeviceLayer, "Updating advertising data");
 
+    /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    [zl_dbg] See if the kAdvertisingRefresh is needed. If so, set flag and call DriveBLEState
+    //mFlags.Clear(Flags::kAdvertisingConfigured);
+    //mFlags.Set(Flags::kAdvertisingRefreshNeeded);
+    //DriveBLEState();
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+    break;
+    
     default:
+        ChipLogProgress(DeviceLayer, "_OnPlatformEvent default:  event->Type = %d", event->Type);
         break;
     }
 }
@@ -388,10 +431,13 @@ CHIP_ERROR BLEManagerImpl::StopAdvertising(void)
 
 void BLEManagerImpl::DriveBLEState(void)
 {
+printf("BLEManagerImpl::DriveBLEState:::::::::::::::\r\n");
+printf("mServiceMode = %d:::::::::::::::\r\n",mServiceMode);
+
     CHIP_ERROR err = CHIP_NO_ERROR;
 
     // Check if BLE stack is initialized
-    VerifyOrExit(mFlags.Has(Flags::kK32WBLEStackInitialized), /* */);
+    VerifyOrExit(mFlags.Has(Flags::kAMEBABLEStackInitialized), /* */);
 
 #if CHIP_DEVICE_CONFIG_CHIPOBLE_DISABLE_ADVERTISING_WHEN_PROVISIONED
     if (ConfigurationMgr().IsFullyProvisioned())
