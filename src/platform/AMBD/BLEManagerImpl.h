@@ -101,7 +101,7 @@ private:
         kFastAdvertisingEnabled  = 0x0002,
         kAdvertising             = 0x0004,
         kRestartAdvertising      = 0x0008,
-        kK32WBLEStackInitialized = 0x0010,
+        kAMEBABLEStackInitialized = 0x0010,
         kDeviceNameSet           = 0x0020,
     };
     BitFlags<BLEManagerImpl::Flags> mFlags;
@@ -127,6 +127,7 @@ private:
     CHIPoBLEServiceMode mServiceMode;
     
     uint16_t mNumGAPCons;
+    uint16_t mSubscribedConIds[kMaxConnections];
     uint8_t mAdvHandle;
     char mDeviceName[kMaxDeviceNameLength + 1];
 
@@ -177,6 +178,16 @@ inline BleLayer * BLEManagerImpl::_GetBleLayer()
 inline BLEManager::CHIPoBLEServiceMode BLEManagerImpl::_GetCHIPoBLEServiceMode(void)
 {
     return mServiceMode;
+}
+
+inline bool BLEManagerImpl::_IsAdvertisingEnabled(void)
+{
+    return mFlags.Has(Flags::kAdvertisingEnabled);
+}
+
+inline bool BLEManagerImpl::_IsAdvertising(void)
+{
+    return mFlags.Has(Flags::kAdvertising);
 }
 
 } // namespace Internal
