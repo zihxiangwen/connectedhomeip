@@ -34,6 +34,8 @@
 #include "stdio.h"
 #include "timers.h"
 
+//Ameba BLE related header files
+#include "gap_conn_le.h"
 
 /*******************************************************************************
  * Local data types
@@ -291,6 +293,7 @@ printf("BLEManagerImpl::_OnPlatformEvent:::::::::::::::\r\n");
 
     /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     [zl_dbg] See if the kAdvertisingRefresh is needed. If so, set flag and call DriveBLEState
+
     //mFlags.Clear(Flags::kAdvertisingConfigured);
     //mFlags.Set(Flags::kAdvertisingRefreshNeeded);
     //DriveBLEState();
@@ -305,47 +308,77 @@ printf("BLEManagerImpl::_OnPlatformEvent:::::::::::::::\r\n");
 
 bool BLEManagerImpl::SubscribeCharacteristic(BLE_CONNECTION_OBJECT conId, const ChipBleUUID * svcId, const ChipBleUUID * charId)
 {
+    printf("BLEManagerImpl::SubscribeCharacteristic:::::::::::::::OK\r\n");
     ChipLogProgress(DeviceLayer, "BLEManagerImpl::SubscribeCharacteristic() not supported");
     return false;
 }
 
 bool BLEManagerImpl::UnsubscribeCharacteristic(BLE_CONNECTION_OBJECT conId, const ChipBleUUID * svcId, const ChipBleUUID * charId)
 {
+    printf("BLEManagerImpl::UnsubscribeCharacteristic:::::::::::::::OK\r\n");
     ChipLogProgress(DeviceLayer, "BLEManagerImpl::UnsubscribeCharacteristic() not supported");
     return false;
 }
 
 bool BLEManagerImpl::CloseConnection(BLE_CONNECTION_OBJECT conId)
 {
+    printf("BLEManagerImpl::CloseConnection:::::::::::::::OK\r\n");
+    CHIP_ERROR err;
+
     ChipLogProgress(DeviceLayer, "Closing BLE GATT connection (con %u)", conId);
 
-    return true;
+    //Ameba Ble close function
+    /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    [zl_dbg] function to be vetified
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+    err = MapBLEError(le_disconnect(conId));
+    if (err != CHIP_NO_ERROR)
+    {
+        ChipLogError(DeviceLayer, "le_disconnect() failed: %s", ErrorStr(err));
+    }
+    
+    /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    [zl_dbg] See if the kAdvertisingRefresh is needed. If so, set flag and call DriveBLEState
+    
+    // Force a refresh of the advertising state.
+    mFlags.Set(Flags::kAdvertisingRefreshNeeded);
+    mFlags.Clear(Flags::kAdvertisingConfigured);
+    PlatformMgr().ScheduleWork(DriveBLEState, 0);
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+    
+    return (err == CHIP_NO_ERROR);
 }
 
 uint16_t BLEManagerImpl::GetMTU(BLE_CONNECTION_OBJECT conId) const
 {
-    uint16_t tempMtu = 0;
-    return tempMtu;
+    printf("BLEManagerImpl::GetMTU:::::::::::::::OK\r\n");
+
+    /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    [zl_dbg] Apply similar function of esp's 'ble_att_mtu'
+    int ret = 0;
+    ret = ble_att_mtu(conId)
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+    return 1;
 }
 
-bool BLEManagerImpl::SendWriteRequest(BLE_CONNECTION_OBJECT conId, const ChipBleUUID * svcId, const ChipBleUUID * charId,
-                                      PacketBufferHandle pBuf)
+bool BLEManagerImpl::SendWriteRequest(BLE_CONNECTION_OBJECT conId, const ChipBleUUID * svcId, const ChipBleUUID * charId, PacketBufferHandle pBuf)
 {
-    ChipLogProgress(DeviceLayer, "BLEManagerImpl::SendWriteRequest() not supported");
+    printf("BLEManagerImpl::SendWriteRequest:::::::::::::::OK\r\n");
+    ChipLogError(DeviceLayer, "BLEManagerImpl::SendWriteRequest() not supported");
     return false;
 }
 
-bool BLEManagerImpl::SendReadRequest(BLE_CONNECTION_OBJECT conId, const ChipBleUUID * svcId, const ChipBleUUID * charId,
-                                     PacketBufferHandle pBuf)
+bool BLEManagerImpl::SendReadRequest(BLE_CONNECTION_OBJECT conId, const ChipBleUUID * svcId, const ChipBleUUID * charId, PacketBufferHandle pBuf)
 {
-    ChipLogProgress(DeviceLayer, "BLEManagerImpl::SendReadRequest() not supported");
+    printf("BLEManagerImpl::SendReadRequest:::::::::::::::OK\r\n");
+    ChipLogError(DeviceLayer, "BLEManagerImpl::SendReadRequest() not supported");
     return false;
 }
 
-bool BLEManagerImpl::SendReadResponse(BLE_CONNECTION_OBJECT conId, BLE_READ_REQUEST_CONTEXT requestContext,
-                                      const ChipBleUUID * svcId, const ChipBleUUID * charId)
+bool BLEManagerImpl::SendReadResponse(BLE_CONNECTION_OBJECT conId, BLE_READ_REQUEST_CONTEXT requestContext, const ChipBleUUID * svcId, const ChipBleUUID * charId)
 {
-    ChipLogProgress(DeviceLayer, "BLEManagerImpl::SendReadResponse() not supported");
+    printf("BLEManagerImpl::SendReadResponse:::::::::::::::OK\r\n");
+    ChipLogError(DeviceLayer, "BLEManagerImpl::SendReadResponse() not supported");
     return false;
 }
 
@@ -354,42 +387,42 @@ void BLEManagerImpl::NotifyChipConnectionClosed(BLE_CONNECTION_OBJECT conId)
     // Nothing to do
 }
 
-bool BLEManagerImpl::SendIndication(BLE_CONNECTION_OBJECT conId, const ChipBleUUID * svcId, const ChipBleUUID * charId,
-                                    PacketBufferHandle data)
+bool BLEManagerImpl::SendIndication(BLE_CONNECTION_OBJECT conId, const ChipBleUUID * svcId, const ChipBleUUID * charId, PacketBufferHandle data)
 {
+    printf("BLEManagerImpl::SendIndication:::::::::::::::OK\r\n");
     CHIP_ERROR err = CHIP_NO_ERROR;
-    ChipDeviceEvent event;
+    //struct os_mbuf * om;
+    
+    VerifyOrExit(IsSubscribed(conId), err = CHIP_ERROR_INVALID_ARGUMENT);
+    printf("Sending indication for CHIPoBLE TX characteristic (con %u, len %u)\r\n", conId, data->DataLength());
 
-    return false;
+    /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    [zl_dbg] Apply similar function of esp 'ble_gattc_notify_custom'
+
+    om = ble_hs_mbuf_from_flat(data->Start(), data->DataLength());
+    if (om == NULL)
+    {
+        ChipLogError(DeviceLayer, "ble_hs_mbuf_from_flat failed:");
+        err = CHIP_ERROR_NO_MEMORY;
+        ExitNow();
+    }
+    err = MapBLEError(ble_gattc_notify_custom(conId, mTXCharCCCDAttrHandle, om));
+    if (err != CHIP_NO_ERROR)
+    {
+        ChipLogError(DeviceLayer, "ble_gattc_notify_custom() failed: %s", ErrorStr(err));
+        ExitNow();
+    }
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+    
+exit:
+    if (err != CHIP_NO_ERROR)
+    {
+        ChipLogError(DeviceLayer, "BLEManagerImpl::SendIndication() failed: %s", ErrorStr(err));
+        return false;
+    }
+    return true;
 }
-	#if 0
-	BLEManagerImpl::ble_err_t BLEManagerImpl::blekw_send_event(int8_t connection_handle, uint16_t handle, uint8_t * data, uint32_t len)
-	{
-	    osaEventFlags_t event_mask;
 
-	#if CHIP_DEVICE_CHIP0BLE_DEBUG
-	    ChipLogProgress(DeviceLayer, "Trying to send event.");
-	#endif
-
-	    if (connection_handle < 0 || handle <= 0)
-	    {
-		ChipLogProgress(DeviceLayer, "BLE Event - Bad Handle");
-		return BLE_E_FAIL;
-	    }
-
-	    if (len > 0 && data == NULL)
-	    {
-		ChipLogProgress(DeviceLayer, "BLE Event - Invalid Data");
-		return BLE_E_FAIL;
-	    }
-
-	#if CHIP_DEVICE_CHIP0BLE_DEBUG
-	    ChipLogProgress(DeviceLayer, "BLE Event - Sent :-) ");
-	#endif
-
-	    return BLE_OK;
-	}
-	#endif
 /*******************************************************************************
  * Private functions
  *******************************************************************************/
@@ -427,6 +460,21 @@ CHIP_ERROR BLEManagerImpl::StopAdvertising(void)
     CancelBleAdvTimeoutTimer();
 
     return CHIP_NO_ERROR;
+}
+
+CHIP_ERROR BLEManagerImpl::MapBLEError(int bleErr)
+{
+printf("BLEManagerImpl::NotifyChipConnectionClosed:::::::::::::::\r\n");
+    switch (bleErr)
+    {
+    /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    [zl_dbg] need to match Ameba BLE return code to CHIP's
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+    case 1:
+        return CHIP_NO_ERROR;
+    default:
+        return CHIP_ERROR_INCORRECT_STATE;
+    }
 }
 
 void BLEManagerImpl::DriveBLEState(void)
@@ -543,6 +591,38 @@ void BLEManagerImpl::StartBleAdvTimeoutTimer(uint32_t aTimeoutInMs)
         ChipLogError(DeviceLayer, "Failed to start BledAdv timeout timer");
     }
 }
+
+
+bool BLEManagerImpl::UnsetSubscribed(uint16_t conId)
+{
+printf("BLEManagerImpl::UnsetSubscribed:::::::::::::::OK\r\n");
+    for (uint16_t i = 0; i < kMaxConnections; i++)
+    {
+        if (mSubscribedConIds[i] == conId)
+        {
+            mSubscribedConIds[i] = BLE_CONNECTION_UNINITIALIZED;
+            return true;
+        }
+    }
+    return false;
+}
+
+bool BLEManagerImpl::IsSubscribed(uint16_t conId)
+{
+printf("BLEManagerImpl::IsSubscribed:::::::::::::::OK\r\n");
+    if (conId != BLE_CONNECTION_UNINITIALIZED)
+    {
+        for (uint16_t i = 0; i < kMaxConnections; i++)
+        {
+            if (mSubscribedConIds[i] == conId)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 
 } // namespace Internal
 } // namespace DeviceLayer
