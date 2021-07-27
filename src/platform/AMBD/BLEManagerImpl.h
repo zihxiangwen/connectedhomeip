@@ -130,12 +130,15 @@ private:
     uint16_t mSubscribedConIds[kMaxConnections];
     uint8_t mAdvHandle;
     char mDeviceName[kMaxDeviceNameLength + 1];
+    CHIP_ERROR MapBLEError(int bleErr);
 
     void DriveBLEState(void);
     CHIP_ERROR ConfigureAdvertising(void);
     CHIP_ERROR StartAdvertising(void);
     CHIP_ERROR StopAdvertising(void);
     CHIP_ERROR ConfigureAdvertisingData(void);
+    bool UnsetSubscribed(uint16_t conId);
+    bool IsSubscribed(uint16_t conId);
     
     bool RemoveConnection(uint8_t connectionHandle);
     void AddConnection(uint8_t connectionHandle);
