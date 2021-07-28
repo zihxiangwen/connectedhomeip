@@ -128,12 +128,12 @@ private:
     
     uint16_t mNumGAPCons;
     uint16_t mSubscribedConIds[kMaxConnections];
-    uint8_t mAdvHandle;
+    //uint8_t mAdvHandle;	//no use
     char mDeviceName[kMaxDeviceNameLength + 1];
     CHIP_ERROR MapBLEError(int bleErr);
 
     void DriveBLEState(void);
-    CHIP_ERROR ConfigureAdvertising(void);
+    //CHIP_ERROR ConfigureAdvertising(void);	//no use
     CHIP_ERROR StartAdvertising(void);
     CHIP_ERROR StopAdvertising(void);
     CHIP_ERROR ConfigureAdvertisingData(void);
