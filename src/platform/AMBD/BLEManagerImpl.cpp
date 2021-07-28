@@ -36,6 +36,7 @@
 
 //Ameba BLE related header files
 #include "gap_conn_le.h"
+#include "bt_config_app_task.h"
 
 /*******************************************************************************
  * Local data types
@@ -53,6 +54,11 @@ namespace {
  * Macros & Constants definitions
  *******************************************************************************/
 
+
+#define MAX_ADV_DATA_LEN 31
+#define CHIP_ADV_DATA_TYPE_FLAGS 0x01
+#define CHIP_ADV_DATA_FLAGS 0x06
+#define CHIP_ADV_DATA_TYPE_SERVICE_DATA 0x16
 
 #define LOOP_EV_BLE (0x08)
 
@@ -72,7 +78,34 @@ EventGroupHandle_t bleAppTaskLoopEvent;
 /* keep the device ID of the connected peer */
 uint8_t device_id;
 
-const uint8_t ShortUUID_CHIPoBLEService[]  = { 0xF6, 0xFF };
+/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+[zl_dbg] From esp sdk, need to change */
+
+/** Type of UUID */
+enum {
+    /** 16-bit UUID (BT SIG assigned) */
+    BLE_UUID_TYPE_16 = 16,
+
+    /** 32-bit UUID (BT SIG assigned) */
+    BLE_UUID_TYPE_32 = 32,
+
+    /** 128-bit UUID */
+    BLE_UUID_TYPE_128 = 128,
+};
+
+typedef struct {
+    /** Type of the UUID */
+    uint8_t type;
+} ble_uuid_t;
+
+/** 16-bit UUID */
+typedef struct {
+    ble_uuid_t u;
+    uint16_t value;
+} ble_uuid16_t;
+/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+
+const ble_uuid16_t ShortUUID_CHIPoBLEService = { BLE_UUID_TYPE_16, 0xFFF6 };
 const ChipBleUUID ChipUUID_CHIPoBLEChar_RX = { { 0x18, 0xEE, 0x2E, 0xF5, 0x26, 0x3D, 0x45, 0x59, 0x95, 0x9F, 0x4F, 0x9C, 0x42, 0x9F,
                                                  0x9D, 0x11 } };
 const ChipBleUUID ChipUUID_CHIPoBLEChar_TX = { { 0x18, 0xEE, 0x2E, 0xF5, 0x26, 0x3D, 0x45, 0x59, 0x95, 0x9F, 0x4F, 0x9C, 0x42, 0x9F,
@@ -92,10 +125,24 @@ printf("BLEManagerImpl::_Init----------------------------------------------OK\r\
 
     mServiceMode = ConnectivityManager::kCHIPoBLEServiceMode_Enabled;
 
+    // Check if BLE stack is initialized
+    VerifyOrExit(!mFlags.Has(Flags::kAMEBABLEStackInitialized), err = CHIP_ERROR_INCORRECT_STATE);
+
+    /*[zl_dbg]Add Ameba Init function
+
+    */
+
+    //Set related flags
     mFlags.ClearAll().Set(Flags::kAdvertisingEnabled, CHIP_DEVICE_CONFIG_CHIPOBLE_ENABLE_ADVERTISING_AUTOSTART);
+    mFlags.Set(Flags::kAMEBABLEStackInitialized);
+    mFlags.Set(Flags::kAdvertisingEnabled, CHIP_DEVICE_CONFIG_CHIPOBLE_ENABLE_ADVERTISING_AUTOSTART ? true : false);
     mFlags.Set(Flags::kFastAdvertisingEnabled);
 
+    /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    [zl_dbg] Maynot need to call DriveBLEState here, if we init BLEStack here (not in DriveBLEState)
+
     PlatformMgr().ScheduleWork(DriveBLEState, 0);
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
 
 exit:
     return err;
@@ -143,6 +190,34 @@ void BLEManagerImpl::AddConnection(uint8_t connectionHandle)
 
 BLEManagerImpl::CHIPoBLEConState * BLEManagerImpl::GetConnectionState(uint8_t connectionHandle, bool allocate)
 {
+    uint8_t freeIndex = kMaxConnections;
+
+    for (uint8_t i = 0; i < kMaxConnections; i++)
+    {
+        if (mBleConnections[i].allocated == 1)
+        {
+            if (mBleConnections[i].connectionHandle == connectionHandle)
+            {
+                return &mBleConnections[i];
+            }
+        }
+
+        else if (i < freeIndex)
+        {
+            freeIndex = i;
+        }
+    }
+
+    if (allocate)
+    {
+        if (freeIndex < kMaxConnections)
+        {
+            return &mBleConnections[freeIndex];
+        }
+
+        ChipLogError(DeviceLayer, "Failed to allocate CHIPoBLEConState");
+    }
+
     return NULL;
 }
 
@@ -429,20 +504,90 @@ exit:
 
 CHIP_ERROR BLEManagerImpl::ConfigureAdvertisingData(void)
 {
-    return 1;
+    printf("BLEManagerImpl::ConfigureAdvertisingData:::::::::::::::OK\r\n");
+    CHIP_ERROR err;
+    uint8_t advData[MAX_ADV_DATA_LEN] = { 0 };
+    uint8_t advPayload[MAX_ADV_DATA_LEN] = { 0 };
+    uint8_t deviceIdInfoLength = 0;
+    ChipBLEDeviceIdentificationInfo deviceIdInfo;
+    uint8_t index = 0;
+
+    // If the device name is not specified, generate a CHIP-standard name based on the bottom digits of the Chip device id.
+    uint16_t discriminator;
+    SuccessOrExit(err = ConfigurationMgr().GetSetupDiscriminator(discriminator));
+
+   if (!mFlags.Has(Flags::kDeviceNameSet))
+    {
+        snprintf(mDeviceName, sizeof(mDeviceName), "%s%04u", CHIP_DEVICE_CONFIG_BLE_DEVICE_NAME_PREFIX, discriminator);
+        mDeviceName[kMaxDeviceNameLength] = 0;
+    }
+
+    // Configure the BLE device name.
+
+    /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    [zl_dbg] replace ble_svc_gap_device_name_set to z2 function
+
+    err = MapBLEError(ble_svc_gap_device_name_set(mDeviceName));
+    if (err != CHIP_NO_ERROR)
+    {
+        ChipLogError(DeviceLayer, "xxxxxxxxxxxxxxx() failed: %s", ErrorStr(err));
+        ExitNow();
+    }
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+
+    /**************** Prepare advertising data *******************************************/
+    memset(advData, 0, sizeof(advData));
+    advData[index++] = 0x02;                                                                // length
+    advData[index++] = CHIP_ADV_DATA_TYPE_FLAGS;                                            // AD type : flags
+    advData[index++] = CHIP_ADV_DATA_FLAGS;                                                 // AD value
+    advData[index++] = 0x0A;                                                                // length
+    advData[index++] = CHIP_ADV_DATA_TYPE_SERVICE_DATA;                                     // AD type: (Service Data - 16-bit UUID)
+
+    advData[index++] = static_cast<uint8_t>(ShortUUID_CHIPoBLEService.value & 0xFF);        // AD value
+    advData[index++] = static_cast<uint8_t>((ShortUUID_CHIPoBLEService.value >> 8) & 0xFF); // AD value
+
+    /*[zl_debug]Need to verify the "AD value" here
+    memcpy(advPayload, ShortUUID_CHIPoBLEService, CHIP_ADV_SHORT_UUID_LEN);
+    memcpy(&advPayload[CHIP_ADV_SHORT_UUID_LEN], (void *) &deviceIdInfo, deviceIdInfoLength);
+    advData[index++] = advPayload;                                                          // AD value
+*/
+
+    err = ConfigurationMgr().GetBLEDeviceIdentificationInfo(deviceIdInfo);
+    if (err != CHIP_NO_ERROR)
+    {
+        ChipLogError(DeviceLayer, "GetBLEDeviceIdentificationInfo(): %s", ErrorStr(err));
+        ExitNow();
+    }
+
+    VerifyOrExit(index + sizeof(deviceIdInfo) <= sizeof(advData), err = CHIP_ERROR_OUTBOUND_MESSAGE_TOO_BIG);
+    memcpy(&advData[index], &deviceIdInfo, sizeof(deviceIdInfo));
+    index = static_cast<uint8_t>(index + sizeof(deviceIdInfo));
+
+    /**************** Prepare scan response data *******************************************/
+    // Construct the Chip BLE Service Data to be sent in the scan response packet.
+    /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    [zl_dbg] replace ble_gap_adv_set_data to z2 function
+
+    err = MapBLEError(ble_gap_adv_set_data(advData, sizeof(advData)));
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+    if (err != CHIP_NO_ERROR)
+    {
+        ChipLogError(DeviceLayer, "ble_gap_adv_set_data failed: %s %d", ErrorStr(err), discriminator);
+        ExitNow();
+    }
+
+exit:
+    return err;
 }
 
 CHIP_ERROR BLEManagerImpl::StartAdvertising(void)
 {
+    printf("BLEManagerImpl::StartAdvertising:::::::::::::::\r\n");
     CHIP_ERROR err           = CHIP_NO_ERROR;
     uint32_t bleAdvTimeoutMs = 0;
 
-    mFlags.Set(Flags::kAdvertising);
-    mFlags.Clear(Flags::kRestartAdvertising);
-
-    StartBleAdvTimeoutTimer(bleAdvTimeoutMs);
-
     err = ConfigureAdvertisingData();
+    SuccessOrExit(err);
 
     if (err == CHIP_NO_ERROR)
     /* schedule NFC emulation stop */
@@ -452,13 +597,50 @@ CHIP_ERROR BLEManagerImpl::StartAdvertising(void)
         advChange.CHIPoBLEAdvertisingChange.Result = kActivity_Started;
         PlatformMgr().PostEvent(&advChange);
     }
+
+    /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    [zl_dbg] Add z2 advertisinig function
+
+    err = z2_adv_fun
+    SuccessOrExit(err);
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+
+    StartBleAdvTimeoutTimer(bleAdvTimeoutMs);
+    mFlags.Set(Flags::kAdvertising);
+    mFlags.Clear(Flags::kRestartAdvertising);
+    StartBleAdvTimeoutTimer(bleAdvTimeoutMs);
+
+exit:
     return err;
 }
 
 CHIP_ERROR BLEManagerImpl::StopAdvertising(void)
 {
+    CHIP_ERROR err;
+
+    /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    [zl_dbg] need to match Ameba StopAdvertising function*/
+
+    //bt_config_send_msg(0);
+    /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
     CancelBleAdvTimeoutTimer();
 
+    // Change flag status to the 'not Advertising state'
+    if (mFlags.Has(Flags::kAdvertising))
+    {
+        mFlags.Clear(Flags::kAdvertising);
+        mFlags.Set(Flags::kFastAdvertisingEnabled);
+
+        ChipLogProgress(DeviceLayer, "CHIPoBLE advertising stopped");
+
+        // Post a CHIPoBLEAdvertisingChange(Stopped) event.
+        {
+            ChipDeviceEvent advChange;
+            advChange.Type                             = DeviceEventType::kCHIPoBLEAdvertisingChange;
+            advChange.CHIPoBLEAdvertisingChange.Result = kActivity_Stopped;
+            PlatformMgr().PostEvent(&advChange);
+        }
+    }
     return CHIP_NO_ERROR;
 }
 
@@ -481,12 +663,12 @@ void BLEManagerImpl::DriveBLEState(void)
 {
 printf("BLEManagerImpl::DriveBLEState:::::::::::::::\r\n");
 printf("mServiceMode = %d:::::::::::::::\r\n",mServiceMode);
-
     CHIP_ERROR err = CHIP_NO_ERROR;
 
     // Check if BLE stack is initialized
     VerifyOrExit(mFlags.Has(Flags::kAMEBABLEStackInitialized), /* */);
 
+// If CHIP_DEVICE_CONFIG_CHIPOBLE_DISABLE_ADVERTISING_WHEN_PROVISIONED is enabled and the device is fully provisioned, the CHIPoBLE advertising will be disabled.
 #if CHIP_DEVICE_CONFIG_CHIPOBLE_DISABLE_ADVERTISING_WHEN_PROVISIONED
     if (ConfigurationMgr().IsFullyProvisioned())
     {
@@ -524,6 +706,7 @@ exit:
 
 void BLEManagerImpl::DriveBLEState(intptr_t arg)
 {
+printf("BLEManagerImpl::DriveBLEState arg=%d:::::::::::::::\r\n",arg);
     sInstance.DriveBLEState();
 }
 
@@ -553,19 +736,17 @@ void BLEManagerImpl::BleAdvTimeoutHandler(TimerHandle_t xTimer)
         ChipLogDetail(DeviceLayer, "bleAdv Timeout : Start slow advertisment");
 
         sInstance.mFlags.Clear(Flags::kFastAdvertisingEnabled);
-        // stop advertiser, change interval and restart it;
+        // Stop advertising, change interval and restart it;
         sInstance.StopAdvertising();
         sInstance.StartAdvertising();
         sInstance.StartBleAdvTimeoutTimer(CHIP_DEVICE_CONFIG_BLE_ADVERTISING_TIMEOUT); // Slow advertise for 15 Minutes
     }
     else if (sInstance._IsAdvertisingEnabled())
     {
-        // advertisement expired. we stop advertissing
+        // Advertisement time expired. Stop advertising
         ChipLogDetail(DeviceLayer, "bleAdv Timeout : Stop advertisement");
         sInstance.StopAdvertising();
     }
-
-    return;
 }
 
 void BLEManagerImpl::CancelBleAdvTimeoutTimer(void)
