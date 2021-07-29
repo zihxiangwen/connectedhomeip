@@ -24,11 +24,9 @@
 
 /* this file behaves like a config.h, comes first */
 #include <platform/internal/CHIPDeviceLayerInternal.h>
-
 #include <crypto/CHIPCryptoPAL.h>
 
 #if CHIP_DEVICE_CONFIG_ENABLE_CHIPOBLE
-
 #include <ble/CHIPBleServiceData.h>
 
 #include "stdio.h"
@@ -37,10 +35,15 @@
 //Ameba BLE related header files
 #include "gap_conn_le.h"
 #include "bt_config_app_task.h"
+#include "bt_config_app_main.h"
+#include "bt_config_peripheral_app.h"
+#include "bte.h"
+#include "rtk_coex.h"
+#include "trace_app.h"
 
 /*******************************************************************************
  * Local data types
- *************************s******************************************************/
+ *******************************************************************************/
 using namespace ::chip;
 using namespace ::chip::Ble;
 
@@ -53,11 +56,10 @@ namespace {
 /*******************************************************************************
  * Macros & Constants definitions
  *******************************************************************************/
-
-
-#define MAX_ADV_DATA_LEN 31
-#define CHIP_ADV_DATA_TYPE_FLAGS 0x01
-#define CHIP_ADV_DATA_FLAGS 0x06
+#define APP_MAX_LINKS                   4
+#define MAX_ADV_DATA_LEN                31
+#define CHIP_ADV_DATA_TYPE_FLAGS        0x01
+#define CHIP_ADV_DATA_FLAGS             0x06
 #define CHIP_ADV_DATA_TYPE_SERVICE_DATA 0x16
 
 #define LOOP_EV_BLE (0x08)
@@ -128,9 +130,16 @@ printf("BLEManagerImpl::_Init----------------------------------------------OK\r\
     // Check if BLE stack is initialized
     VerifyOrExit(!mFlags.Has(Flags::kAMEBABLEStackInitialized), err = CHIP_ERROR_INCORRECT_STATE);
 
-    /*[zl_dbg]Add Ameba Init function
+    /*[zl_dbg]Add Ameba Init function*/
+    bt_trace_init();
+    bt_config_stack_config_init();
+    bte_init();
+    le_gap_init(APP_MAX_LINKS);
+    bt_config_app_le_profile_init();
+    bt_config_app_le_gap_init();
+    bt_config_task_init();
 
-    */
+    bt_coex_init();
 
     //Set related flags
     mFlags.ClearAll().Set(Flags::kAdvertisingEnabled, CHIP_DEVICE_CONFIG_CHIPOBLE_ENABLE_ADVERTISING_AUTOSTART);
@@ -600,10 +609,13 @@ CHIP_ERROR BLEManagerImpl::StartAdvertising(void)
 
     /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     [zl_dbg] Add z2 advertisinig function
-
-    err = z2_adv_fun
-    SuccessOrExit(err);
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+    bt_config_app_set_adv_data();
+    bt_config_send_msg(1); //Start ADV
+    set_bt_config_state(BC_DEV_IDLE); // BT Config Ready
+  //  err = z2_adv_fun
+   //SuccessOrExit(err);
+
 
     StartBleAdvTimeoutTimer(bleAdvTimeoutMs);
     mFlags.Set(Flags::kAdvertising);
