@@ -95,6 +95,14 @@ private:
 
     // ===== Private members reserved for use by this class only.
 
+    typedef enum {
+	BC_DEV_DISABLED            = 0x0,
+	BC_DEV_INIT                = 0x1,
+	BC_DEV_IDLE                = 0x2,
+	BC_DEV_BT_CONNECTED        = 0x3,
+	BC_DEV_DEINIT              = 0x4,
+    } BC_device_state_t;
+
     enum class Flags : uint8_t
     {
         kAdvertisingEnabled      = 0x0001,
