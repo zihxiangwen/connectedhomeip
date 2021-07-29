@@ -8,6 +8,9 @@
 
 #include <platform/CHIPDeviceLayer.h>
 #include <support/CHIPMem.h>
+#include "chip_porting.h"
+
+#include <platform/AMBD/AMBDConfig.h>
 
 extern "C"{ void * __dso_handle = 0 ;}
 
@@ -47,6 +50,8 @@ extern "C" void ChipTest(void)
     printf("In ChipTest()\r\n");
     CHIP_ERROR err = CHIP_NO_ERROR;
 
+    printf("initPrefr\n");
+    initPref();
 
     CHIPDeviceManager &deviceMgr = CHIPDeviceManager::GetInstance();
 
