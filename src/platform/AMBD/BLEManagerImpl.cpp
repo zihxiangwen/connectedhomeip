@@ -118,7 +118,7 @@ BLEManagerImpl BLEManagerImpl::sInstance;
 
 CHIP_ERROR BLEManagerImpl::_Init()
 {
-printf("BLEManagerImpl::_Init----------------------------------------------OK\r\n");
+printf("BLEManagerImpl::_Init----------------------------------------------Start\r\n");
     CHIP_ERROR err;
 
     // Initialize the CHIP BleLayer.
@@ -131,7 +131,7 @@ printf("BLEManagerImpl::_Init----------------------------------------------OK\r\
     VerifyOrExit(!mFlags.Has(Flags::kAMEBABLEStackInitialized), err = CHIP_ERROR_INCORRECT_STATE);
 
     /*[zl_dbg]Add Ameba Init function*/
-    bt_trace_init();
+ /*   bt_trace_init();
     bt_config_stack_config_init();
     bte_init();
     le_gap_init(APP_MAX_LINKS);
@@ -140,6 +140,11 @@ printf("BLEManagerImpl::_Init----------------------------------------------OK\r\
     bt_config_task_init();
 
     bt_coex_init();
+*/
+    printf("Before bt_config_init\r\n");
+    err = bt_config_init();
+    printf("After bt_config_init\r\n");
+    SuccessOrExit(err);
 
     //Set related flags
     mFlags.ClearAll().Set(Flags::kAdvertisingEnabled, CHIP_DEVICE_CONFIG_CHIPOBLE_ENABLE_ADVERTISING_AUTOSTART);
@@ -610,11 +615,12 @@ CHIP_ERROR BLEManagerImpl::StartAdvertising(void)
     /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     [zl_dbg] Add z2 advertisinig function
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
-    bt_config_app_set_adv_data();
-    bt_config_send_msg(1); //Start ADV
-    set_bt_config_state(BC_DEV_IDLE); // BT Config Ready
+    err = bt_config_adv();
+//    bt_config_app_set_adv_data();
+//    bt_config_send_msg(1); //Start ADV
+ //   set_bt_config_state(BC_DEV_IDLE); // BT Config Ready
   //  err = z2_adv_fun
-   //SuccessOrExit(err);
+    SuccessOrExit(err);
 
 
     StartBleAdvTimeoutTimer(bleAdvTimeoutMs);
