@@ -33,10 +33,6 @@
 namespace chip {
 namespace DeviceLayer {
 
-namespace Internal {
-class NetworkProvisioningServerImpl;
-}
-
 /**
  * Concrete implementation of the ConfigurationManager singleton object for the AmebaD platform.
  */
@@ -68,7 +64,6 @@ private:
 
     // ===== Members for internal use by the following friends.
 
-    friend class Internal::NetworkProvisioningServerImpl;
     friend ConfigurationManager & ConfigurationMgr(void);
     friend ConfigurationManagerImpl & ConfigurationMgrImpl(void);
 
