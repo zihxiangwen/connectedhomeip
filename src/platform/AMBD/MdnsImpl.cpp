@@ -64,7 +64,7 @@ exit:
     return error;
 }
 
-static const char * GetProtocolString(MdnsServiceProtocol protocol)
+const char * GetProtocolString(MdnsServiceProtocol protocol)
 {
     return protocol == MdnsServiceProtocol::kMdnsProtocolTcp ? "_tcp" : "_udp";
 }
