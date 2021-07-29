@@ -30,7 +30,8 @@ enum {
     kPrefsTypeBoolean = 1,
     kPrefsTypeInteger = 2,
     kPrefsTypeString = 3,
-    kPrefsTypeBuffer = 4
+    kPrefsTypeBuffer = 4,
+    kPrefsTypeBinary = 5
 };
 
 namespace chip {
@@ -75,6 +76,7 @@ const AMBDConfig::Key AMBDConfig::kConfigKey_Breadcrumb                  = { kCo
 CHIP_ERROR AMBDConfig::ReadConfigValue(Key key, bool & val)
 {
     uint32_t intVal;
+    int32_t success=0;
 
     char* _namespace = (char*) malloc(strlen(key.Namespace) + 1);
     char* _name = (char*) malloc(strlen(key.Name) + 1);
@@ -87,17 +89,23 @@ CHIP_ERROR AMBDConfig::ReadConfigValue(Key key, bool & val)
     strcpy(_namespace, key.Namespace);
     strcpy(_name, key.Name);
 
-    getPref_u32(_namespace, _name, kPrefsTypeBoolean, &intVal);
+    success = getPref_bool_new(_namespace, _name, &intVal);
+    if (!success)
+        printf("getPref_u32_new: %s/%s failed\n", _namespace, _name);
 
     val = (intVal != 0);
 
     free(_namespace);
     free(_name);
-    return CHIP_NO_ERROR;
+    if (success == 1)
+        return CHIP_NO_ERROR;
+    else
+        return CHIP_DEVICE_ERROR_CONFIG_NOT_FOUND;
 }
 
 CHIP_ERROR AMBDConfig::ReadConfigValue(Key key, uint32_t & val)
 {
+    int32_t success=0;
     char* _namespace = (char*) malloc(strlen(key.Namespace) + 1);
     char* _name = (char*) malloc(strlen(key.Name) + 1);
 
@@ -109,22 +117,22 @@ CHIP_ERROR AMBDConfig::ReadConfigValue(Key key, uint32_t & val)
     strcpy(_namespace, key.Namespace);
     strcpy(_name, key.Name);
 
-    getPref_u32(_namespace, _name, kPrefsTypeInteger, &val);
+    success = getPref_u32_new(_namespace, _name, &val);
+    if (!success)
+        printf("getPref_u32_new: %s/%s failed\n", _namespace, _name);
 
     free(_namespace);
     free(_name);
-    return CHIP_NO_ERROR;
+
+    if (success == 1)
+        return CHIP_NO_ERROR;
+    else
+        return CHIP_DEVICE_ERROR_CONFIG_NOT_FOUND;
 }
 
 CHIP_ERROR AMBDConfig::ReadConfigValue(Key key, uint64_t & val)
 {
-    // TODO
-    return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
-}
-
-CHIP_ERROR AMBDConfig::ReadConfigValueStr(Key key, char * buf, size_t bufSize, size_t & outLen)
-{
-    int32_t ret=0;
+    int32_t success=0;
     char* _namespace = (char*) malloc(strlen(key.Namespace) + 1);
     char* _name = (char*) malloc(strlen(key.Name) + 1);
 
@@ -134,13 +142,44 @@ CHIP_ERROR AMBDConfig::ReadConfigValueStr(Key key, char * buf, size_t bufSize, s
         return CHIP_ERROR_NO_MEMORY;
     }
     strcpy(_namespace, key.Namespace);
-    strcpy(_namespace, key.Name);
+    strcpy(_name, key.Name);
 
-    ret = getPref_str(_namespace, _name, kPrefsTypeString, buf, &outLen);
+    success = getPref_u64_new(_namespace, _name, &val);
+    if (!success)
+        printf("getPref_u32_new: %s/%s failed\n", _namespace, _name);
 
     free(_namespace);
     free(_name);
-    if (ret == 0)
+
+    if (success == 1)
+        return CHIP_NO_ERROR;
+    else
+        return CHIP_DEVICE_ERROR_CONFIG_NOT_FOUND;
+
+}
+
+CHIP_ERROR AMBDConfig::ReadConfigValueStr(Key key, char * buf, size_t bufSize, size_t & outLen)
+{
+    int32_t success=0;
+    char* _namespace = (char*) malloc(strlen(key.Namespace) + 1);
+    char* _name = (char*) malloc(strlen(key.Name) + 1);
+
+    if (_namespace == NULL || _name == NULL) {
+        free(_namespace);
+        free(_name);
+        return CHIP_ERROR_NO_MEMORY;
+    }
+    strcpy(_namespace, key.Namespace);
+    strcpy(_name, key.Name);
+
+    success = getPref_str_new(_namespace, _name, buf, bufSize, &outLen);
+    if (!success)
+        printf("getPref_str_new: %s/%s failed\n", _namespace, _name);
+
+    free(_namespace);
+    free(_name);
+
+    if (success == 1)
     {
         return CHIP_NO_ERROR;
     }
@@ -153,8 +192,34 @@ CHIP_ERROR AMBDConfig::ReadConfigValueStr(Key key, char * buf, size_t bufSize, s
 
 CHIP_ERROR AMBDConfig::ReadConfigValueBin(Key key, uint8_t * buf, size_t bufSize, size_t & outLen)
 {
-    // TODO
-    return CHIP_ERROR_NOT_IMPLEMENTED;
+    int32_t success=0;
+    char* _namespace = (char*) malloc(strlen(key.Namespace) + 1);
+    char* _name = (char*) malloc(strlen(key.Name) + 1);
+
+    if (_namespace == NULL || _name == NULL) {
+        free(_namespace);
+        free(_name);
+        return CHIP_ERROR_NO_MEMORY;
+    }
+    strcpy(_namespace, key.Namespace);
+    strcpy(_name, key.Name);
+
+    success = getPref_bin_new(_namespace, _name, buf, bufSize, &outLen);
+    if (!success)
+        printf("getPref_bin_new: %s/%s failed\n", _namespace, _name);
+
+    free(_namespace);
+    free(_name);
+    if (success == 1)
+    {
+        return CHIP_NO_ERROR;
+    }
+    else
+    {
+        outLen = 0;
+        return CHIP_DEVICE_ERROR_CONFIG_NOT_FOUND;
+    }
+
 }
 
 CHIP_ERROR AMBDConfig::WriteConfigValue(Key key, bool val)
@@ -177,7 +242,7 @@ CHIP_ERROR AMBDConfig::WriteConfigValue(Key key, bool val)
         value = 1;
     else
         value = 0;
-    success = setPref(_namespace, _name, kPrefsTypeBoolean, &value, 1);
+    success = setPref_new(_namespace, _name, &value, 1);
     if (!success)
         printf("setPref: %s/%s = %s failed\n", _namespace, _name, value ? "true" : "false");
 
@@ -201,7 +266,7 @@ CHIP_ERROR AMBDConfig::WriteConfigValue(Key key, uint32_t val)
     strcpy(_namespace, key.Namespace);
     strcpy(_name, key.Name);
 
-    success = setPref(_namespace, _name, kPrefsTypeInteger, (uint8_t *)&val, sizeof(uint32_t));
+    success = setPref_new(_namespace, _name, (uint8_t *)&val, sizeof(uint32_t));
     if (!success)
         printf("setPref: %s/%s = %d(0x%x) failed\n", _namespace, _name, val, val);
 
@@ -225,7 +290,7 @@ CHIP_ERROR AMBDConfig::WriteConfigValue(Key key, uint64_t val)
     strcpy(_namespace, key.Namespace);
     strcpy(_name, key.Name);
 
-    success = setPref(_namespace, _name, kPrefsTypeInteger, (uint8_t *)&val, sizeof(uint64_t));
+    success = setPref_new(_namespace, _name, (uint8_t *)&val, sizeof(uint64_t));
     if (!success)
         printf("setPref: %s/%s = %d(0x%x) failed\n", _namespace, _name, val, val);
 
@@ -252,7 +317,7 @@ CHIP_ERROR AMBDConfig::WriteConfigValueStr(Key key, const char * str)
     strcpy(_name, key.Name);
     strcpy(_str, str);
 
-    success = setPref(_namespace, _name, kPrefsTypeString, (uint8_t *)_str, strlen(_str) + 1);
+    success = setPref_new(_namespace, _name, (uint8_t *)_str, strlen(_str) + 1);
     if (!success)
         printf("setPref: %s/%s = %s failed\n", _namespace, _name, _str);
 
@@ -280,20 +345,71 @@ exit:
 
 CHIP_ERROR AMBDConfig::WriteConfigValueBin(Key key, const uint8_t * data, size_t dataLen)
 {
-    // TODO
-    return CHIP_ERROR_NOT_IMPLEMENTED;
+    int32_t success;
+
+    char* _namespace = (char*) malloc(strlen(key.Namespace) + 1);
+    char* _name = (char*) malloc(strlen(key.Name) + 1);
+
+    if (_namespace == NULL || _name == NULL) {
+        free(_namespace);
+        free(_name);
+        return CHIP_ERROR_NO_MEMORY;
+    }
+    strcpy(_namespace, key.Namespace);
+    strcpy(_name, key.Name);
+
+    success = setPref_new(_namespace, _name, (uint8_t *)data, dataLen);
+    if (!success)
+        printf("setPref: %s/%s failed\n", _namespace, _name);
+
+    free(_namespace);
+    free(_name);
+    return CHIP_NO_ERROR;
 }
 
 CHIP_ERROR AMBDConfig::ClearConfigValue(Key key)
 {
-    // TODO
-    return CHIP_ERROR_NOT_IMPLEMENTED;
+    int32_t success;
+    char* _namespace = (char*) malloc(strlen(key.Namespace) + 1);
+    char* _name = (char*) malloc(strlen(key.Name) + 1);
+
+    if (_namespace == NULL || _name == NULL) {
+        free(_namespace);
+        free(_name);
+        return CHIP_ERROR_NO_MEMORY;
+    }
+    strcpy(_namespace, key.Namespace);
+    strcpy(_name, key.Name);
+
+    success = deleteKey(_namespace, _name);
+    if (!success)
+        printf("%s : %s/%s failed\n",__FUNCTION__, _namespace, _name);
+
+    free(_namespace);
+    free(_name);
+    return CHIP_NO_ERROR;
+
 }
 
 bool AMBDConfig::ConfigValueExists(Key key)
 {
-    // TODO
-    return CHIP_ERROR_NOT_IMPLEMENTED;
+    int32_t success;
+    char* _namespace = (char*) malloc(strlen(key.Namespace) + 1);
+    char* _name = (char*) malloc(strlen(key.Name) + 1);
+
+    if (_namespace == NULL || _name == NULL) {
+        free(_namespace);
+        free(_name);
+        return CHIP_ERROR_NO_MEMORY;
+    }
+    strcpy(_namespace, key.Namespace);
+    strcpy(_name, key.Name);
+
+    success = checkExist(_namespace, _name);
+
+    free(_namespace);
+    free(_name);
+    return success;
 }
 
 CHIP_ERROR AMBDConfig::EnsureNamespace(const char * ns)
@@ -307,7 +423,7 @@ CHIP_ERROR AMBDConfig::EnsureNamespace(const char * ns)
     }
     strcpy(temp, ns);
 
-    ret = initPref(temp);
+    ret = registerPref(temp);
     if (ret != 0)
     {
         printf("dct_register_module failed\n");
