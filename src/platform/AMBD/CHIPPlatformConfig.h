@@ -26,6 +26,7 @@
 // ==================== General Platform Adaptations ====================
 
 #define CHIP_CONFIG_ERROR_TYPE uint32_t
+#define CHIP_CONFIG_ERROR_FORMAT PRId32
 #define CHIP_CONFIG_NO_ERROR 0
 #define CHIP_CONFIG_ERROR_MIN 4000000
 #define CHIP_CONFIG_ERROR_MAX 4000999

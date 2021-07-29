@@ -62,3 +62,8 @@ extern "C" void ChipTest(void)
     while(true)
         vTaskDelay( pdMS_TO_TICKS(50) );
 }
+
+bool lowPowerClusterSleep()
+{
+	    return true;
+}
