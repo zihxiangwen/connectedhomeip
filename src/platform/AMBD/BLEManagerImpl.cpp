@@ -40,6 +40,7 @@
 #include "bte.h"
 #include "rtk_coex.h"
 #include "trace_app.h"
+#include "gap_adv.h"
 
 /*******************************************************************************
  * Local data types
@@ -141,9 +142,9 @@ printf("BLEManagerImpl::_Init----------------------------------------------Start
 
     bt_coex_init();
 */
-    printf("Before bt_config_init\r\n");
+    printf("\n************************************************Before bt_config_init**********************************************\r\n");
     err = bt_config_init();
-    printf("After bt_config_init\r\n");
+    printf("\n***********************************************After bt_config_init((((((((((((((((((((((((((((((((((((((((((((((((\r\n");
     SuccessOrExit(err);
 
     //Set related flags
@@ -157,6 +158,7 @@ printf("BLEManagerImpl::_Init----------------------------------------------Start
 
     PlatformMgr().ScheduleWork(DriveBLEState, 0);
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+    PlatformMgr().ScheduleWork(DriveBLEState, 0);
 
 exit:
     return err;
@@ -598,9 +600,11 @@ CHIP_ERROR BLEManagerImpl::StartAdvertising(void)
 {
     printf("BLEManagerImpl::StartAdvertising:::::::::::::::\r\n");
     CHIP_ERROR err           = CHIP_NO_ERROR;
-    uint32_t bleAdvTimeoutMs = 0;
+    uint32_t bleAdvTimeoutMs;
+    uint16_t adv_int_min;
+    uint16_t adv_int_max;
 
-    err = ConfigureAdvertisingData();
+    //err = ConfigureAdvertisingData();			to be added
     SuccessOrExit(err);
 
     if (err == CHIP_NO_ERROR)
@@ -615,18 +619,42 @@ CHIP_ERROR BLEManagerImpl::StartAdvertising(void)
     /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     [zl_dbg] Add z2 advertisinig function
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
-    err = bt_config_adv();
+    printf("\n*********************************before le_adv_start()********************************/\n");
+    le_adv_start();
+    printf("\n*********************************after le_adv_start()********************************/\n");
+    //err = bt_config_adv();
 //    bt_config_app_set_adv_data();
 //    bt_config_send_msg(1); //Start ADV
  //   set_bt_config_state(BC_DEV_IDLE); // BT Config Ready
   //  err = z2_adv_fun
-    SuccessOrExit(err);
+    //SuccessOrExit(err);
 
+    if (mFlags.Has(Flags::kFastAdvertisingEnabled)) {
+	    printf("Fast Advertising Enabled\n");
+	    adv_int_min = CHIP_DEVICE_CONFIG_BLE_FAST_ADVERTISING_INTERVAL_MIN;
+	    adv_int_max = CHIP_DEVICE_CONFIG_BLE_FAST_ADVERTISING_INTERVAL_MAX;
+	    bleAdvTimeoutMs = CHIP_DEVICE_CONFIG_BLE_ADVERTISING_INTERVAL_CHANGE_TIME;
+    }
+    else {
+	    printf("Using slow advertising\n");
+	    adv_int_min = CHIP_DEVICE_CONFIG_BLE_SLOW_ADVERTISING_INTERVAL_MIN;
+	    adv_int_max = CHIP_DEVICE_CONFIG_BLE_SLOW_ADVERTISING_INTERVAL_MAX;
+	    bleAdvTimeoutMs = CHIP_DEVICE_CONFIG_BLE_ADVERTISING_TIMEOUT;
+    }
+    printf("bleAdvTimeoutMs: %d\n", bleAdvTimeoutMs);
+    printf("adv_int_min: %d\n", adv_int_min);
+    printf("adv_int_max: %d\n", adv_int_max);
+    
 
-    StartBleAdvTimeoutTimer(bleAdvTimeoutMs);
+    le_adv_set_param(GAP_PARAM_ADV_INTERVAL_MIN, sizeof(adv_int_min), &adv_int_min);
+    le_adv_set_param(GAP_PARAM_ADV_INTERVAL_MAX, sizeof(adv_int_max), &adv_int_max);
+
+    printf("TIMEOUT HERE\n");
+    //StartBleAdvTimeoutTimer(bleAdvTimeoutMs);
     mFlags.Set(Flags::kAdvertising);
     mFlags.Clear(Flags::kRestartAdvertising);
-    StartBleAdvTimeoutTimer(bleAdvTimeoutMs);
+    //printf("TIMEOUT HERE\n");
+    //StartBleAdvTimeoutTimer(bleAdvTimeoutMs);
 
 exit:
     return err;
