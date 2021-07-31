@@ -41,7 +41,12 @@
 #include "rtk_coex.h"
 #include "trace_app.h"
 #include "gap_adv.h"
+#include "wifi_conf.h"
+#include "gap_adv.h"
+#include "gap.h"
+#include "os_sched.h"
 
+extern void wifi_bt_coex_set_bt_on(void);
 /*******************************************************************************
  * Local data types
  *******************************************************************************/
@@ -527,10 +532,15 @@ CHIP_ERROR BLEManagerImpl::ConfigureAdvertisingData(void)
     uint8_t deviceIdInfoLength = 0;
     ChipBLEDeviceIdentificationInfo deviceIdInfo;
     uint8_t index = 0;
+    uint32_t bleAdvTimeoutMs;
+    uint16_t adv_int_min;
+    uint16_t adv_int_max;
+    T_GAP_DEV_STATE new_state;
 
     // If the device name is not specified, generate a CHIP-standard name based on the bottom digits of the Chip device id.
     uint16_t discriminator;
     SuccessOrExit(err = ConfigurationMgr().GetSetupDiscriminator(discriminator));
+    printf("Discriminator: %d\n", discriminator);
 
    if (!mFlags.Has(Flags::kDeviceNameSet))
     {
@@ -539,6 +549,8 @@ CHIP_ERROR BLEManagerImpl::ConfigureAdvertisingData(void)
     }
 
     // Configure the BLE device name.
+   printf("mDeviceName: %s\n", mDeviceName);
+   le_set_gap_param(GAP_PARAM_DEVICE_NAME, kMaxDeviceNameLength, mDeviceName);
 
     /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     [zl_dbg] replace ble_svc_gap_device_name_set to z2 function
@@ -556,17 +568,11 @@ CHIP_ERROR BLEManagerImpl::ConfigureAdvertisingData(void)
     advData[index++] = 0x02;                                                                // length
     advData[index++] = CHIP_ADV_DATA_TYPE_FLAGS;                                            // AD type : flags
     advData[index++] = CHIP_ADV_DATA_FLAGS;                                                 // AD value
-    advData[index++] = 0x0A;                                                                // length
-    advData[index++] = CHIP_ADV_DATA_TYPE_SERVICE_DATA;                                     // AD type: (Service Data - 16-bit UUID)
+    advData[index++] = 0x03;                                                                // length
+    advData[index++] = 0x03;                                     // AD type: (Service Data - 16-bit UUID)
 
     advData[index++] = static_cast<uint8_t>(ShortUUID_CHIPoBLEService.value & 0xFF);        // AD value
     advData[index++] = static_cast<uint8_t>((ShortUUID_CHIPoBLEService.value >> 8) & 0xFF); // AD value
-
-    /*[zl_debug]Need to verify the "AD value" here
-    memcpy(advPayload, ShortUUID_CHIPoBLEService, CHIP_ADV_SHORT_UUID_LEN);
-    memcpy(&advPayload[CHIP_ADV_SHORT_UUID_LEN], (void *) &deviceIdInfo, deviceIdInfoLength);
-    advData[index++] = advPayload;                                                          // AD value
-*/
 
     err = ConfigurationMgr().GetBLEDeviceIdentificationInfo(deviceIdInfo);
     if (err != CHIP_NO_ERROR)
@@ -576,8 +582,46 @@ CHIP_ERROR BLEManagerImpl::ConfigureAdvertisingData(void)
     }
 
     VerifyOrExit(index + sizeof(deviceIdInfo) <= sizeof(advData), err = CHIP_ERROR_OUTBOUND_MESSAGE_TOO_BIG);
+    advData[index++] = (uint8_t) (sizeof(deviceIdInfo));				//length
+    advData[index++] = 0x09;								//complete local name
     memcpy(&advData[index], &deviceIdInfo, sizeof(deviceIdInfo));
     index = static_cast<uint8_t>(index + sizeof(deviceIdInfo));
+
+    if (mFlags.Has(Flags::kFastAdvertisingEnabled)) {
+	    printf("Fast Advertising Enabled\n");
+	    adv_int_min = CHIP_DEVICE_CONFIG_BLE_FAST_ADVERTISING_INTERVAL_MIN;
+	    adv_int_max = CHIP_DEVICE_CONFIG_BLE_FAST_ADVERTISING_INTERVAL_MAX;
+	    bleAdvTimeoutMs = CHIP_DEVICE_CONFIG_BLE_ADVERTISING_INTERVAL_CHANGE_TIME;
+    }
+    else {
+	    printf("Using slow advertising\n");
+	    adv_int_min = CHIP_DEVICE_CONFIG_BLE_SLOW_ADVERTISING_INTERVAL_MIN;
+	    adv_int_max = CHIP_DEVICE_CONFIG_BLE_SLOW_ADVERTISING_INTERVAL_MAX;
+	    bleAdvTimeoutMs = CHIP_DEVICE_CONFIG_BLE_ADVERTISING_TIMEOUT;
+    }
+    printf("bleAdvTimeoutMs: %d\n", bleAdvTimeoutMs);
+    printf("adv_int_min: %d\n", adv_int_min);
+    printf("adv_int_max: %d\n", adv_int_max);
+    
+
+    le_adv_set_param(GAP_PARAM_ADV_INTERVAL_MIN, sizeof(adv_int_min), &adv_int_min);
+    le_adv_set_param(GAP_PARAM_ADV_INTERVAL_MAX, sizeof(adv_int_max), &adv_int_max);
+    le_adv_set_param(GAP_PARAM_ADV_DATA, sizeof(advData), (void *)advData);	//set advData
+    le_register_app_cb(bt_config_app_gap_callback);
+
+    bt_config_app_le_gap_init_chip();
+    bt_config_task_init();
+
+    bt_coex_init();
+
+    //Wait BT init complete*
+    do {
+            os_delay(100);
+            le_get_gap_param(GAP_PARAM_DEV_STATE , &new_state);
+    } while (new_state.gap_init_state != GAP_INIT_STATE_STACK_READY);
+
+    //Start BT WIFI coexistence
+    wifi_btcoex_set_bt_on();
 
     /**************** Prepare scan response data *******************************************/
     // Construct the Chip BLE Service Data to be sent in the scan response packet.
@@ -585,12 +629,12 @@ CHIP_ERROR BLEManagerImpl::ConfigureAdvertisingData(void)
     [zl_dbg] replace ble_gap_adv_set_data to z2 function
 
     err = MapBLEError(ble_gap_adv_set_data(advData, sizeof(advData)));
-    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
     if (err != CHIP_NO_ERROR)
     {
         ChipLogError(DeviceLayer, "ble_gap_adv_set_data failed: %s %d", ErrorStr(err), discriminator);
         ExitNow();
     }
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
 
 exit:
     return err;
@@ -600,11 +644,8 @@ CHIP_ERROR BLEManagerImpl::StartAdvertising(void)
 {
     printf("BLEManagerImpl::StartAdvertising:::::::::::::::\r\n");
     CHIP_ERROR err           = CHIP_NO_ERROR;
-    uint32_t bleAdvTimeoutMs;
-    uint16_t adv_int_min;
-    uint16_t adv_int_max;
 
-    //err = ConfigureAdvertisingData();			to be added
+    err = ConfigureAdvertisingData();		
     SuccessOrExit(err);
 
     if (err == CHIP_NO_ERROR)
@@ -629,25 +670,6 @@ CHIP_ERROR BLEManagerImpl::StartAdvertising(void)
   //  err = z2_adv_fun
     //SuccessOrExit(err);
 
-    if (mFlags.Has(Flags::kFastAdvertisingEnabled)) {
-	    printf("Fast Advertising Enabled\n");
-	    adv_int_min = CHIP_DEVICE_CONFIG_BLE_FAST_ADVERTISING_INTERVAL_MIN;
-	    adv_int_max = CHIP_DEVICE_CONFIG_BLE_FAST_ADVERTISING_INTERVAL_MAX;
-	    bleAdvTimeoutMs = CHIP_DEVICE_CONFIG_BLE_ADVERTISING_INTERVAL_CHANGE_TIME;
-    }
-    else {
-	    printf("Using slow advertising\n");
-	    adv_int_min = CHIP_DEVICE_CONFIG_BLE_SLOW_ADVERTISING_INTERVAL_MIN;
-	    adv_int_max = CHIP_DEVICE_CONFIG_BLE_SLOW_ADVERTISING_INTERVAL_MAX;
-	    bleAdvTimeoutMs = CHIP_DEVICE_CONFIG_BLE_ADVERTISING_TIMEOUT;
-    }
-    printf("bleAdvTimeoutMs: %d\n", bleAdvTimeoutMs);
-    printf("adv_int_min: %d\n", adv_int_min);
-    printf("adv_int_max: %d\n", adv_int_max);
-    
-
-    le_adv_set_param(GAP_PARAM_ADV_INTERVAL_MIN, sizeof(adv_int_min), &adv_int_min);
-    le_adv_set_param(GAP_PARAM_ADV_INTERVAL_MAX, sizeof(adv_int_max), &adv_int_max);
 
     printf("TIMEOUT HERE\n");
     //StartBleAdvTimeoutTimer(bleAdvTimeoutMs);
