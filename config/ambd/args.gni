@@ -33,10 +33,7 @@ chip_inet_config_enable_tcp_endpoint = true
 chip_inet_config_enable_udp_endpoint = true
 
 chip_bypass_rendezvous=false
-<<<<<<< HEAD
 chip_ip_commissioning=false
-=======
->>>>>>> c6b6e587e... Disable bypass mode
 chip_config_network_layer_ble = true
 
 custom_toolchain = "//third_party/connectedhomeip/config/ambd/toolchain:ambd"
