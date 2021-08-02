@@ -454,16 +454,21 @@ CHIP_ERROR GenericConfigurationManagerImpl<ImplClass>::_GetDevicePrivateKey(uint
 template <class ImplClass>
 CHIP_ERROR GenericConfigurationManagerImpl<ImplClass>::_GetSetupPinCode(uint32_t & setupPinCode)
 {
+    printf("GetSetupPinCode Called here ==========================================\n");
     CHIP_ERROR err;
 
     err = Impl()->ReadConfigValue(ImplClass::kConfigKey_SetupPinCode, setupPinCode);
 #if defined(CHIP_DEVICE_CONFIG_USE_TEST_SETUP_PIN_CODE) && CHIP_DEVICE_CONFIG_USE_TEST_SETUP_PIN_CODE
-    if (err == CHIP_DEVICE_ERROR_CONFIG_NOT_FOUND)
+    printf("config defined=====================\n");
+    if(1) //temporary fix
+    //if (err == CHIP_DEVICE_ERROR_CONFIG_NOT_FOUND)
     {
+	printf("SetupPinCode: %d\n", CHIP_DEVICE_CONFIG_USE_TEST_SETUP_PIN_CODE);
         setupPinCode = CHIP_DEVICE_CONFIG_USE_TEST_SETUP_PIN_CODE;
         err          = CHIP_NO_ERROR;
     }
 #endif // defined(CHIP_DEVICE_CONFIG_USE_TEST_SETUP_PIN_CODE) && CHIP_DEVICE_CONFIG_USE_TEST_SETUP_PIN_CODE
+    printf("Final pincode: %d\n", setupPinCode);
     SuccessOrExit(err);
 
 exit:
@@ -479,13 +484,17 @@ CHIP_ERROR GenericConfigurationManagerImpl<ImplClass>::_StoreSetupPinCode(uint32
 template <class ImplClass>
 CHIP_ERROR GenericConfigurationManagerImpl<ImplClass>::_GetSetupDiscriminator(uint16_t & setupDiscriminator)
 {
+    printf("GetSetupDiscriminator Called here ==========================================\n");
     CHIP_ERROR err;
     uint32_t val;
 
     err = Impl()->ReadConfigValue(ImplClass::kConfigKey_SetupDiscriminator, val);
 #if defined(CHIP_DEVICE_CONFIG_USE_TEST_SETUP_DISCRIMINATOR) && CHIP_DEVICE_CONFIG_USE_TEST_SETUP_DISCRIMINATOR
-    if (err == CHIP_DEVICE_ERROR_CONFIG_NOT_FOUND)
+    printf("config defined=====================\n");
+    if (1) //temporary fix
+    //if (err == CHIP_DEVICE_ERROR_CONFIG_NOT_FOUND)
     {
+	printf("SetupDiscriminator: %d\n", CHIP_DEVICE_CONFIG_USE_TEST_SETUP_DISCRIMINATOR);
         val = CHIP_DEVICE_CONFIG_USE_TEST_SETUP_DISCRIMINATOR;
         err = CHIP_NO_ERROR;
     }
@@ -493,6 +502,7 @@ CHIP_ERROR GenericConfigurationManagerImpl<ImplClass>::_GetSetupDiscriminator(ui
     SuccessOrExit(err);
 
     setupDiscriminator = static_cast<uint16_t>(val);
+    printf("Final disc: %d\n", setupDiscriminator);
 
 exit:
     return err;
