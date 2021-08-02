@@ -539,6 +539,7 @@ CHIP_ERROR BLEManagerImpl::ConfigureAdvertisingData(void)
 
     // If the device name is not specified, generate a CHIP-standard name based on the bottom digits of the Chip device id.
     uint16_t discriminator;
+    printf("GET DISCRIMINATOR HERE ===============================\n");
     SuccessOrExit(err = ConfigurationMgr().GetSetupDiscriminator(discriminator));
     printf("Discriminator: %d\n", discriminator);
 
@@ -606,8 +607,8 @@ CHIP_ERROR BLEManagerImpl::ConfigureAdvertisingData(void)
 
     le_adv_set_param(GAP_PARAM_ADV_INTERVAL_MIN, sizeof(adv_int_min), &adv_int_min);
     le_adv_set_param(GAP_PARAM_ADV_INTERVAL_MAX, sizeof(adv_int_max), &adv_int_max);
-    le_adv_set_param(GAP_PARAM_ADV_DATA, sizeof(advData), (void *)advData);	//set advData
-    le_register_app_cb(bt_config_app_gap_callback);
+    //le_adv_set_param(GAP_PARAM_ADV_DATA, sizeof(advData), (void *)advData);	//set advData
+    //le_register_app_cb(bt_config_app_gap_callback);
 
     bt_config_app_le_gap_init_chip();
     bt_config_task_init();
