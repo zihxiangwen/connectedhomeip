@@ -146,7 +146,7 @@ private:
     CHIP_ERROR StartAdvertising(void);
     CHIP_ERROR StopAdvertising(void);
     CHIP_ERROR ConfigureAdvertisingData(void);
-    int gatt_svr_chr_access(TBTCONFIG_CALLBACK_DATA);
+    static int gatt_svr_chr_access(void *, TBTCONFIG_CALLBACK_DATA *);
     void HandleRXCharWrite(uint8_t *, uint16_t, uint8_t);
     bool UnsetSubscribed(uint16_t conId);
     bool IsSubscribed(uint16_t conId);
