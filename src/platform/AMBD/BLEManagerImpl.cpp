@@ -45,6 +45,8 @@
 #include "gap_adv.h"
 #include "gap.h"
 #include "os_sched.h"
+#include "bt_config_service.h"
+#include "profile_server.h"
 
 extern void wifi_bt_coex_set_bt_on(void);
 /*******************************************************************************
@@ -569,9 +571,8 @@ CHIP_ERROR BLEManagerImpl::ConfigureAdvertisingData(void)
     advData[index++] = 0x02;                                                                // length
     advData[index++] = CHIP_ADV_DATA_TYPE_FLAGS;                                            // AD type : flags
     advData[index++] = CHIP_ADV_DATA_FLAGS;                                                 // AD value
-    advData[index++] = 0x03;                                                                // length
-    advData[index++] = 0x03;                                     // AD type: (Service Data - 16-bit UUID)
-
+    advData[index++] = 0x0A;                                                                // length
+    advData[index++] = 0x16;                                     // AD type: (Service Data - 16-bit UUID)
     advData[index++] = static_cast<uint8_t>(ShortUUID_CHIPoBLEService.value & 0xFF);        // AD value
     advData[index++] = static_cast<uint8_t>((ShortUUID_CHIPoBLEService.value >> 8) & 0xFF); // AD value
 
@@ -583,8 +584,6 @@ CHIP_ERROR BLEManagerImpl::ConfigureAdvertisingData(void)
     }
 
     VerifyOrExit(index + sizeof(deviceIdInfo) <= sizeof(advData), err = CHIP_ERROR_OUTBOUND_MESSAGE_TOO_BIG);
-    advData[index++] = (uint8_t) (sizeof(deviceIdInfo));				//length
-    advData[index++] = 0x09;								//complete local name
     memcpy(&advData[index], &deviceIdInfo, sizeof(deviceIdInfo));
     index = static_cast<uint8_t>(index + sizeof(deviceIdInfo));
 
@@ -607,14 +606,18 @@ CHIP_ERROR BLEManagerImpl::ConfigureAdvertisingData(void)
 
     le_adv_set_param(GAP_PARAM_ADV_INTERVAL_MIN, sizeof(adv_int_min), &adv_int_min);
     le_adv_set_param(GAP_PARAM_ADV_INTERVAL_MAX, sizeof(adv_int_max), &adv_int_max);
-    //le_adv_set_param(GAP_PARAM_ADV_DATA, sizeof(advData), (void *)advData);	//set advData
-    //le_register_app_cb(bt_config_app_gap_callback);
+    le_adv_set_param(GAP_PARAM_ADV_DATA, sizeof(advData), (void *)advData);	//set advData
+    le_register_app_cb(bt_config_app_gap_callback);
 
     bt_config_app_le_gap_init_chip();
     bt_config_task_init();
 
     bt_coex_init();
 
+    // print advData
+    for(int i=0; i<sizeof(advData); i++) {
+	    printf("%X\n", advData[i]);
+    }
     //Wait BT init complete*
     do {
             os_delay(100);
@@ -662,6 +665,8 @@ CHIP_ERROR BLEManagerImpl::StartAdvertising(void)
     [zl_dbg] Add z2 advertisinig function
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
     printf("\n*********************************before le_adv_start()********************************/\n");
+    le_adv_stop();
+    vTaskDelay(100);
     le_adv_start();
     printf("\n*********************************after le_adv_start()********************************/\n");
     //err = bt_config_adv();
@@ -873,6 +878,90 @@ printf("BLEManagerImpl::IsSubscribed:::::::::::::::OK\r\n");
     return false;
 }
 
+//int BLEManagerImpl::gatt_svr_chr_access(uint16_t conn_handle, uint16_t attr_handle, struct ble_gatt_access_ctxt * ctxt, void * arg)
+int BLEManagerImpl::gatt_svr_chr_access(TBTCONFIG_CALLBACK_DATA p_simp_cb_data)
+{
+    //struct ble_gatt_char_context param;
+    int err = 0;
+    uint8_t conn_id = p_simp_cb_data.conn_id;
+    T_SERVICE_CALLBACK_TYPE msg_type = p_simp_cb_data.msg_type;
+    uint8_t *p_value = p_simp_cb_data.msg_data.write.p_value;
+    uint16_t len = p_simp_cb_data.msg_data.write.len;
+
+    //memset(&param, 0, sizeof(struct ble_gatt_char_context));
+
+    switch (msg_type)
+    {
+    case SERVICE_CALLBACK_TYPE_READ_CHAR_VALUE:
+/*
+        param.conn_handle = conn_handle;
+        param.attr_handle = attr_handle;
+        param.ctxt        = ctxt;
+        param.arg         = arg;
+        sInstance.HandleTXCharRead(&param);
+	*/
+        break;
+
+	/*
+    case BLE_GATT_ACCESS_OP_READ_DSC:
+
+        param.conn_handle = conn_handle;
+        param.attr_handle = attr_handle;
+        param.ctxt        = ctxt;
+        param.arg         = arg;
+        sInstance.HandleTXCharCCCDRead(&param);
+        break;
+	*/
+
+    case SERVICE_CALLBACK_TYPE_WRITE_CHAR_VALUE:
+        //param.conn_handle = conn_handle;
+        //param.attr_handle = attr_handle;
+        //param.ctxt        = ctxt;
+        //param.arg         = arg;
+        sInstance.HandleRXCharWrite(p_value, len, conn_id);
+        break;
+
+    default:
+        //err = BLE_ATT_ERR_UNLIKELY;
+        break;
+    }
+
+    PlatformMgr().ScheduleWork(DriveBLEState, 0);
+
+    return err;
+}
+
+void BLEManagerImpl::HandleRXCharWrite(uint8_t *p_value, uint16_t len, uint8_t conn_id)
+{
+    CHIP_ERROR err    = CHIP_NO_ERROR;
+    //uint16_t data_len = 0;
+
+    //ESP_LOGI(TAG, "Write request received for CHIPoBLE RX characteristic con %u %u", param->conn_handle, param->attr_handle);
+
+    // Copy the data to a packet buffer.
+    //data_len               = OS_MBUF_PKTLEN(param->ctxt->om);
+    PacketBufferHandle buf = System::PacketBufferHandle::New(len, 0);
+    //VerifyOrExit(!buf.IsNull(), err = CHIP_ERROR_NO_MEMORY);
+    //VerifyOrExit(buf->AvailableDataLength() >= data_len, err = CHIP_ERROR_BUFFER_TOO_SMALL);
+    //ble_hs_mbuf_to_flat(param->ctxt->om, buf->Start(), data_len, NULL);
+    memcpy(buf->start(), p_value, len);
+    buf->SetDataLength(len);
+
+    // Post an event to the Chip queue to deliver the data into the Chip stack.
+    {
+        ChipDeviceEvent event;
+        event.Type                        = DeviceEventType::kCHIPoBLEWriteReceived;
+        event.CHIPoBLEWriteReceived.ConId = (uint16_t) conn_id;
+        event.CHIPoBLEWriteReceived.Data  = std::move(buf).UnsafeRelease();
+        PlatformMgr().PostEvent(&event);
+    }
+
+exit:
+    if (err != CHIP_NO_ERROR)
+    {
+        ChipLogError(DeviceLayer, "HandleRXCharWrite() failed: %s", ErrorStr(err));
+    }
+}
 
 } // namespace Internal
 } // namespace DeviceLayer
