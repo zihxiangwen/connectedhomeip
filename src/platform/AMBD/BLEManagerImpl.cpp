@@ -34,6 +34,7 @@
 
 //Ameba BLE related header files
 #include "gap_conn_le.h"
+#include "bt_config_service.h"
 #include "bt_config_app_task.h"
 #include "bt_config_app_main.h"
 #include "bt_config_peripheral_app.h"
@@ -151,6 +152,7 @@ printf("BLEManagerImpl::_Init----------------------------------------------Start
 */
     printf("\n************************************************Before bt_config_init**********************************************\r\n");
     err = bt_config_init();
+	chip_blemgr_set_callback_func((chip_blemgr_callback)(gatt_svr_chr_access), this);
     printf("\n***********************************************After bt_config_init((((((((((((((((((((((((((((((((((((((((((((((((\r\n");
     SuccessOrExit(err);
 
@@ -879,16 +881,21 @@ printf("BLEManagerImpl::IsSubscribed:::::::::::::::OK\r\n");
 }
 
 //int BLEManagerImpl::gatt_svr_chr_access(uint16_t conn_handle, uint16_t attr_handle, struct ble_gatt_access_ctxt * ctxt, void * arg)
-int BLEManagerImpl::gatt_svr_chr_access(TBTCONFIG_CALLBACK_DATA p_simp_cb_data)
+int BLEManagerImpl::gatt_svr_chr_access(void *param, TBTCONFIG_CALLBACK_DATA *p_simp_cb_data)
 {
     //struct ble_gatt_char_context param;
     int err = 0;
-    uint8_t conn_id = p_simp_cb_data.conn_id;
-    T_SERVICE_CALLBACK_TYPE msg_type = p_simp_cb_data.msg_type;
-    uint8_t *p_value = p_simp_cb_data.msg_data.write.p_value;
-    uint16_t len = p_simp_cb_data.msg_data.write.len;
+    uint8_t conn_id = p_simp_cb_data->conn_id;
+    T_SERVICE_CALLBACK_TYPE msg_type = p_simp_cb_data->msg_type;
+    uint8_t *p_value = p_simp_cb_data->msg_data.write.p_value;
+    uint16_t len = p_simp_cb_data->msg_data.write.len;
+    BLEManagerImpl *blemgr = static_cast<BLEManagerImpl *>(param);
+
+ 
 
     //memset(&param, 0, sizeof(struct ble_gatt_char_context));
+
+ 
 
     switch (msg_type)
     {
@@ -899,11 +906,15 @@ int BLEManagerImpl::gatt_svr_chr_access(TBTCONFIG_CALLBACK_DATA p_simp_cb_data)
         param.ctxt        = ctxt;
         param.arg         = arg;
         sInstance.HandleTXCharRead(&param);
-	*/
+    */
         break;
 
-	/*
+ 
+
+    /*
     case BLE_GATT_ACCESS_OP_READ_DSC:
+
+ 
 
         param.conn_handle = conn_handle;
         param.attr_handle = attr_handle;
@@ -911,7 +922,9 @@ int BLEManagerImpl::gatt_svr_chr_access(TBTCONFIG_CALLBACK_DATA p_simp_cb_data)
         param.arg         = arg;
         sInstance.HandleTXCharCCCDRead(&param);
         break;
-	*/
+    */
+
+ 
 
     case SERVICE_CALLBACK_TYPE_WRITE_CHAR_VALUE:
         //param.conn_handle = conn_handle;
@@ -920,6 +933,8 @@ int BLEManagerImpl::gatt_svr_chr_access(TBTCONFIG_CALLBACK_DATA p_simp_cb_data)
         //param.arg         = arg;
         sInstance.HandleRXCharWrite(p_value, len, conn_id);
         break;
+
+ 
 
     default:
         //err = BLE_ATT_ERR_UNLIKELY;
@@ -944,7 +959,7 @@ void BLEManagerImpl::HandleRXCharWrite(uint8_t *p_value, uint16_t len, uint8_t c
     //VerifyOrExit(!buf.IsNull(), err = CHIP_ERROR_NO_MEMORY);
     //VerifyOrExit(buf->AvailableDataLength() >= data_len, err = CHIP_ERROR_BUFFER_TOO_SMALL);
     //ble_hs_mbuf_to_flat(param->ctxt->om, buf->Start(), data_len, NULL);
-    memcpy(buf->start(), p_value, len);
+    memcpy(buf->Start(), p_value, len);
     buf->SetDataLength(len);
 
     // Post an event to the Chip queue to deliver the data into the Chip stack.
@@ -956,7 +971,7 @@ void BLEManagerImpl::HandleRXCharWrite(uint8_t *p_value, uint16_t len, uint8_t c
         PlatformMgr().PostEvent(&event);
     }
 
-exit:
+//exit:
     if (err != CHIP_NO_ERROR)
     {
         ChipLogError(DeviceLayer, "HandleRXCharWrite() failed: %s", ErrorStr(err));
