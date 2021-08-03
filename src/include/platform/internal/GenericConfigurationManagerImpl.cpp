@@ -880,6 +880,7 @@ template <class ImplClass>
 CHIP_ERROR
 GenericConfigurationManagerImpl<ImplClass>::_GetBLEDeviceIdentificationInfo(Ble::ChipBLEDeviceIdentificationInfo & deviceIdInfo)
 {
+    printf("GetBLEDeviceIdentificationInfo Called here=======================\n");
     CHIP_ERROR err;
     uint16_t id;
     uint16_t discriminator;
@@ -887,17 +888,21 @@ GenericConfigurationManagerImpl<ImplClass>::_GetBLEDeviceIdentificationInfo(Ble:
     deviceIdInfo.Init();
 
     err = Impl()->_GetVendorId(id);
+    printf("vendorid: %d\n", id);
     SuccessOrExit(err);
     deviceIdInfo.SetVendorId(id);
 
     err = Impl()->_GetProductId(id);
+    printf("productid: %d\n", id);
     SuccessOrExit(err);
     deviceIdInfo.SetProductId(id);
 
     err = Impl()->_GetSetupDiscriminator(discriminator);
+    printf("discriminator: %d\n", discriminator);
     SuccessOrExit(err);
     deviceIdInfo.SetDeviceDiscriminator(discriminator);
 
+    printf("End of GetBLEDeviceIdentificationInfo =========================\n");
 exit:
     return err;
 }
