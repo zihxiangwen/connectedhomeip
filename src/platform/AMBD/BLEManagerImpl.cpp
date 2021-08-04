@@ -48,6 +48,8 @@
 #include "os_sched.h"
 #include "bt_config_service.h"
 #include "profile_server.h"
+#include "complete_ble_service.h"
+#include "app_msg.h"
 
 extern void wifi_bt_coex_set_bt_on(void);
 /*******************************************************************************
@@ -152,7 +154,7 @@ printf("BLEManagerImpl::_Init----------------------------------------------Start
 */
     printf("\n************************************************Before bt_config_init**********************************************\r\n");
     err = bt_config_init();
-	chip_blemgr_set_callback_func((chip_blemgr_callback)(gatt_svr_chr_access), this);
+	chip_blemgr_set_callback_func((chip_blemgr_callback)(ble_callback_dispatcher), this);
     printf("\n***********************************************After bt_config_init((((((((((((((((((((((((((((((((((((((((((((((((\r\n");
     SuccessOrExit(err);
 
@@ -286,15 +288,15 @@ printf("BLEManagerImpl::_NumConnections:::::::::::::::\r\n");
     return numCons;
 }
 
-CHIP_ERROR BLEManagerImpl::HandleGAPConnect(struct ble_gap_event * gapEvent)
+CHIP_ERROR BLEManagerImpl::HandleGAPConnect(uint16_t conn_id)
 {
 printf("BLEManagerImpl::HandleGAPConnect xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx TB Verified \r\n");
     CHIP_ERROR err = CHIP_NO_ERROR;
-    ChipLogProgress(DeviceLayer, "BLE GAP connection established (con %" PRIu16 ")", gapEvent->connect.conn_handle);
+    //ChipLogProgress(DeviceLayer, "BLE GAP connection established (con %" PRIu16 ")", gapEvent->connect.conn_handle);
 
     // Track the number of active GAP connections.
     mNumGAPCons++;
-    err = SetSubscribed(gapEvent->connect.conn_handle);
+    err = SetSubscribed(conn_id);
     VerifyOrExit(err != CHIP_ERROR_NO_MEMORY, err = CHIP_NO_ERROR);
     SuccessOrExit(err);
 
@@ -305,11 +307,11 @@ exit:
     return err;
 }
 
-CHIP_ERROR BLEManagerImpl::HandleGAPDisconnect(struct ble_gap_event * gapEvent)
+CHIP_ERROR BLEManagerImpl::HandleGAPDisconnect(uint16_t conn_id)
 {
 printf("BLEManagerImpl::HandleGAPDisconnect xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx TB Verified \r\n");
-    ChipLogProgress(DeviceLayer, "BLE GAP connection terminated (con %" PRIu16 " reason 0x%02" PRIx8 ")",
-                    gapEvent->disconnect.conn.conn_handle, gapEvent->disconnect.reason);
+    //ChipLogProgress(DeviceLayer, "BLE GAP connection terminated (con %" PRIu16 " reason 0x%02" PRIx8 ")",
+                    //gapEvent->disconnect.conn.conn_handle, gapEvent->disconnect.reason);
 
     // Update the number of GAP connections.
     if (mNumGAPCons > 0)
@@ -317,8 +319,9 @@ printf("BLEManagerImpl::HandleGAPDisconnect xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx TB Ve
         mNumGAPCons--;
     }
 
-    if (UnsetSubscribed(gapEvent->disconnect.conn.conn_handle))
+    if (UnsetSubscribed(conn_id))
     {
+	    /*
         CHIP_ERROR disconReason;
         switch (gapEvent->disconnect.reason)
         {
@@ -333,6 +336,8 @@ printf("BLEManagerImpl::HandleGAPDisconnect xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx TB Ve
             break;
         }
         HandleConnectionError(gapEvent->disconnect.conn.conn_handle, disconReason);
+	*/
+	printf("Error in HandleGAPDisconnect");
     }
 
     // Force a reconfiguration of advertising in case we switched to non-connectable mode when
@@ -1064,42 +1069,58 @@ printf("BLEManagerImpl::IsSubscribed:::::::::::::::OK\r\n");
     return false;
 }
 
-int BLEManagerImpl::ble_svr_gap_event(struct ble_gap_event * event, void * arg)
+int BLEManagerImpl::ble_svr_gap_msg_event(void *param, T_IO_MSG *p_gap_msg)
 {
-printf("BLEManagerImpl::ble_svr_gap_event xxxxxxxxxxevent->type=%dxxxxxxxxxxxxxxxxxxxx TB Verified \r\n",event->type);
+printf("BLEManagerImpl::ble_svr_gap_event xxxxxxxxxxevent->type=%dxxxxxxxxxxxxxxxxxxxx TB Verified \r\n", p_gap_msg->subtype);
+    T_LE_GAP_MSG gap_msg;
+    memcpy(&gap_msg, &p_gap_msg->u.param, sizeof(p_gap_msg->u.param));
     CHIP_ERROR err = CHIP_NO_ERROR;
+    uint16_t conn_id = gap_msg.msg_data.gap_conn_state_change.conn_id;
+    uint16_t new_state = gap_msg.msg_data.gap_conn_state_change.new_state;
+    uint16_t disc_cause = gap_msg.msg_data.gap_conn_state_change.disc_cause;
 
-    switch (event->type)
+    printf("CASE: %d======================================\r\n", p_gap_msg->subtype);
+    switch (p_gap_msg->subtype)
     {
-    case 0: //BLE_GAP_EVENT_CONNECT:
+    case GAP_MSG_LE_CONN_STATE_CHANGE:
         /* A new connection was established or a connection attempt failed */
-        err = sInstance.HandleGAPConnect(event);
-        SuccessOrExit(err);
+        if(new_state==GAP_CONN_STATE_CONNECTED) {
+                err = sInstance.HandleGAPConnect(conn_id);
+                SuccessOrExit(err);
+        }
+        else if(new_state==GAP_CONN_STATE_DISCONNECTED) {
+                err = sInstance.HandleGAPDisconnect(conn_id);
+                SuccessOrExit(err);
+        }
         break;
 
+	/*
     case 1: //BLE_GAP_EVENT_DISCONNECT:
         err = sInstance.HandleGAPDisconnect(event);
         SuccessOrExit(err);
         break;
+	*/
 
     case 9: //BLE_GAP_EVENT_ADV_COMPLETE:
         printf("BLE_GAP_EVENT_ADV_COMPLETE event\r\n");
         break;
 
     case 14://BLE_GAP_EVENT_SUBSCRIBE:
-        if (event->subscribe.attr_handle == sInstance.mTXCharCCCDAttrHandle)
+        //if (event->subscribe.attr_handle == sInstance.mTXCharCCCDAttrHandle)
         {
-            sInstance.HandleTXCharCCCDWrite(event);
+            //sInstance.HandleTXCharCCCDWrite(event);
+	    printf("BLE_GAP_EVENT_SUBSCRIBE\r\n");
         }
 
         break;
 
     case 13://BLE_GAP_EVENT_NOTIFY_TX:
-        err = sInstance.HandleTXComplete(event);
-        SuccessOrExit(err);
+	printf("BLE_GAP_EVENT_NOTIFY_TX\r\n");
+        //err = sInstance.HandleTXComplete(event);
+        //SuccessOrExit(err);
         break;
 
-    case 15: //BLE_GAP_EVENT_MTU:
+    case GAP_MSG_LE_CONN_MTU_INFO: //BLE_GAP_EVENT_MTU:
         printf("BLE_GAP_EVENT_MTU \r\n");
         break;
 
@@ -1120,68 +1141,155 @@ exit:
     return err;
 }
 
+int BLEManagerImpl::ble_svr_gap_event(void *param, int cb_type, void *p_cb_data)
+{
+printf("BLEManagerImpl::ble_svr_gap_event xxxxxxxxxxevent->type=%dxxxxxxxxxxxxxxxxxxxx TB Verified \r\n", cb_type);
+    CHIP_ERROR err = CHIP_NO_ERROR;
+	T_LE_CB_DATA *p_data = (T_LE_CB_DATA *)p_cb_data;
+	switch (cb_type)
+		{
+#if defined(CONFIG_PLATFORM_8721D)
+		case GAP_MSG_LE_DATA_LEN_CHANGE_INFO:
+		//printf("GAP_MSG_LE_DATA_LEN_CHANGE_INFO: conn_id %d, tx octets 0x%x, max_tx_time 0x%x", p_data->p_le_data_len_change_info->conn_id, p_data->p_le_data_len_change_info->max_tx_octets,  p_data->p_le_data_len_change_info->max_tx_time);
+			APP_PRINT_INFO3("GAP_MSG_LE_DATA_LEN_CHANGE_INFO: conn_id %d, tx octets 0x%x, max_tx_time 0x%x",
+							p_data->p_le_data_len_change_info->conn_id,
+							p_data->p_le_data_len_change_info->max_tx_octets,
+							p_data->p_le_data_len_change_info->max_tx_time);
+			break;
+#endif
+		case GAP_MSG_LE_MODIFY_WHITE_LIST:
+			//APP_PRINT_INFO2("GAP_MSG_LE_MODIFY_WHITE_LIST: operation %d, cause 0x%x",
+							//p_data->p_le_modify_white_list_rsp->operation,
+							//p_data->p_le_modify_white_list_rsp->cause);
+			break;
+	
+		default:
+			//APP_PRINT_ERROR1("bt_config_app_gap_callback: unhandled cb_type 0x%x", cb_type);
+			break;
+		}
+
+
+    return err;
+}
+
 
 //int BLEManagerImpl::gatt_svr_chr_access(uint16_t conn_handle, uint16_t attr_handle, struct ble_gatt_access_ctxt * ctxt, void * arg)
-int BLEManagerImpl::gatt_svr_chr_access(void *param, TBTCONFIG_CALLBACK_DATA *p_simp_cb_data)
+int BLEManagerImpl::gatt_svr_chr_access(void *param, T_SERVER_ID service_id, TBTCONFIG_CALLBACK_DATA *p_data)
 {
     //struct ble_gatt_char_context param;
     int err = 0;
-    uint8_t conn_id = p_simp_cb_data->conn_id;
-    T_SERVICE_CALLBACK_TYPE msg_type = p_simp_cb_data->msg_type;
-    uint8_t *p_value = p_simp_cb_data->msg_data.write.p_value;
-    uint16_t len = p_simp_cb_data->msg_data.write.len;
-    BLEManagerImpl *blemgr = static_cast<BLEManagerImpl *>(param);
-
- 
-
     //memset(&param, 0, sizeof(struct ble_gatt_char_context));
 
- 
-
-    switch (msg_type)
+    if (service_id == SERVICE_PROFILE_GENERAL_ID)
     {
-    case SERVICE_CALLBACK_TYPE_READ_CHAR_VALUE:
-/*
-        param.conn_handle = conn_handle;
-        param.attr_handle = attr_handle;
-        param.ctxt        = ctxt;
-        param.arg         = arg;
-        sInstance.HandleTXCharRead(&param);
-    */
-        break;
+        T_SERVER_APP_CB_DATA *p_param = (T_SERVER_APP_CB_DATA *)p_data;
+        switch (p_param->eventId)
+        {
+        case PROFILE_EVT_SRV_REG_COMPLETE:// srv register result event.
+            //APP_PRINT_INFO1("PROFILE_EVT_SRV_REG_COMPLETE: result %d",
+                            //p_param->event_data.service_reg_result);
+            break;
+        default:
+            break;
+        }
+    } else {
+	    uint8_t conn_id = p_data->conn_id;
+	    T_SERVICE_CALLBACK_TYPE msg_type = p_data->msg_type;
+	    uint8_t *p_value = p_data->msg_data.write.p_value;
+	    uint16_t len = p_data->msg_data.write.len;
+	    BLEManagerImpl *blemgr = static_cast<BLEManagerImpl *>(param);
+	    switch (msg_type)
+	    {
+	    case SERVICE_CALLBACK_TYPE_READ_CHAR_VALUE:
+	/*
+	        param.conn_handle = conn_handle;
+	        param.attr_handle = attr_handle;
+	        param.ctxt        = ctxt;
+	        param.arg         = arg;
+	        sInstance.HandleTXCharRead(&param);
+	    */
+	        break;
 
- 
+	 
 
-    /*
-    case BLE_GATT_ACCESS_OP_READ_DSC:
+	    /*
+	    case BLE_GATT_ACCESS_OP_READ_DSC:
 
- 
+	 
 
-        param.conn_handle = conn_handle;
-        param.attr_handle = attr_handle;
-        param.ctxt        = ctxt;
-        param.arg         = arg;
-        sInstance.HandleTXCharCCCDRead(&param);
-        break;
-    */
+	        param.conn_handle = conn_handle;
+	        param.attr_handle = attr_handle;
+	        param.ctxt        = ctxt;
+	        param.arg         = arg;
+	        sInstance.HandleTXCharCCCDRead(&param);
+	        break;
+	    */
 
- 
+	 
 
-    case SERVICE_CALLBACK_TYPE_WRITE_CHAR_VALUE:
-        //param.conn_handle = conn_handle;
-        //param.attr_handle = attr_handle;
-        //param.ctxt        = ctxt;
-        //param.arg         = arg;
-        sInstance.HandleRXCharWrite(p_value, len, conn_id);
-        break;
+	    case SERVICE_CALLBACK_TYPE_WRITE_CHAR_VALUE:
+	        //param.conn_handle = conn_handle;
+	        //param.attr_handle = attr_handle;
+	        //param.ctxt        = ctxt;
+	        //param.arg         = arg;
+	        sInstance.HandleRXCharWrite(p_value, len, conn_id);
+	        break;
 
- 
+		case SERVICE_CALLBACK_TYPE_INDIFICATION_NOTIFICATION:
+			{
+				switch (p_data->msg_data.notification_indification_index)
+				{
+				case SIMP_NOTIFY_INDICATE_V3_ENABLE:
+					{
+						printf("SIMP_NOTIFY_INDICATE_V3_ENABLE");
+					}
+					break;
+		
+				case SIMP_NOTIFY_INDICATE_V3_DISABLE:
+					{
+						printf("SIMP_NOTIFY_INDICATE_V3_DISABLE");
+					}
+					break;
+				case SIMP_NOTIFY_INDICATE_V4_ENABLE:
+					{
+						printf("SIMP_NOTIFY_INDICATE_V4_ENABLE");
+					}
+					break;
+				case SIMP_NOTIFY_INDICATE_V4_DISABLE:
+					{
+						printf("SIMP_NOTIFY_INDICATE_V4_DISABLE");
+					}
+					break;
+				case SIMP_NOTIFY_INDICATE_V8_NOTIFY_ENABLE:
+					{
+						printf("SIMP_NOTIFY_INDICATE_V8_NOTIFY_ENABLE");
+					}
+					break;
+				case SIMP_NOTIFY_INDICATE_V8_INDICATE_ENABLE:
+					{
+						printf("SIMP_NOTIFY_INDICATE_V8_INDICATE_ENABLE");
+					}
+					break;
+				case SIMP_NOTIFY_INDICATE_V8_NOTIFY_INDICATE_ENABLE:
+					{
+						printf("SIMP_NOTIFY_INDICATE_V8_NOTIFY_INDICATE_ENABLE");
+					}
+					break;
+				case SIMP_NOTIFY_INDICATE_V8_DISABLE:
+					{
+						printf("SIMP_NOTIFY_INDICATE_V8_DISABLE");
+					}
+					break;
+				}
+			}
+			break;
 
-    default:
-        //err = BLE_ATT_ERR_UNLIKELY;
-        break;
+
+	    default:
+	        //err = BLE_ATT_ERR_UNLIKELY;
+	        break;
+	    }
     }
-
     PlatformMgr().ScheduleWork(DriveBLEState, 0);
 
     return err;
@@ -1215,6 +1323,27 @@ void BLEManagerImpl::HandleRXCharWrite(uint8_t *p_value, uint16_t len, uint8_t c
     {
         ChipLogError(DeviceLayer, "HandleRXCharWrite() failed: %s", ErrorStr(err));
     }
+}
+
+int BLEManagerImpl::ble_callback_dispatcher(void *param, void *p_cb_data, int type, T_CHIP_BLEMGR_CALLBACK_TYPE callback_type)
+{
+    BLEManagerImpl *blemgr = static_cast<BLEManagerImpl *>(param);
+    switch (callback_type)
+    {
+    case CB_PROFILE_CALLBACK:
+		blemgr->gatt_svr_chr_access(param, type, (TBTCONFIG_CALLBACK_DATA *)p_cb_data);
+        break;
+    case CB_GAP_CALLBACK:
+        blemgr->ble_svr_gap_event(param, type, p_cb_data);
+        break;
+    case CB_GAP_MSG_CALLBACK:
+        blemgr->ble_svr_gap_msg_event(param, (T_IO_MSG*) p_cb_data);
+        break;
+    default:
+        printf("%s %d error\r\n", __func__, __LINE__);
+        break;
+    }
+    return 0;
 }
 
 } // namespace Internal
