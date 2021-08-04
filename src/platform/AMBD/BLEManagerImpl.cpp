@@ -292,11 +292,12 @@ CHIP_ERROR BLEManagerImpl::HandleGAPConnect(uint16_t conn_id)
 {
 printf("BLEManagerImpl::HandleGAPConnect xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx TB Verified \r\n");
     CHIP_ERROR err = CHIP_NO_ERROR;
-    //ChipLogProgress(DeviceLayer, "BLE GAP connection established (con %" PRIu16 ")", gapEvent->connect.conn_handle);
+    //ChipLogProgress(DeviceLayer, "BLE GAP connection established (con %" PRIu16 ")", conn_id);
 
     // Track the number of active GAP connections.
     mNumGAPCons++;
     err = SetSubscribed(conn_id);
+    printf("HandleGapConnect Error: %d\r\n", err);
     VerifyOrExit(err != CHIP_ERROR_NO_MEMORY, err = CHIP_NO_ERROR);
     SuccessOrExit(err);
 
@@ -614,13 +615,16 @@ bool BLEManagerImpl::CloseConnection(BLE_CONNECTION_OBJECT conId)
 uint16_t BLEManagerImpl::GetMTU(BLE_CONNECTION_OBJECT conId) const
 {
     printf("BLEManagerImpl::GetMTU:::::::::::::::TBD\r\n");
+    int mtu;
+    mtu = ble_att_mtu_z2(conId);
 
+    printf("MTU size: %d\r\n", mtu);
     /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     [zl_dbg] Apply similar function of esp's 'ble_att_mtu'
     int ret = 0;
     ret = ble_att_mtu(conId)
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
-    return 1;
+    return mtu;
 }
 
 bool BLEManagerImpl::SendWriteRequest(BLE_CONNECTION_OBJECT conId, const ChipBleUUID * svcId, const ChipBleUUID * charId, PacketBufferHandle pBuf)
@@ -1013,7 +1017,8 @@ void BLEManagerImpl::StartBleAdvTimeoutTimer(uint32_t aTimeoutInMs)
 
 CHIP_ERROR BLEManagerImpl::SetSubscribed(uint16_t conId)
 {
-printf("BLEManagerImpl::HandleGAPDisconnect xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx TB Verified \r\n");
+printf("SetSubscribed called\r\n");
+//printf("BLEManagerImpl::HandleGAPDisconnect xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx TB Verified \r\n");
     uint16_t freeIndex = kMaxConnections;
 
     for (uint16_t i = 0; i < kMaxConnections; i++)
@@ -1089,6 +1094,7 @@ printf("BLEManagerImpl::ble_svr_gap_event xxxxxxxxxxevent->type=%dxxxxxxxxxxxxxx
                 SuccessOrExit(err);
         }
         else if(new_state==GAP_CONN_STATE_DISCONNECTED) {
+		printf("disc_cause: %d\r\n", disc_cause);
                 err = sInstance.HandleGAPDisconnect(conn_id);
                 SuccessOrExit(err);
         }
@@ -1237,7 +1243,10 @@ int BLEManagerImpl::gatt_svr_chr_access(void *param, T_SERVER_ID service_id, TBT
 
 		case SERVICE_CALLBACK_TYPE_INDIFICATION_NOTIFICATION:
 			{
-				switch (p_data->msg_data.notification_indification_index)
+				printf("SERVICE_CALLBACK_TYPE_INDIFICATION_NOTIFICATION\r\n");
+				TSIMP_CALLBACK_DATA *pp_data;
+				pp_data = (TSIMP_CALLBACK_DATA *)p_data;
+				switch (pp_data->msg_data.notification_indification_index)
 				{
 				case SIMP_NOTIFY_INDICATE_V3_ENABLE:
 					{
