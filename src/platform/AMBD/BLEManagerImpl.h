@@ -34,6 +34,9 @@
 #include "event_groups.h"
 #include "timers.h"
 #include "bt_config_service.h"
+#include "app_msg.h"
+#include "bt_config_peripheral_app.h"
+#include "gap_msg.h"
 
 /**************** These structs are from ESP32 ******************/
 /** @brief Passkey query */
@@ -812,15 +815,14 @@ private:
     CHIP_ERROR StartAdvertising(void);
     CHIP_ERROR StopAdvertising(void);
     CHIP_ERROR ConfigureAdvertisingData(void);
-    static int gatt_svr_chr_access(void *, TBTCONFIG_CALLBACK_DATA *);
 
     void HandleRXCharWrite(uint8_t *, uint16_t, uint8_t);
     void HandleTXCharRead(struct ble_gatt_char_context * param);
     void HandleTXCharCCCDRead(void * param);
     void HandleTXCharCCCDWrite(struct ble_gap_event * gapEvent);
     CHIP_ERROR HandleTXComplete(struct ble_gap_event * gapEvent);
-    CHIP_ERROR HandleGAPConnect(struct ble_gap_event * gapEvent);
-    CHIP_ERROR HandleGAPDisconnect(struct ble_gap_event * gapEvent);
+    CHIP_ERROR HandleGAPConnect(uint16_t);
+    CHIP_ERROR HandleGAPDisconnect(uint16_t);
     CHIP_ERROR SetSubscribed(uint16_t conId);
     bool UnsetSubscribed(uint16_t conId);
     bool IsSubscribed(uint16_t conId);
@@ -829,7 +831,10 @@ private:
     void AddConnection(uint8_t connectionHandle);
     
     BLEManagerImpl::CHIPoBLEConState * GetConnectionState(uint8_t connectionHandle, bool allocate);
-    static int ble_svr_gap_event(struct ble_gap_event * event, void * arg);
+    static int ble_svr_gap_msg_event(void *param, T_IO_MSG *p_gap_msg);
+    static int ble_svr_gap_event(void *param, int cb_type, void *p_cb_data);
+    static int gatt_svr_chr_access(void *param, T_SERVER_ID service_id, TBTCONFIG_CALLBACK_DATA *p_data);
+    static int ble_callback_dispatcher(void *param, void *p_cb_data, int type, T_CHIP_BLEMGR_CALLBACK_TYPE callback_type);
     static void DriveBLEState(intptr_t arg);
     static void BleAdvTimeoutHandler(TimerHandle_t xTimer);
     static void CancelBleAdvTimeoutTimer(void);
