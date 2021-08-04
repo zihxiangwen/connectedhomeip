@@ -173,6 +173,104 @@ exit:
     return err;
 }
 
+void BLEManagerImpl::HandleTXCharRead(struct ble_gatt_char_context * param)
+{
+printf("BLEManagerImpl::HandleTXCharRead -------------------------------- not supported\r\n");
+    /* Not supported */
+    ChipLogError(DeviceLayer, "BLEManagerImpl::HandleTXCharRead() not supported");
+}
+
+void BLEManagerImpl::HandleTXCharCCCDRead(void * param)
+{
+printf("BLEManagerImpl::HandleTXCharCCCDRead -------------------------------- not supported\r\n");
+    /* Not Supported */
+    ChipLogError(DeviceLayer, "BLEManagerImpl::HandleTXCharCCCDRead() not supported");
+}
+
+void BLEManagerImpl::HandleTXCharCCCDWrite(struct ble_gap_event * gapEvent)
+{
+printf("BLEManagerImpl::HandleTXCharCCCDWrite xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx TB Verified\r \n");
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    bool indicationsEnabled;
+    bool notificationsEnabled;
+
+    //ChipLogProgress(DeviceLayer,"Write request command received for CHIPoBLE TX CCCD characteristic (con %" PRIu16" ) indicate = %d notify = %d",gapEvent->subscribe.conn_handle, gapEvent->subscribe.cur_indicate, gapEvent->subscribe.cur_notify);
+
+    // Determine if the client is enabling or disabling indications/notification.
+    indicationsEnabled   = gapEvent->subscribe.cur_indicate;
+    notificationsEnabled = gapEvent->subscribe.cur_notify;
+
+    // If the client has requested to enabled indications/notifications
+    if (indicationsEnabled || notificationsEnabled)
+    {
+        // If indications are not already enabled for the connection...
+        if (!IsSubscribed(gapEvent->subscribe.conn_handle))
+        {
+            // Record that indications have been enabled for this connection.  If this fails because
+            err = SetSubscribed(gapEvent->subscribe.conn_handle);
+            VerifyOrExit(err != CHIP_ERROR_NO_MEMORY, err = CHIP_NO_ERROR);
+            SuccessOrExit(err);
+        }
+    }
+
+    else
+    {
+        // If indications had previously been enabled for this connection, record that they are no longer
+        // enabled.
+        UnsetSubscribed(gapEvent->subscribe.conn_handle);
+    }
+
+    // Post an event to the Chip queue to process either a CHIPoBLE Subscribe or Unsubscribe based on
+    // whether the client is enabling or disabling indications.
+    {
+        ChipDeviceEvent event;
+        event.Type = (indicationsEnabled || notificationsEnabled) ? DeviceEventType::kCHIPoBLESubscribe
+                                                                  : DeviceEventType::kCHIPoBLEUnsubscribe;
+        event.CHIPoBLESubscribe.ConId = gapEvent->subscribe.conn_handle;
+        PlatformMgr().PostEvent(&event);
+    }
+
+    ChipLogProgress(DeviceLayer, "CHIPoBLE %s received",
+                    (indicationsEnabled || notificationsEnabled) ? "subscribe" : "unsubscribe");
+
+exit:
+    if (err != CHIP_NO_ERROR)
+    {
+        ChipLogError(DeviceLayer, "HandleTXCharCCCDWrite() failed: %s", ErrorStr(err));
+        // TODO: fail connection???
+    }
+
+    return;
+}
+
+CHIP_ERROR BLEManagerImpl::HandleTXComplete(struct ble_gap_event * gapEvent)
+{
+printf("BLEManagerImpl::HandleTXComplete xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx TB Verified\r\n");
+    ChipLogProgress(DeviceLayer, "Confirm received for CHIPoBLE TX characteristic indication (con %" PRIu16 ") status= %d ",
+                    gapEvent->notify_tx.conn_handle, gapEvent->notify_tx.status);
+
+    // Signal the BLE Layer that the outstanding indication is complete.
+    if (gapEvent->notify_tx.status == 0 || gapEvent->notify_tx.status == 14/*BLE_HS_EDONE!!!!*/)
+    {
+        // Post an event to the Chip queue to process the indicate confirmation.
+        ChipDeviceEvent event;
+        event.Type                          = DeviceEventType::kCHIPoBLEIndicateConfirm;
+        event.CHIPoBLEIndicateConfirm.ConId = gapEvent->notify_tx.conn_handle;
+        PlatformMgr().PostEvent(&event);
+    }
+
+    else
+    {
+        ChipDeviceEvent event;
+        event.Type                           = DeviceEventType::kCHIPoBLEConnectionError;
+        event.CHIPoBLEConnectionError.ConId  = gapEvent->notify_tx.conn_handle;
+        event.CHIPoBLEConnectionError.Reason = BLE_ERROR_CHIPOBLE_PROTOCOL_ABORT;
+        PlatformMgr().PostEvent(&event);
+    }
+
+    return CHIP_NO_ERROR;
+}
+
 uint16_t BLEManagerImpl::_NumConnections(void)
 {
 printf("BLEManagerImpl::_NumConnections:::::::::::::::\r\n");
@@ -186,6 +284,63 @@ printf("BLEManagerImpl::_NumConnections:::::::::::::::\r\n");
     }
 
     return numCons;
+}
+
+CHIP_ERROR BLEManagerImpl::HandleGAPConnect(struct ble_gap_event * gapEvent)
+{
+printf("BLEManagerImpl::HandleGAPConnect xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx TB Verified \r\n");
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    ChipLogProgress(DeviceLayer, "BLE GAP connection established (con %" PRIu16 ")", gapEvent->connect.conn_handle);
+
+    // Track the number of active GAP connections.
+    mNumGAPCons++;
+    err = SetSubscribed(gapEvent->connect.conn_handle);
+    VerifyOrExit(err != CHIP_ERROR_NO_MEMORY, err = CHIP_NO_ERROR);
+    SuccessOrExit(err);
+
+    mFlags.Set(Flags::kAdvertisingRefreshNeeded);
+    mFlags.Clear(Flags::kAdvertisingConfigured);
+
+exit:
+    return err;
+}
+
+CHIP_ERROR BLEManagerImpl::HandleGAPDisconnect(struct ble_gap_event * gapEvent)
+{
+printf("BLEManagerImpl::HandleGAPDisconnect xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx TB Verified \r\n");
+    ChipLogProgress(DeviceLayer, "BLE GAP connection terminated (con %" PRIu16 " reason 0x%02" PRIx8 ")",
+                    gapEvent->disconnect.conn.conn_handle, gapEvent->disconnect.reason);
+
+    // Update the number of GAP connections.
+    if (mNumGAPCons > 0)
+    {
+        mNumGAPCons--;
+    }
+
+    if (UnsetSubscribed(gapEvent->disconnect.conn.conn_handle))
+    {
+        CHIP_ERROR disconReason;
+        switch (gapEvent->disconnect.reason)
+        {
+        case 0x13://BLE_ERR_REM_USER_CONN_TERM:
+            disconReason = BLE_ERROR_REMOTE_DEVICE_DISCONNECTED;
+            break;
+        case 0x16://BLE_ERR_CONN_TERM_LOCAL:
+            disconReason = BLE_ERROR_APP_CLOSED_CONNECTION;
+            break;
+        default:
+            disconReason = BLE_ERROR_CHIPOBLE_PROTOCOL_ABORT;
+            break;
+        }
+        HandleConnectionError(gapEvent->disconnect.conn.conn_handle, disconReason);
+    }
+
+    // Force a reconfiguration of advertising in case we switched to non-connectable mode when
+    // the BLE connection was established.
+    mFlags.Set(Flags::kAdvertisingRefreshNeeded);
+    mFlags.Clear(Flags::kAdvertisingConfigured);
+
+    return CHIP_NO_ERROR;
 }
 
 bool BLEManagerImpl::RemoveConnection(uint8_t connectionHandle)
@@ -248,6 +403,7 @@ BLEManagerImpl::CHIPoBLEConState * BLEManagerImpl::GetConnectionState(uint8_t co
 
 CHIP_ERROR BLEManagerImpl::_SetCHIPoBLEServiceMode(CHIPoBLEServiceMode val)
 {
+printf("BLEManagerImpl::_SetCHIPoBLEServiceMode----------------------------------------------OK \r\n");
     CHIP_ERROR err = CHIP_NO_ERROR;
 
     VerifyOrExit(val != ConnectivityManager::kCHIPoBLEServiceMode_NotSupported, err = CHIP_ERROR_INVALID_ARGUMENT);
@@ -283,6 +439,7 @@ exit:
 
 CHIP_ERROR BLEManagerImpl::_SetAdvertisingMode(BLEAdvertisingMode mode)
 {
+printf("BLEManagerImpl::_SetAdvertisingMode ---------mode = %d------------------------------------- \r\n",mode);
     switch (mode)
     {
     case BLEAdvertisingMode::kFastAdvertising:
@@ -451,7 +608,7 @@ bool BLEManagerImpl::CloseConnection(BLE_CONNECTION_OBJECT conId)
 
 uint16_t BLEManagerImpl::GetMTU(BLE_CONNECTION_OBJECT conId) const
 {
-    printf("BLEManagerImpl::GetMTU:::::::::::::::OK\r\n");
+    printf("BLEManagerImpl::GetMTU:::::::::::::::TBD\r\n");
 
     /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     [zl_dbg] Apply similar function of esp's 'ble_att_mtu'
@@ -722,7 +879,7 @@ CHIP_ERROR BLEManagerImpl::StopAdvertising(void)
 
 CHIP_ERROR BLEManagerImpl::MapBLEError(int bleErr)
 {
-printf("BLEManagerImpl::NotifyChipConnectionClosed:::::::::::::::\r\n");
+printf("BLEManagerImpl::MapBLEError:::::::::::::::\r\n");
     switch (bleErr)
     {
     /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -849,6 +1006,33 @@ void BLEManagerImpl::StartBleAdvTimeoutTimer(uint32_t aTimeoutInMs)
     }
 }
 
+CHIP_ERROR BLEManagerImpl::SetSubscribed(uint16_t conId)
+{
+printf("BLEManagerImpl::HandleGAPDisconnect xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx TB Verified \r\n");
+    uint16_t freeIndex = kMaxConnections;
+
+    for (uint16_t i = 0; i < kMaxConnections; i++)
+    {
+        if (mSubscribedConIds[i] == conId)
+        {
+            return CHIP_NO_ERROR;
+        }
+        else if (mSubscribedConIds[i] == BLE_CONNECTION_UNINITIALIZED && i < freeIndex)
+        {
+            freeIndex = i;
+        }
+    }
+
+    if (freeIndex < kMaxConnections)
+    {
+        mSubscribedConIds[freeIndex] = conId;
+        return CHIP_NO_ERROR;
+    }
+    else
+    {
+        return CHIP_ERROR_NO_MEMORY;
+    }
+}
 
 bool BLEManagerImpl::UnsetSubscribed(uint16_t conId)
 {
@@ -879,6 +1063,63 @@ printf("BLEManagerImpl::IsSubscribed:::::::::::::::OK\r\n");
     }
     return false;
 }
+
+int BLEManagerImpl::ble_svr_gap_event(struct ble_gap_event * event, void * arg)
+{
+printf("BLEManagerImpl::ble_svr_gap_event xxxxxxxxxxevent->type=%dxxxxxxxxxxxxxxxxxxxx TB Verified \r\n",event->type);
+    CHIP_ERROR err = CHIP_NO_ERROR;
+
+    switch (event->type)
+    {
+    case 0: //BLE_GAP_EVENT_CONNECT:
+        /* A new connection was established or a connection attempt failed */
+        err = sInstance.HandleGAPConnect(event);
+        SuccessOrExit(err);
+        break;
+
+    case 1: //BLE_GAP_EVENT_DISCONNECT:
+        err = sInstance.HandleGAPDisconnect(event);
+        SuccessOrExit(err);
+        break;
+
+    case 9: //BLE_GAP_EVENT_ADV_COMPLETE:
+        printf("BLE_GAP_EVENT_ADV_COMPLETE event\r\n");
+        break;
+
+    case 14://BLE_GAP_EVENT_SUBSCRIBE:
+        if (event->subscribe.attr_handle == sInstance.mTXCharCCCDAttrHandle)
+        {
+            sInstance.HandleTXCharCCCDWrite(event);
+        }
+
+        break;
+
+    case 13://BLE_GAP_EVENT_NOTIFY_TX:
+        err = sInstance.HandleTXComplete(event);
+        SuccessOrExit(err);
+        break;
+
+    case 15: //BLE_GAP_EVENT_MTU:
+        printf("BLE_GAP_EVENT_MTU \r\n");
+        break;
+
+    default:
+        break;
+    }
+
+exit:
+    if (err != CHIP_NO_ERROR)
+    {
+        ChipLogError(DeviceLayer, "Disabling CHIPoBLE service due to error: %s", ErrorStr(err));
+        sInstance.mServiceMode = ConnectivityManager::kCHIPoBLEServiceMode_Disabled;
+    }
+
+    // Schedule DriveBLEState() to run.
+    PlatformMgr().ScheduleWork(DriveBLEState, 0);
+
+    return err;
+}
+
 
 //int BLEManagerImpl::gatt_svr_chr_access(uint16_t conn_handle, uint16_t attr_handle, struct ble_gatt_access_ctxt * ctxt, void * arg)
 int BLEManagerImpl::gatt_svr_chr_access(void *param, TBTCONFIG_CALLBACK_DATA *p_simp_cb_data)
@@ -950,8 +1191,6 @@ void BLEManagerImpl::HandleRXCharWrite(uint8_t *p_value, uint16_t len, uint8_t c
 {
     CHIP_ERROR err    = CHIP_NO_ERROR;
     //uint16_t data_len = 0;
-
-    //ESP_LOGI(TAG, "Write request received for CHIPoBLE RX characteristic con %u %u", param->conn_handle, param->attr_handle);
 
     // Copy the data to a packet buffer.
     //data_len               = OS_MBUF_PKTLEN(param->ctxt->om);
