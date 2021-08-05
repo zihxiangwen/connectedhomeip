@@ -819,10 +819,10 @@ private:
     void HandleRXCharWrite(uint8_t *, uint16_t, uint8_t);
     void HandleTXCharRead(struct ble_gatt_char_context * param);
     void HandleTXCharCCCDRead(void * param);
-    void HandleTXCharCCCDWrite(struct ble_gap_event * gapEvent);
-    CHIP_ERROR HandleTXComplete(struct ble_gap_event * gapEvent);
+    void HandleTXCharCCCDWrite(int, int, int);
+    CHIP_ERROR HandleTXComplete(int);
     CHIP_ERROR HandleGAPConnect(uint16_t);
-    CHIP_ERROR HandleGAPDisconnect(uint16_t);
+    CHIP_ERROR HandleGAPDisconnect(uint16_t, uint16_t);
     CHIP_ERROR SetSubscribed(uint16_t conId);
     bool UnsetSubscribed(uint16_t conId);
     bool IsSubscribed(uint16_t conId);
