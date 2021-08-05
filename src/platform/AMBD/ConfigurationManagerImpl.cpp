@@ -25,6 +25,7 @@
 /* this file behaves like a config.h, comes first */
 #include <platform/internal/CHIPDeviceLayerInternal.h>
 
+#include <core/CHIPKeyIds.h>
 #include <platform/ConfigurationManager.h>
 #include <platform/AMBD/AMBDConfig.h>
 #include <platform/internal/GenericConfigurationManagerImpl.cpp>
