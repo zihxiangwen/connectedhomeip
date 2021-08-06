@@ -33,6 +33,8 @@
 #define _CRT_SECURE_NO_DEPRECATE 1
 #endif
 
+#define MBEDTLS_PLATFORM_SNPRINTF_MACRO snprintf
+
 /**
  * \name SECTION: System support
  *
@@ -2613,7 +2615,7 @@
  *
  * This module provides networking routines.
  */
-//#define MBEDTLS_NET_C
+#define MBEDTLS_NET_C
 
 /**
  * \def MBEDTLS_OID_C
