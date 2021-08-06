@@ -38,6 +38,7 @@ static_library("AMBD") {
     "KeyValueStoreManagerImpl.h",
     "Logging.cpp",
     "LwIPCoreLock.cpp",
+    "MdnsImpl.cpp",
     "NetworkProvisioningServerImpl.h",
     "PlatformManagerImpl.cpp",
     "PlatformManagerImpl.h",
