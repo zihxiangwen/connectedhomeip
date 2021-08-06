@@ -435,6 +435,7 @@ CHIP_ERROR BleLayer::NewBleEndPoint(BLEEndPoint ** retEndPoint, BLE_CONNECTION_O
 // Handle remote central's initiation of CHIP over BLE protocol handshake.
 CHIP_ERROR BleLayer::HandleBleTransportConnectionInitiated(BLE_CONNECTION_OBJECT connObj, PacketBufferHandle && pBuf)
 {
+    ChipLogError(Ble, "HandleBleTransportConnectionInitiated called here");
     CHIP_ERROR err            = CHIP_NO_ERROR;
     BLEEndPoint * newEndPoint = nullptr;
 
@@ -467,6 +468,7 @@ exit:
 bool BleLayer::HandleWriteReceived(BLE_CONNECTION_OBJECT connObj, const ChipBleUUID * svcId, const ChipBleUUID * charId,
                                    PacketBufferHandle && pBuf)
 {
+    ChipLogError(Ble, "HandleWriteReceived here");
     if (!UUIDsMatch(&CHIP_BLE_SVC_ID, svcId))
     {
         ChipLogError(Ble, "ble write rcvd on unknown svc id");
