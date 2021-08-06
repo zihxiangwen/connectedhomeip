@@ -1,0 +1,7 @@
+descriptor.cpp:36:15:EmberAfStatus writeAttribute(chip::EndpointId, chip::AttributeId, uint8_t*, int32_t)	40	static
+descriptor.cpp:56:15:EmberAfStatus writeClientServerAttribute(chip::EndpointId, bool)	32	static
+descriptor.cpp:74:15:EmberAfStatus writeServerAttribute(chip::EndpointId)	0	static
+descriptor.cpp:79:15:EmberAfStatus writeClientAttribute(chip::EndpointId)	0	static
+descriptor.cpp:84:15:EmberAfStatus writeDeviceAttribute(chip::EndpointId, uint16_t)	24	static
+descriptor.cpp:103:15:EmberAfStatus writePartsAttribute(chip::EndpointId)	24	static
+descriptor.cpp:127:6:void emberAfPluginDescriptorServerInitCallback()	24	static

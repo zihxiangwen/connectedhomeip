@@ -1,0 +1,62 @@
+attribute-storage.cpp:125:6:void emberAfEndpointConfigure()	56	static
+attribute-storage.cpp:157:6:void emberAfSetDynamicEndpointCount(uint16_t)	0	static
+attribute-storage.cpp:162:10:uint16_t emberAfGetDynamicIndexFromEndpoint(chip::EndpointId)	0	static
+attribute-storage.cpp:175:15:EmberAfStatus emberAfSetDynamicEndpoint(uint16_t, chip::EndpointId, EmberAfEndpointType*, uint16_t, uint8_t)	0	static
+attribute-storage.cpp:212:12:chip::EndpointId emberAfClearDynamicEndpoint(uint16_t)	24	static
+attribute-storage.cpp:237:10:uint16_t emberAfFixedEndpointCount()	0	static
+attribute-storage.cpp:242:10:uint16_t emberAfEndpointCount()	0	static
+attribute-storage.cpp:247:6:bool emberAfEndpointIndexIsEnabled(uint16_t)	0	static
+attribute-storage.cpp:254:6:bool emberAfIsThisDataTypeAStringType(EmberAfAttributeType)	0	static
+attribute-storage.cpp:260:6:bool emberAfIsStringAttributeType(EmberAfAttributeType)	0	static
+attribute-storage.cpp:265:6:bool emberAfIsLongStringAttributeType(EmberAfAttributeType)	0	static
+attribute-storage.cpp:270:6:bool emberAfIsThisDataTypeAListType(EmberAfAttributeType)	0	static
+attribute-storage.cpp:538:10:uint16_t emberAfGetMfgCode(EmberAfAttributeMetadata*)	0	static
+attribute-storage.cpp:550:10:uint16_t emAfGetManufacturerCodeForCluster(EmberAfCluster*)	0	static
+attribute-storage.cpp:544:10:uint16_t emAfGetManufacturerCodeForAttribute(EmberAfCluster*, EmberAfAttributeMetadata*)	0	static
+attribute-storage.cpp:567:6:bool emAfMatchCluster(EmberAfCluster*, EmberAfAttributeSearchRecord*)	8	static
+attribute-storage.cpp:589:6:bool emAfMatchAttribute(EmberAfCluster*, EmberAfAttributeMetadata*, EmberAfAttributeSearchRecord*)	16	static
+attribute-storage.cpp:609:15:EmberAfStatus emAfReadOrWriteAttribute(EmberAfAttributeSearchRecord*, EmberAfAttributeMetadata**, uint8_t*, uint16_t, bool, int32_t)	96	static
+attribute-storage.cpp:426:28:EmberAfAttributeMetadata* emberAfLocateAttributeMetadata(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint8_t, uint16_t)	40	static
+attribute-storage.cpp:721:18:EmberAfCluster* emberAfFindClusterInTypeWithMfgCode(EmberAfEndpointType*, chip::ClusterId, EmberAfClusterMask, uint16_t)	24	static
+attribute-storage.cpp:745:18:EmberAfCluster* emberAfFindClusterInType(EmberAfEndpointType*, chip::ClusterId, EmberAfClusterMask)	0	static
+attribute-storage.cpp:752:9:uint8_t emberAfClusterIndex(chip::EndpointId, chip::ClusterId, EmberAfClusterMask)	32	static
+attribute-storage.cpp:919:6:bool emberAfEndpointIsEnabled(chip::EndpointId)	12	static
+attribute-storage.cpp:990:10:uint16_t emberAfIndexFromEndpoint(chip::EndpointId)	12	static
+attribute-storage.cpp:811:18:EmberAfCluster* emberAfFindClusterWithMfgCode(chip::EndpointId, chip::ClusterId, EmberAfClusterMask, uint16_t)	24	static
+attribute-storage.cpp:772:6:bool emberAfContainsClusterWithMfgCode(chip::EndpointId, chip::ClusterId, uint16_t)	8	static
+attribute-storage.cpp:778:6:bool emberAfContainsServerWithMfgCode(chip::EndpointId, chip::ClusterId, uint16_t)	8	static
+attribute-storage.cpp:784:6:bool emberAfContainsClientWithMfgCode(chip::EndpointId, chip::ClusterId, uint16_t)	8	static
+attribute-storage.cpp:791:6:bool emberAfContainsCluster(chip::EndpointId, chip::ClusterId)	8	static
+attribute-storage.cpp:798:6:bool emberAfContainsServer(chip::EndpointId, chip::ClusterId)	8	static
+attribute-storage.cpp:805:6:bool emberAfContainsClient(chip::EndpointId, chip::ClusterId)	8	static
+attribute-storage.cpp:828:18:EmberAfCluster* emberAfFindCluster(chip::EndpointId, chip::ClusterId, EmberAfClusterMask)	0	static
+attribute-storage.cpp:997:10:uint16_t emberAfIndexFromEndpointIncludingDisabledEndpoints(chip::EndpointId)	12	static
+attribute-storage.cpp:834:18:EmberAfCluster* emberAfFindClusterIncludingDisabledEndpointsWithMfgCode(chip::EndpointId, chip::ClusterId, EmberAfClusterMask, uint16_t)	24	static
+attribute-storage.cpp:847:18:EmberAfCluster* emberAfFindClusterIncludingDisabledEndpoints(chip::EndpointId, chip::ClusterId, EmberAfClusterMask)	0	static
+attribute-storage.cpp:880:17:uint16_t findClusterEndpointIndex(chip::EndpointId, chip::ClusterId, uint8_t, uint16_t)	40	static
+attribute-storage.cpp:860:10:uint16_t emberAfFindClusterClientEndpointIndexWithMfgCode(chip::EndpointId, chip::ClusterId, uint16_t)	16	static
+attribute-storage.cpp:874:10:uint16_t emberAfFindClusterClientEndpointIndex(chip::EndpointId, chip::ClusterId)	0	static
+attribute-storage.cpp:867:10:uint16_t emberAfFindClusterServerEndpointIndex(chip::EndpointId, chip::ClusterId)	16	static
+attribute-storage.cpp:1003:12:chip::EndpointId emberAfEndpointFromIndex(uint16_t)	0	static
+attribute-storage.cpp:1010:9:uint8_t emberAfClusterCount(chip::EndpointId, bool)	16	static
+attribute-storage.cpp:1041:9:uint8_t emberAfGetClusterCountForEndpoint(chip::EndpointId)	8	static
+attribute-storage.cpp:1060:18:EmberAfCluster* emberAfGetClusterByIndex(chip::EndpointId, uint8_t)	8	static
+attribute-storage.cpp:1078:10:uint16_t emberAfGetDeviceIdForEndpoint(chip::EndpointId)	8	static
+attribute-storage.cpp:1090:18:EmberAfCluster* emberAfGetNthCluster(chip::EndpointId, uint8_t, bool)	24	static
+attribute-storage.cpp:1121:9:uint8_t emberAfGetClustersFromEndpoint(chip::EndpointId, chip::ClusterId*, uint8_t, bool)	24	static
+attribute-storage.cpp:1148:6:void emAfLoadAttributeDefaults(chip::EndpointId, bool)	72	static
+attribute-storage.cpp:1138:6:void emberAfInitializeAttributes(chip::EndpointId)	0	static
+attribute-storage.cpp:1143:6:void emberAfResetAttributes(chip::EndpointId)	0	static
+attribute-storage.cpp:1256:6:void emAfLoadAttributesFromTokens(chip::EndpointId)	0	static
+attribute-storage.cpp:1268:6:void emAfSaveAttributeToToken(uint8_t*, chip::EndpointId, chip::ClusterId, EmberAfAttributeMetadata*)	0	static
+attribute-storage.cpp:1285:31:void (* emberAfFindClusterFunction(EmberAfCluster*, EmberAfClusterMask))()	12	static
+attribute-storage.cpp:276:6:void emberAfClusterDefaultResponseWithMfgCodeCallback(chip::EndpointId, chip::ClusterId, chip::CommandId, EmberAfStatus, uint8_t, uint16_t)	24	static
+attribute-storage.cpp:295:6:void emberAfClusterDefaultResponseCallback(chip::EndpointId, chip::ClusterId, chip::CommandId, EmberAfStatus, uint8_t)	16	static
+attribute-storage.cpp:303:6:void emberAfClusterMessageSentWithMfgCodeCallback(const chip::MessageSendDestination&, EmberApsFrame*, uint16_t, uint8_t*, EmberStatus, uint16_t)	32	static
+attribute-storage.cpp:329:6:void emberAfClusterMessageSentCallback(const chip::MessageSendDestination&, EmberApsFrame*, uint16_t, uint8_t*, EmberStatus)	16	static
+attribute-storage.cpp:336:6:void emAfClusterAttributeChangedCallback(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint8_t, uint16_t)	24	static
+attribute-storage.cpp:367:15:EmberAfStatus emAfClusterPreAttributeChangedCallback(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint8_t, uint16_t, EmberAfAttributeType, uint16_t, uint8_t*)	32	static
+attribute-storage.cpp:393:13:void initializeEndpoint(EmberAfDefinedEndpoint*)	24	static
+attribute-storage.cpp:413:6:void emAfCallInits()	16	static
+attribute-storage.cpp:934:6:bool emberAfEndpointEnableDisable(chip::EndpointId, bool)	24	static
+attribute-storage.cpp:1408:6:bool emberAfExtractCommandIds(bool, EmberAfClusterCommand*, chip::ClusterId, uint8_t*, uint16_t, uint16_t*, uint8_t, uint8_t)	0	static

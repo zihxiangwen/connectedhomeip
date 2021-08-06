@@ -1,0 +1,18 @@
+attribute-table.cpp:171:6:bool emberAfReadSequentialAttributesAddToResponse(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint8_t, uint16_t, uint8_t, bool)	80	static
+attribute-table.cpp:486:15:EmberAfStatus emAfWriteAttribute(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint8_t, uint16_t, uint8_t*, EmberAfAttributeType, bool, bool)	104	static
+attribute-table.cpp:68:15:EmberAfStatus emberAfWriteAttributeExternal(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint8_t, uint16_t, uint8_t*, EmberAfAttributeType)	56	static
+attribute-table.cpp:87:15:EmberAfStatus emberAfWriteAttribute(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint8_t, uint8_t*, EmberAfAttributeType)	40	static
+attribute-table.cpp:95:15:EmberAfStatus emberAfWriteClientAttribute(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint8_t*, EmberAfAttributeType)	40	static
+attribute-table.cpp:104:15:EmberAfStatus emberAfWriteServerAttribute(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint8_t*, EmberAfAttributeType)	40	static
+attribute-table.cpp:113:15:EmberAfStatus emberAfWriteManufacturerSpecificClientAttribute(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint16_t, uint8_t*, EmberAfAttributeType)	32	static
+attribute-table.cpp:122:15:EmberAfStatus emberAfWriteManufacturerSpecificServerAttribute(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint16_t, uint8_t*, EmberAfAttributeType)	32	static
+attribute-table.cpp:131:15:EmberAfStatus emberAfVerifyAttributeWrite(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint8_t, uint16_t, uint8_t*, EmberAfAttributeType)	32	static
+attribute-table.cpp:629:15:EmberAfStatus emAfReadAttribute(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint8_t, uint16_t, uint8_t*, uint16_t, EmberAfAttributeType*)	48	static
+attribute-table.cpp:139:15:EmberAfStatus emberAfReadAttribute(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint8_t, uint8_t*, uint16_t, EmberAfAttributeType*)	24	static
+attribute-table.cpp:416:15:EmberAfStatus emberAfAppendAttributeReportFields(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint8_t, uint8_t*, uint8_t, uint8_t*)	1072	static
+attribute-table.cpp:145:15:EmberAfStatus emberAfReadServerAttribute(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint8_t*, uint16_t)	32	static
+attribute-table.cpp:152:15:EmberAfStatus emberAfReadClientAttribute(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint8_t*, uint16_t)	32	static
+attribute-table.cpp:159:15:EmberAfStatus emberAfReadManufacturerSpecificServerAttribute(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint16_t, uint8_t*, uint16_t)	24	static
+attribute-table.cpp:165:15:EmberAfStatus emberAfReadManufacturerSpecificClientAttribute(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint16_t, uint8_t*, uint16_t)	24	static
+attribute-table.cpp:257:6:void emberAfPrintAttributeTable()	1072	static
+attribute-table.cpp:339:6:void emberAfRetrieveAttributeAndCraftResponse(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint8_t, uint16_t, uint16_t)	1064	static

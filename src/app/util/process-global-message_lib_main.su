@@ -1,0 +1,1 @@
+process-global-message.cpp:100:6:bool emAfProcessGlobalCommand(EmberAfClusterCommand*)	80	static

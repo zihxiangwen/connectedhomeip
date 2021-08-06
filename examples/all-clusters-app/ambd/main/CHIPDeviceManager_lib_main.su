@@ -1,0 +1,3 @@
+CHIPDeviceManager.cpp:42:6:static void chip::DeviceManager::CHIPDeviceManager::CommonDeviceEventHandler(const chip::DeviceLayer::ChipDeviceEvent*, intptr_t)	16	static
+CHIPDeviceManager.cpp:55:12:CHIP_ERROR chip::DeviceManager::CHIPDeviceManager::Init(chip::DeviceManager::CHIPDeviceManagerCallbacks*)	16	static
+CHIPDeviceManager.cpp:97:6:void emberAfPostAttributeChangeCallback(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint8_t, uint16_t, uint8_t, uint16_t, uint8_t*)	56	static

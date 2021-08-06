@@ -1,0 +1,1 @@
+diagnostic-logs-server.cpp:21:6:bool emberAfDiagnosticLogsClusterRetrieveLogsRequestCallback(chip::app::CommandHandler*, uint8_t, uint8_t, chip::ByteSpan)	8	static
