@@ -69,6 +69,7 @@ private:
     bool _HaveServiceConnectivity(void);
     CHIP_ERROR _Init(void);
     void _OnPlatformEvent(const ChipDeviceEvent * event);
+    CHIP_ERROR _SetWiFiStationMode(WiFiStationMode val);
 
     // ===== Members for internal use by the following friends.
 
@@ -76,6 +77,22 @@ private:
     friend ConnectivityManagerImpl & ConnectivityMgrImpl(void);
 
     static ConnectivityManagerImpl sInstance;
+
+    // ===== Private members reserved for use by this class only.
+    uint64_t mLastStationConnectFailTime;
+    uint64_t mLastAPDemandTime;
+    WiFiStationMode mWiFiStationMode;
+    WiFiStationState mWiFiStationState;
+    WiFiAPMode mWiFiAPMode;
+    WiFiAPState mWiFiAPState;
+    uint32_t mWiFiStationReconnectIntervalMS;
+    uint32_t mWiFiAPIdleTimeoutMS;
+
+    void DriveStationState(void);
+    void OnStationConnected(void);
+    void OnStationDisconnected(void);
+    void ChangeWiFiStationState(WiFiStationState newState);
+    static void DriveStationState(::chip::System::Layer * aLayer, void * aAppState, ::CHIP_ERROR aError);
 };
 
 inline bool ConnectivityManagerImpl::_HaveIPv4InternetConnectivity(void)
