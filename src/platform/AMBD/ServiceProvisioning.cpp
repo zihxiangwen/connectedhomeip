@@ -25,7 +25,28 @@ using namespace ::chip::DeviceLayer;
 
 CHIP_ERROR SetWiFiStationProvisioning(const char * ssid, const char * key)
 {
-    // TODO
-    printf("TODO : SetWiFiStationProvisioning\n");
+    printf("%s %d ToDo\r\n", __func__,__LINE__);
+    ConnectivityMgr().SetWiFiStationMode(ConnectivityManager::kWiFiStationMode_Disabled);
+#if 0
+    wifi_config_t wifiConfig;
+
+    // Set the wifi configuration
+    memset(&wifiConfig, 0, sizeof(wifiConfig));
+    memcpy(wifiConfig.sta.ssid, ssid, std::min(strlen(ssid) + 1, sizeof(wifiConfig.sta.ssid)));
+    memcpy(wifiConfig.sta.password, key, std::min(strlen(key) + 1, sizeof(wifiConfig.sta.password)));
+    wifiConfig.sta.scan_method = WIFI_ALL_CHANNEL_SCAN;
+    wifiConfig.sta.sort_method = WIFI_CONNECT_AP_BY_SIGNAL;
+
+    // Configure the ESP WiFi interface.
+    esp_err_t err = esp_wifi_set_config(WIFI_IF_STA, &wifiConfig);
+    if (err != ESP_OK)
+    {
+        ChipLogError(DeviceLayer, "esp_wifi_set_config() failed: %s", esp_err_to_name(err));
+        return chip::DeviceLayer::Internal::ESP32Utils::MapError(err);
+    }
+#endif
+    ConnectivityMgr().SetWiFiStationMode(ConnectivityManager::kWiFiStationMode_Disabled);
+    ConnectivityMgr().SetWiFiStationMode(ConnectivityManager::kWiFiStationMode_Enabled);
+
     return CHIP_NO_ERROR;
 }
