@@ -30,6 +30,7 @@ using namespace ::chip::DeviceLayer;
 
 CHIP_ERROR SetWiFiStationProvisioning(const char * ssid, const char * key)
 {
+    printf("%s %d ToDo\r\n", __func__,__LINE__);
     ConnectivityMgr().SetWiFiStationMode(ConnectivityManager::kWiFiStationMode_Disabled);
 
     wifi_config_t wifiConfig;
