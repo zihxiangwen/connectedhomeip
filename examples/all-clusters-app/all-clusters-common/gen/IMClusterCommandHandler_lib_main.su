@@ -1,0 +1,25 @@
+CHIPTLVTags.h:207:13:bool chip::TLV::IsContextTag(uint64_t)	12	static
+IMClusterCommandHandler.cpp:43:6:void chip::app::clusters::BarrierControl::DispatchServerCommand(chip::app::CommandHandler*, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&)	80	static
+IMClusterCommandHandler.cpp:163:6:void chip::app::clusters::Basic::DispatchServerCommand(chip::app::CommandHandler*, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&)	48	static
+IMClusterCommandHandler.cpp:218:6:void chip::app::clusters::Binding::DispatchServerCommand(chip::app::CommandHandler*, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&)	88	static
+IMClusterCommandHandler.cpp:415:6:void chip::app::clusters::ColorControl::DispatchServerCommand(chip::app::CommandHandler*, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&)	88	static
+IMClusterCommandHandler.cpp:1896:6:void chip::app::clusters::DiagnosticLogs::DispatchServerCommand(chip::app::CommandHandler*, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&)	96	static
+IMClusterCommandHandler.cpp:2022:6:void chip::app::clusters::DoorLock::DispatchServerCommand(chip::app::CommandHandler*, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&)	96	static
+IMClusterCommandHandler.cpp:3435:6:void chip::app::clusters::EthernetNetworkDiagnostics::DispatchServerCommand(chip::app::CommandHandler*, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&)	56	static
+IMClusterCommandHandler.cpp:3497:6:void chip::app::clusters::GeneralCommissioning::DispatchServerCommand(chip::app::CommandHandler*, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&)	88	static
+IMClusterCommandHandler.cpp:3699:6:void chip::app::clusters::Groups::DispatchServerCommand(chip::app::CommandHandler*, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&)	88	static
+IMClusterCommandHandler.cpp:4071:6:void chip::app::clusters::IasZone::DispatchServerCommand(chip::app::CommandHandler*, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&)	88	static
+IMClusterCommandHandler.cpp:4189:6:void chip::app::clusters::Identify::DispatchServerCommand(chip::app::CommandHandler*, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&)	80	static
+IMClusterCommandHandler.cpp:4309:6:void chip::app::clusters::LevelControl::DispatchServerCommand(chip::app::CommandHandler*, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&)	80	static
+IMClusterCommandHandler.cpp:4845:6:void chip::app::clusters::LowPower::DispatchServerCommand(chip::app::CommandHandler*, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&)	56	static
+IMClusterCommandHandler.cpp:4906:6:void chip::app::clusters::NetworkCommissioning::DispatchServerCommand(chip::app::CommandHandler*, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&)	120	static
+IMClusterCommandHandler.cpp:5601:6:void chip::app::clusters::OtaSoftwareUpdateProvider::DispatchServerCommand(chip::app::CommandHandler*, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&)	136	static
+IMClusterCommandHandler.cpp:5889:6:void chip::app::clusters::OnOff::DispatchServerCommand(chip::app::CommandHandler*, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&)	56	static
+IMClusterCommandHandler.cpp:5962:6:void chip::app::clusters::OperationalCredentials::DispatchServerCommand(chip::app::CommandHandler*, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&)	120	static
+IMClusterCommandHandler.cpp:6475:6:void chip::app::clusters::Scenes::DispatchServerCommand(chip::app::CommandHandler*, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&)	96	static
+IMClusterCommandHandler.cpp:6982:6:void chip::app::clusters::SoftwareDiagnostics::DispatchServerCommand(chip::app::CommandHandler*, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&)	56	static
+IMClusterCommandHandler.cpp:7043:6:void chip::app::clusters::TestCluster::DispatchServerCommand(chip::app::CommandHandler*, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&)	56	static
+IMClusterCommandHandler.cpp:7116:6:void chip::app::clusters::ThreadNetworkDiagnostics::DispatchServerCommand(chip::app::CommandHandler*, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&)	56	static
+IMClusterCommandHandler.cpp:7178:6:void chip::app::clusters::WiFiNetworkDiagnostics::DispatchServerCommand(chip::app::CommandHandler*, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&)	56	static
+IMClusterCommandHandler.cpp:7239:6:void chip::app::DispatchSingleClusterCommand(chip::ClusterId, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&, chip::app::CommandHandler*)	56	static
+IMClusterCommandHandler.cpp:7331:6:void chip::app::DispatchSingleClusterResponseCommand(chip::ClusterId, chip::CommandId, chip::EndpointId, chip::TLV::TLVReader&, chip::app::CommandSender*)	56	static

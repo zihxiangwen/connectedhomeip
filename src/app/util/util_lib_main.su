@@ -1,0 +1,50 @@
+util.cpp:241:13:void prepareForResponse(const EmberAfClusterCommand*)	8	static
+util.cpp:454:13:bool dispatchZclMessage(EmberAfClusterCommand*)	16	static
+util.cpp:66:28:bool chip::app::Compatibility::IMEmberAfSendDefaultResponseWithCallback(EmberAfStatus)	0	static
+util.cpp:158:6:bool emberAfIsDeviceEnabled(chip::EndpointId)	8	static
+util.cpp:177:6:void emberAfSetDeviceEnabled(chip::EndpointId, bool)	8	static
+util.cpp:191:6:bool emberAfIsDeviceIdentifying(chip::EndpointId)	24	static
+util.cpp:205:23:EmberAfDifferenceType emberAfGetDifference(uint8_t*, EmberAfDifferenceType, uint8_t)	8	static
+util.cpp:274:6:void emberAfInit(chip::Messaging::ExchangeManager*)	8	static
+util.cpp:321:6:void emberAfTick()	0	static
+util.cpp:336:6:void emberAfStackDown()	0	static
+util.cpp:362:10:uint16_t emberAfFindClusterNameIndexWithMfgCode(chip::ClusterId, uint16_t)	20	static
+util.cpp:384:10:uint16_t emberAfFindClusterNameIndex(chip::ClusterId)	0	static
+util.cpp:391:6:void emberAfDecodeAndPrintClusterWithMfgCode(chip::ClusterId, uint16_t)	8	static
+util.cpp:405:6:void emberAfDecodeAndPrintCluster(chip::ClusterId)	0	static
+util.cpp:417:10:uint16_t emberAfGetMfgCodeFromCurrentCommand()	0	static
+util.cpp:488:6:bool emberAfProcessMessageIntoZclCmd(EmberApsFrame*, EmberIncomingMessageType, uint8_t*, uint16_t, chip::Messaging::ExchangeContext*, EmberAfInterpanHeader*, EmberAfClusterCommand*)	24	static
+util.cpp:535:6:bool emberAfProcessMessage(EmberApsFrame*, EmberIncomingMessageType, uint8_t*, uint16_t, chip::Messaging::ExchangeContext*, EmberAfInterpanHeader*)	56	static
+util.cpp:608:9:uint8_t emberAfNextSequence()	0	static
+util.cpp:613:9:uint8_t emberAfGetLastSequenceNumber()	0	static
+util.cpp:623:6:void emberAfSetNoReplyForNextMessage(bool)	0	static
+util.cpp:635:6:void emberAfSetRetryOverride(EmberAfRetryOverride)	0	static
+util.cpp:640:22:EmberAfRetryOverride emberAfGetRetryOverride()	0	static
+util.cpp:645:6:void emAfApplyRetryOverride(EmberApsOption*)	0	static
+util.cpp:665:6:void emberAfSetDisableDefaultResponse(EmberAfDisableDefaultResponse)	0	static
+util.cpp:674:31:EmberAfDisableDefaultResponse emberAfGetDisableDefaultResponse()	0	static
+util.cpp:679:6:void emAfApplyDisableDefaultResponse(uint8_t*)	0	static
+util.cpp:706:13:EmberStatus emberAfSendResponseWithCallback(EmberAfMessageSentFunction)	48	static
+util.cpp:786:13:EmberStatus emberAfSendResponse()	0	static
+util.cpp:801:13:EmberStatus emberAfSendDefaultResponseWithCallback(const EmberAfClusterCommand*, EmberAfStatus, EmberAfMessageSentFunction)	16	static
+util.cpp:791:13:EmberStatus emberAfSendImmediateDefaultResponseWithCallback(EmberAfStatus, EmberAfMessageSentFunction)	0	static
+util.cpp:796:13:EmberStatus emberAfSendImmediateDefaultResponse(EmberAfStatus)	0	static
+util.cpp:855:13:EmberStatus emberAfSendDefaultResponse(const EmberAfClusterCommand*, EmberAfStatus)	0	static
+util.cpp:860:6:void emberAfCopyInt16u(uint8_t*, uint16_t, uint16_t)	0	static
+util.cpp:866:6:void emberAfCopyInt24u(uint8_t*, uint16_t, uint32_t)	0	static
+util.cpp:873:6:void emberAfCopyInt32u(uint8_t*, uint16_t, uint32_t)	0	static
+util.cpp:881:6:void emberAfCopyString(uint8_t*, const uint8_t*, size_t)	24	static
+util.cpp:904:6:void emberAfCopyLongString(uint8_t*, const uint8_t*, size_t)	24	static
+util.cpp:938:8:int8_t emberAfCompareValues(uint8_t*, uint8_t*, uint16_t, bool)	20	static
+util.cpp:1026:9:uint8_t emberAfGetAttributeAnalogOrDiscreteType(uint8_t)	0	static
+util.cpp:1038:6:bool emberAfIsTypeSigned(EmberAfAttributeType)	0	static
+util.cpp:1043:13:EmberStatus emberAfEndpointEventControlSetInactive(EmberEventControl*, chip::EndpointId)	8	static
+util.cpp:1054:6:bool emberAfEndpointEventControlGetActive(EmberEventControl*, chip::EndpointId)	8	static
+util.cpp:1060:13:EmberStatus emberAfEndpointEventControlSetActive(EmberEventControl*, chip::EndpointId)	8	static
+util.cpp:1071:9:uint8_t emberAfAppendCharacters(uint8_t*, uint8_t, const uint8_t*, uint8_t)	32	static
+util.cpp:1110:13:EmberStatus emAfValidateChannelPages(uint8_t, uint8_t)	0	static
+util.cpp:1142:6:void slabAssert(const char*, int)	0	static
+util.cpp:1161:9:uint8_t emberAfGetPageFrom8bitEncodedChanPg(uint8_t)	0	static
+util.cpp:1180:9:uint8_t emberAfGetChannelFrom8bitEncodedChanPg(uint8_t)	0	static
+util.cpp:1185:9:uint8_t emberAfMake8bitEncodedChanPg(uint8_t, uint8_t)	8	static
+util.cpp:1211:36:chip::Messaging::ExchangeManager* chip::ExchangeManager()	0	static

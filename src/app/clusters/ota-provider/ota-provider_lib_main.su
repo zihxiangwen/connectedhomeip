@@ -1,0 +1,6 @@
+ota-provider.cpp:43:23:chip::app::clusters::OTAProviderDelegate* {anonymous}::GetDelegate(chip::EndpointId)	8	static
+ota-provider.cpp:49:6:bool {anonymous}::SendStatusIfDelegateNull(chip::EndpointId)	8	static
+ota-provider.cpp:70:6:bool emberAfOtaSoftwareUpdateProviderClusterApplyUpdateRequestCallback(chip::app::CommandHandler*, chip::ByteSpan, uint32_t)	40	static
+ota-provider.cpp:108:6:bool emberAfOtaSoftwareUpdateProviderClusterNotifyUpdateAppliedCallback(chip::app::CommandHandler*, chip::ByteSpan, uint32_t)	40	static
+ota-provider.cpp:154:6:bool emberAfOtaSoftwareUpdateProviderClusterQueryImageCallback(chip::app::CommandHandler*, uint16_t, uint16_t, uint16_t, uint16_t, uint32_t, uint8_t*, uint8_t*, uint8_t, chip::ByteSpan)	64	static
+ota-provider.cpp:200:6:void chip::app::clusters::OTAProvider::SetDelegate(chip::EndpointId, chip::app::clusters::OTAProviderDelegate*)	8	static

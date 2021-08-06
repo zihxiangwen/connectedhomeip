@@ -1,0 +1,8 @@
+Command.h:97:24:virtual CHIP_ERROR chip::app::Command::AddStatusCode(const chip::app::CommandPathParams&, chip::Protocols::SecureChannel::GeneralStatusCode, chip::Protocols::Id, chip::Protocols::InteractionModel::ProtocolCode)	8	static
+CommandHandler.cpp:80:12:virtual CHIP_ERROR chip::app::CommandHandler::ProcessCommandDataElement(chip::app::CommandDataElement::Parser&)	176	static
+CommandHandler.cpp:136:12:virtual CHIP_ERROR chip::app::CommandHandler::AddStatusCode(const chip::app::CommandPathParams&, chip::Protocols::SecureChannel::GeneralStatusCode, chip::Protocols::Id, chip::Protocols::InteractionModel::ProtocolCode)	40	static
+SystemPacketBuffer.h:477:26:chip::System::PacketBufferHandle& chip::System::PacketBufferHandle::operator=(std::nullptr_t)	8	static
+CommandHandler.h:42:7:chip::app::CommandHandler::~CommandHandler()	8	static
+CommandHandler.h:42:7:virtual chip::app::CommandHandler::~CommandHandler()	8	static
+CommandHandler.cpp:58:12:CHIP_ERROR chip::app::CommandHandler::SendCommandResponse()	32	static
+CommandHandler.cpp:37:12:CHIP_ERROR chip::app::CommandHandler::OnInvokeCommandRequest(chip::Messaging::ExchangeContext*, const chip::PacketHeader&, const chip::PayloadHeader&, chip::System::PacketBufferHandle&&)	24	static

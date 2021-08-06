@@ -1,0 +1,18 @@
+reporting.cpp:102:13:void retrySendReport(const chip::MessageSendDestination&, EmberApsFrame*, uint16_t, uint8_t*, EmberStatus)	4	static
+reporting.cpp:362:13:void conditionallySendReport(chip::EndpointId, chip::ClusterId)	8	static
+reporting.cpp:97:15:EmberAfStatus emberAfPluginReportingConfiguredCallback(const EmberAfPluginReportingEntry*)	0	static
+reporting.cpp:137:6:void emAfPluginReportingGetEntry(uint8_t, EmberAfPluginReportingEntry*)	0	static
+reporting.cpp:797:13:void scheduleTick()	64	static
+reporting.cpp:143:6:void emAfPluginReportingSetEntry(uint8_t, EmberAfPluginReportingEntry*)	0	static
+reporting.cpp:163:6:void emberAfPluginReportingStackStatusCallback(EmberStatus)	8	static
+reporting.cpp:174:6:void emberAfPluginReportingInitCallback()	48	static
+reporting.cpp:192:6:void emberAfPluginReportingTickEventHandler()	1144	static
+reporting.cpp:545:6:bool emberAfReadReportingConfigurationCommandCallback(const EmberAfClusterCommand*)	72	static
+reporting.cpp:675:13:EmberStatus emberAfClearReportTableCallback()	48	static
+reporting.cpp:686:13:EmberStatus emAfPluginReportingRemoveEntry(uint8_t)	48	static
+reporting.cpp:697:6:void emberAfReportingAttributeChangeCallback(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint8_t, uint16_t, EmberAfAttributeType, uint8_t*)	80	static
+reporting.cpp:744:6:bool emAfPluginReportingDoEntriesMatch(const EmberAfPluginReportingEntry*, const EmberAfPluginReportingEntry*)	16	static
+reporting.cpp:764:9:uint8_t emAfPluginReportingAddEntry(EmberAfPluginReportingEntry*)	56	static
+reporting.cpp:855:15:EmberAfStatus emberAfPluginReportingConfigureReportedAttribute(const EmberAfPluginReportingEntry*)	96	static
+reporting.cpp:385:6:bool emberAfConfigureReportingCommandCallback(const EmberAfClusterCommand*)	96	static
+reporting.cpp:1089:9:uint8_t emAfPluginReportingConditionallyAddReportingEntry(EmberAfPluginReportingEntry*)	48	static

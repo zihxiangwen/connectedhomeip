@@ -1,0 +1,6 @@
+temperature-measurement-server.cpp:36:15:EmberAfStatus emberAfTemperatureMeasurementClusterGetMeasuredValue(chip::EndpointId, int16_t*)	16	static
+temperature-measurement-server.cpp:42:15:EmberAfStatus emberAfTemperatureMeasurementClusterGetMinMeasuredValue(chip::EndpointId, int16_t*)	16	static
+temperature-measurement-server.cpp:48:15:EmberAfStatus emberAfTemperatureMeasurementClusterGetMaxMeasuredValue(chip::EndpointId, int16_t*)	16	static
+temperature-measurement-server.cpp:54:15:EmberAfStatus emberAfTemperatureMeasurementClusterSetMeasuredValueCallback(chip::EndpointId, int16_t)	24	static
+temperature-measurement-server.cpp:60:15:EmberAfStatus emberAfTemperatureMeasurementClusterSetMinMeasuredValueCallback(chip::EndpointId, int16_t)	24	static
+temperature-measurement-server.cpp:66:15:EmberAfStatus emberAfTemperatureMeasurementClusterSetMaxMeasuredValueCallback(chip::EndpointId, int16_t)	24	static

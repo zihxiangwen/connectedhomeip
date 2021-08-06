@@ -1,0 +1,10 @@
+identify.cpp:180:15:EmberAfStatus readIdentifyTime(chip::EndpointId, uint16_t*)	24	static
+identify.cpp:194:22:EmberAfStatus writeIdentifyTime(chip::EndpointId, uint16_t)	24	static
+identify.cpp:86:6:void emberAfIdentifyClusterServerTickCallback(chip::EndpointId)	16	static
+identify.cpp:106:6:bool emberAfIdentifyClusterIdentifyCallback(chip::app::CommandHandler*, uint16_t)	8	static
+identify.cpp:123:6:bool emberAfIdentifyClusterIdentifyQueryCallback(chip::app::CommandHandler*)	48	static
+identify.cpp:238:6:bool emberAfPluginIdentifyStartFeedbackCallback(chip::EndpointId, uint16_t)	8	static
+identify.cpp:244:6:bool emberAfPluginIdentifyStopFeedbackCallback(chip::EndpointId)	8	static
+identify.cpp:207:20:EmberStatus scheduleIdentifyTick(chip::EndpointId)	24	static
+identify.cpp:81:6:void emberAfIdentifyClusterServerInitCallback(chip::EndpointId)	0	static
+identify.cpp:98:6:void emberAfIdentifyClusterServerAttributeChangedCallback(chip::EndpointId, chip::AttributeId)	0	static

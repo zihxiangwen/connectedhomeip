@@ -1,0 +1,15 @@
+af-main-common.cpp:195:6:void emAfInitializeMessageSentCallbackArray()	0	static
+af-main-common.cpp:499:13:EmberStatus emberAfSendInterPan(EmberPanId, const uint8_t*, EmberNodeId, chip::GroupId, chip::ClusterId, uint16_t, uint8_t*)	48	static
+af-main-common.cpp:526:6:void emberAfPrintMessageData(uint8_t*, uint16_t)	16	static
+af-main-common.cpp:535:6:void emAfPrintStatus(const char*, EmberStatus)	16	static
+af-main-common.cpp:562:6:void emAfMessageSentHandler(const chip::MessageSendDestination&, EmberApsFrame*, EmberStatus, uint16_t, uint8_t*, uint8_t)	40	static
+af-main-common.cpp:615:13:EmberStatus emAfSend(const chip::MessageSendDestination&, EmberApsFrame*, uint16_t, uint8_t*, uint8_t*, EmberNodeId, uint8_t)	64	static
+af-main-common.cpp:205:20:EmberStatus send(const chip::MessageSendDestination&, EmberApsFrame*, uint16_t, uint8_t*, bool, EmberNodeId, uint8_t, EmberAfMessageSentFunction)	136	static
+af-main-common.cpp:329:13:EmberStatus emberAfSendMulticastWithAliasWithCallback(chip::GroupId, EmberApsFrame*, uint16_t, uint8_t*, EmberNodeId, uint8_t, EmberAfMessageSentFunction)	40	static
+af-main-common.cpp:340:13:EmberStatus emberAfSendMulticastWithCallback(chip::GroupId, EmberApsFrame*, uint16_t, uint8_t*, EmberAfMessageSentFunction)	40	static
+af-main-common.cpp:352:13:EmberStatus emberAfSendMulticast(chip::GroupId, EmberApsFrame*, uint16_t, uint8_t*)	16	static
+af-main-common.cpp:357:13:EmberStatus emberAfSendMulticastToBindings(EmberApsFrame*, uint16_t, uint8_t*)	56	static
+af-main-common.cpp:426:13:EmberStatus emberAfSendUnicastWithCallback(const chip::MessageSendDestination&, EmberApsFrame*, uint16_t, uint8_t*, EmberAfMessageSentFunction)	72	static
+af-main-common.cpp:454:13:EmberStatus emberAfSendUnicast(const chip::MessageSendDestination&, EmberApsFrame*, uint16_t, uint8_t*)	16	static
+af-main-common.cpp:460:13:EmberStatus emberAfSendUnicastToBindingsWithCallback(EmberApsFrame*, uint16_t, uint8_t*, EmberAfMessageSentFunction)	96	static
+af-main-common.cpp:494:13:EmberStatus emberAfSendUnicastToBindings(EmberApsFrame*, uint16_t, uint8_t*)	0	static

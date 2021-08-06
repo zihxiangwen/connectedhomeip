@@ -72,6 +72,8 @@ namespace {
 #define CHIP_ADV_DATA_TYPE_FLAGS        0x01
 #define CHIP_ADV_DATA_FLAGS             0x06
 #define CHIP_ADV_DATA_TYPE_SERVICE_DATA 0x16
+#undef printf
+#define printf(...)  
 
 #define LOOP_EV_BLE (0x08)
 
@@ -867,7 +869,8 @@ CHIP_ERROR BLEManagerImpl::StopAdvertising(void)
 
     //bt_config_send_msg(0);
     /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
-    CancelBleAdvTimeoutTimer();
+    //CancelBleAdvTimeoutTimer();
+    le_adv_stop();
 
     // Change flag status to the 'not Advertising state'
     if (mFlags.Has(Flags::kAdvertising))

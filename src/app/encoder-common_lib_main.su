@@ -1,0 +1,2 @@
+encoder-common.cpp:24:10:uint16_t doEncodeApsFrame(chip::Encoding::LittleEndian::BufferWriter&, chip::ClusterId, chip::EndpointId, chip::EndpointId, EmberApsOption, chip::GroupId, uint8_t, uint8_t, bool)	32	static
+encoder-common.cpp:63:10:uint16_t encodeApsFrame(uint8_t*, uint16_t, EmberApsFrame*)	48	static

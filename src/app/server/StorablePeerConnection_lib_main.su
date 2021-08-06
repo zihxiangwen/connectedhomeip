@@ -1,0 +1,8 @@
+StorablePeerConnection.h:37:13:chip::StorablePeerConnection::~StorablePeerConnection()	0	static
+StorablePeerConnection.h:37:13:virtual chip::StorablePeerConnection::~StorablePeerConnection()	8	static
+StorablePeerConnection.cpp:61:12:static CHIP_ERROR chip::StorablePeerConnection::GenerateKey(uint16_t, char*, size_t)	16	static
+StorablePeerConnection.cpp:24:1:chip::StorablePeerConnection::StorablePeerConnection(chip::PASESession&, chip::FabricIndex)	16	static
+StorablePeerConnection.cpp:31:12:CHIP_ERROR chip::StorablePeerConnection::StoreIntoKVS(chip::PersistentStorageDelegate&)	32	static
+StorablePeerConnection.cpp:39:12:CHIP_ERROR chip::StorablePeerConnection::FetchFromKVS(chip::PersistentStorageDelegate&, uint16_t)	40	static
+StorablePeerConnection.cpp:48:12:static CHIP_ERROR chip::StorablePeerConnection::DeleteFromKVS(chip::PersistentStorageDelegate&, uint16_t)	24	static
+StorablePeerConnection.cpp:61:12:static CHIP_ERROR chip::StorablePeerConnection::GenerateKey(uint16_t, char*, size_t)	0	static
