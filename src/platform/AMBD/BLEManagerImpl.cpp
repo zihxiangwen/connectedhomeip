@@ -546,6 +546,7 @@ printf("platform EVENTTYPE: %d\r\n", event->Type);
 
     case DeviceEventType::kCHIPoBLEWriteReceived: {
             ChipLogProgress(DeviceLayer, "_OnPlatformEvent kCHIPoBLEWriteReceived");
+	    printf("ConID = %d\r\n", event->CHIPoBLEWriteReceived.ConId);
             HandleWriteReceived(event->CHIPoBLEWriteReceived.ConId, &CHIP_BLE_SVC_ID, &ChipUUID_CHIPoBLEChar_RX, PacketBufferHandle::Adopt(event->CHIPoBLEWriteReceived.Data));
         }
         break;
@@ -702,8 +703,11 @@ bool BLEManagerImpl::SendIndication(BLE_CONNECTION_OBJECT conId, const ChipBleUU
         ExitNow();
     }
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
-    server_send_data(conId, bt_config_service_id, BT_CONFIG_SERVICE_CHAR_NOTIFY_CCCD_INDEX, data->Start(), data->DataLength(), GATT_PDU_TYPE_NOTIFICATION);
+    server_send_data(conId, bt_config_service_id, BT_CONFIG_SERVICE_CHAR_NOTIFY_CCCD_INDEX-1, data->Start(), data->DataLength(), GATT_PDU_TYPE_NOTIFICATION);
     printf("DATALENGTH = %d\r\n", data->DataLength());
+    vPortEnterCritical();
+    dump_bytes(data->Start(), data->DataLength());
+    vPortExitCritical();
     
 exit:
     if (err != CHIP_NO_ERROR)
@@ -800,38 +804,9 @@ CHIP_ERROR BLEManagerImpl::ConfigureAdvertisingData(void)
     le_adv_set_param(GAP_PARAM_ADV_INTERVAL_MIN, sizeof(adv_int_min), &adv_int_min);
     le_adv_set_param(GAP_PARAM_ADV_INTERVAL_MAX, sizeof(adv_int_max), &adv_int_max);
     le_adv_set_param(GAP_PARAM_ADV_DATA, sizeof(advData), (void *)advData);	//set advData
-    le_register_app_cb(bt_config_app_gap_callback);
+    //le_register_app_cb(bt_config_app_gap_callback);
 
-    bt_config_app_le_gap_init_chip();
-    bt_config_task_init();
 
-    bt_coex_init();
-
-    // print advData
-    for(int i=0; i<sizeof(advData); i++) {
-	    printf("%X\n", advData[i]);
-    }
-    //Wait BT init complete*
-    do {
-            os_delay(100);
-            le_get_gap_param(GAP_PARAM_DEV_STATE , &new_state);
-    } while (new_state.gap_init_state != GAP_INIT_STATE_STACK_READY);
-
-    //Start BT WIFI coexistence
-    wifi_btcoex_set_bt_on();
-
-    /**************** Prepare scan response data *******************************************/
-    // Construct the Chip BLE Service Data to be sent in the scan response packet.
-    /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    [zl_dbg] replace ble_gap_adv_set_data to z2 function
-
-    err = MapBLEError(ble_gap_adv_set_data(advData, sizeof(advData)));
-    if (err != CHIP_NO_ERROR)
-    {
-        ChipLogError(DeviceLayer, "ble_gap_adv_set_data failed: %s %d", ErrorStr(err), discriminator);
-        ExitNow();
-    }
-    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
 
 exit:
     return err;
@@ -845,15 +820,6 @@ CHIP_ERROR BLEManagerImpl::StartAdvertising(void)
     err = ConfigureAdvertisingData();		
     SuccessOrExit(err);
 
-    if (err == CHIP_NO_ERROR)
-    /* schedule NFC emulation stop */
-    {
-        ChipDeviceEvent advChange;
-        advChange.Type = DeviceEventType::kCHIPoBLEAdvertisingChange;
-        advChange.CHIPoBLEAdvertisingChange.Result = kActivity_Started;
-	printf("postevent event type: %d\r\n", advChange.Type);
-        PlatformMgr().PostEvent(&advChange);
-    }
 
     /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     [zl_dbg] Add z2 advertisinig function
@@ -877,6 +843,16 @@ CHIP_ERROR BLEManagerImpl::StartAdvertising(void)
     mFlags.Clear(Flags::kRestartAdvertising);
     //printf("TIMEOUT HERE\n");
     //StartBleAdvTimeoutTimer(bleAdvTimeoutMs);
+
+    if (err == CHIP_NO_ERROR)
+    /* schedule NFC emulation stop */
+    {
+        ChipDeviceEvent advChange;
+        advChange.Type = DeviceEventType::kCHIPoBLEAdvertisingChange;
+        advChange.CHIPoBLEAdvertisingChange.Result = kActivity_Started;
+	printf("postevent event type: %d\r\n", advChange.Type);
+        PlatformMgr().PostEvent(&advChange);
+    }
 
 exit:
     return err;
@@ -1130,32 +1106,6 @@ printf("BLEManagerImpl::ble_svr_gap_msg_event xxxxxxxxxxevent->type=%dxxxxxxxxxx
         }
         break;
 
-	/*
-    case 1: //BLE_GAP_EVENT_DISCONNECT:
-        err = sInstance.HandleGAPDisconnect(event);
-        SuccessOrExit(err);
-        break;
-	*/
-
-    case 9: //BLE_GAP_EVENT_ADV_COMPLETE:
-        printf("BLE_GAP_EVENT_ADV_COMPLETE event\r\n");
-        break;
-
-    case 14://BLE_GAP_EVENT_SUBSCRIBE:
-        //if (event->subscribe.attr_handle == sInstance.mTXCharCCCDAttrHandle)
-        {
-            //sInstance.HandleTXCharCCCDWrite(event);
-	    printf("BLE_GAP_EVENT_SUBSCRIBE\r\n");
-        }
-
-        break;
-
-    case 13://BLE_GAP_EVENT_NOTIFY_TX:
-	printf("BLE_GAP_EVENT_NOTIFY_TX\r\n");
-        //err = sInstance.HandleTXComplete(event);
-        //SuccessOrExit(err);
-        break;
-
     case GAP_MSG_LE_CONN_MTU_INFO: //BLE_GAP_EVENT_MTU:
         printf("BLE_GAP_EVENT_MTU \r\n");
         break;
@@ -1219,6 +1169,7 @@ int BLEManagerImpl::gatt_svr_chr_access(void *param, T_SERVER_ID service_id, TBT
     if (service_id == SERVICE_PROFILE_GENERAL_ID)
     {
         T_SERVER_APP_CB_DATA *p_param = (T_SERVER_APP_CB_DATA *)p_data;
+	printf("eventID: %d\r\n", p_param->eventId);
         switch (p_param->eventId)
         {
         case PROFILE_EVT_SRV_REG_COMPLETE:// srv register result event.
@@ -1234,6 +1185,7 @@ int BLEManagerImpl::gatt_svr_chr_access(void *param, T_SERVER_ID service_id, TBT
             break;
         }
     } else {
+	    printf("msg_type: %d\r\n", p_data->msg_type);
 	    uint8_t conn_id = p_data->conn_id;
 	    T_SERVICE_CALLBACK_TYPE msg_type = p_data->msg_type;
 	    uint8_t *p_value = p_data->msg_data.write.p_value;
