@@ -80,6 +80,7 @@ bool ConnectivityManagerImpl::_IsWiFiStationEnabled(void)
 
 CHIP_ERROR ConnectivityManagerImpl::_SetWiFiStationMode(WiFiStationMode val)
 {
+    printf("%s %d ToDo\r\n", __func__,__LINE__);
     CHIP_ERROR err = CHIP_NO_ERROR;
 
     VerifyOrExit(val != kWiFiStationMode_NotSupported, err = CHIP_ERROR_INVALID_ARGUMENT);
