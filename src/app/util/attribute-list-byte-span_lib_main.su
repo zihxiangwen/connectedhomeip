@@ -1,0 +1,3 @@
+attribute-list-byte-span.cpp:49:12:CHIP_ERROR chip::app::List::ReadByteSpan(const uint8_t*, uint16_t, chip::ByteSpan*)	40	static
+attribute-list-byte-span.cpp:60:12:CHIP_ERROR chip::app::List::WriteByteSpan(uint8_t*, uint16_t, chip::ByteSpan*)	48	static
+attribute-list-byte-span.cpp:71:10:uint16_t chip::app::List::GetByteSpanOffsetFromIndex(const uint8_t*, uint16_t, uint16_t)	40	static

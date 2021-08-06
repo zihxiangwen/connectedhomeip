@@ -1,0 +1,10 @@
+client-api.cpp:62:17:uint16_t vFillBuffer(uint8_t*, uint16_t, uint8_t, uint16_t, chip::CommandId, const char*, va_list)	48	static
+client-api.cpp:249:6:void emberAfSetExternalBuffer(uint8_t*, uint16_t, uint16_t*, EmberApsFrame*)	8	static
+client-api.cpp:257:10:)	40	static
+client-api.cpp:272:10:)	36	static
+client-api.cpp:287:10:)	40	static
+client-api.cpp:298:13:EmberStatus emberAfSendCommandUnicastToBindingsWithCallback(EmberAfMessageSentFunction)	0	static
+client-api.cpp:303:13:EmberStatus emberAfSendCommandUnicastToBindings()	0	static
+client-api.cpp:331:13:EmberStatus emberAfSendCommandMulticastToBindings()	0	static
+client-api.cpp:377:17:EmberApsFrame* emberAfGetCommandApsFrame()	0	static
+client-api.cpp:382:6:void emberAfSetCommandEndpoints(chip::EndpointId, chip::EndpointId)	0	static

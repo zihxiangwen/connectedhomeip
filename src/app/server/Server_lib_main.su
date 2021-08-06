@@ -1,0 +1,61 @@
+Base.h:78:18:virtual void chip::Transport::Base::Disconnect(const chip::Transport::PeerAddress&)	0	static
+Base.h:83:18:virtual void chip::Transport::Base::Close()	0	static
+PairingSession.h:71:22:virtual uint32_t chip::PairingSession::GetPeerCounter()	0	static
+ExchangeDelegate.h:99:18:virtual void chip::Messaging::ExchangeDelegate::OnExchangeClosing(chip::Messaging::ExchangeContext*)	0	static
+ExchangeDelegate.h:101:39:virtual chip::Messaging::ExchangeMessageDispatch* chip::Messaging::ExchangeDelegate::GetMessageDispatch(chip::Messaging::ReliableMessageMgr*, chip::SecureSessionMgr*)	0	static
+BLE.h:87:10:virtual bool chip::Transport::BLEBase::CanSendToPeer(const chip::Transport::PeerAddress&)	0	static
+PASESession.h:355:14:virtual uint16_t chip::SecurePairingUsingTestSecret::GetPeerKeyId()	0	static
+PASESession.h:357:14:virtual uint16_t chip::SecurePairingUsingTestSecret::GetLocalKeyId()	0	static
+PASESession.h:359:18:virtual const char* chip::SecurePairingUsingTestSecret::GetI2RSessionInfo() const	0	static
+PASESession.h:361:18:virtual const char* chip::SecurePairingUsingTestSecret::GetR2ISessionInfo() const	0	static
+RendezvousParameters.h:44:18:virtual void chip::RendezvousAdvertisementDelegate::RendezvousComplete() const	0	static
+SessionIDAllocator.h:28:5:chip::SessionIDAllocator::~SessionIDAllocator()	0	static
+Server.cpp:329:7:{anonymous}::ServerCallback::~ServerCallback()	0	static
+Server.cpp:251:7:{anonymous}::ServerRendezvousAdvertisementDelegate::~ServerRendezvousAdvertisementDelegate()	0	static
+Server.cpp:85:7:{anonymous}::ServerStorageDelegate::~ServerStorageDelegate()	0	static
+PASESession.h:327:7:chip::SecurePairingUsingTestSecret::~SecurePairingUsingTestSecret()	0	static
+Tuple.h:91:10:void chip::Transport::Tuple<TransportTypes>::Disconnect(const chip::Transport::PeerAddress&) [with TransportTypes = {chip::Transport::UDP, chip::Transport::UDP, chip::Transport::BLE<1>}]	0	static
+Server.cpp:399:10:virtual void {anonymous}::ServerCallback::OnResponseTimeout(chip::Messaging::ExchangeContext*)	8	static
+Server.cpp:99:16:virtual CHIP_ERROR {anonymous}::ServerStorageDelegate::SyncDeleteKeyValue(const char*)	8	static
+Server.cpp:93:16:virtual CHIP_ERROR {anonymous}::ServerStorageDelegate::SyncSetKeyValue(const char*, const void*, uint16_t)	16	static
+Server.cpp:87:16:virtual CHIP_ERROR {anonymous}::ServerStorageDelegate::SyncGetKeyValue(const char*, void*, uint16_t&)	24	static
+Server.cpp:251:7:virtual {anonymous}::ServerRendezvousAdvertisementDelegate::~ServerRendezvousAdvertisementDelegate()	8	static
+Server.cpp:85:7:virtual {anonymous}::ServerStorageDelegate::~ServerStorageDelegate()	8	static
+PASESession.h:327:7:virtual chip::SecurePairingUsingTestSecret::~SecurePairingUsingTestSecret()	8	static
+Server.cpp:329:7:virtual {anonymous}::ServerCallback::~ServerCallback()	8	static
+Server.cpp:254:16:virtual CHIP_ERROR {anonymous}::ServerRendezvousAdvertisementDelegate::StartAdvertisement() const	8	static
+PASESession.h:334:16:virtual CHIP_ERROR chip::SecurePairingUsingTestSecret::DeriveSecureSession(chip::SecureSession&, chip::SecureSession::SessionRole)	40	static
+ExchangeMgr.h:53:46:chip::Messaging::ExchangeManager::~ExchangeManager()	8	static
+Tuple.h:93:10:void chip::Transport::Tuple<TransportTypes>::Close() [with TransportTypes = {chip::Transport::UDP, chip::Transport::UDP, chip::Transport::BLE<1>}]	8	static
+SystemPacketBuffer.h:477:26:chip::System::PacketBufferHandle& chip::System::PacketBufferHandle::operator=(std::nullptr_t)	8	static
+BLE.h:129:7:chip::Transport::BLE<1>::~BLE()	8	static
+BLE.h:129:7:virtual chip::Transport::BLE<1>::~BLE()	8	static
+Tuple.h:81:7:chip::Transport::Tuple<chip::Transport::UDP, chip::Transport::UDP, chip::Transport::BLE<1> >::~Tuple()	8	static
+TransportMgr.h:57:7:chip::TransportMgr<chip::Transport::UDP, chip::Transport::UDP, chip::Transport::BLE<1> >::~TransportMgr()	8	static
+TransportMgr.h:57:7:virtual chip::TransportMgr<chip::Transport::UDP, chip::Transport::UDP, chip::Transport::BLE<1> >::~TransportMgr()	8	static
+Tuple.h:81:7:virtual chip::Transport::Tuple<chip::Transport::UDP, chip::Transport::UDP, chip::Transport::BLE<1> >::~Tuple()	8	static
+MessageCounterManager.h:43:5:chip::secure_channel::MessageCounterManager::~MessageCounterManager()	16	static
+Server.cpp:266:16:virtual CHIP_ERROR {anonymous}::ServerRendezvousAdvertisementDelegate::StopAdvertisement() const	32	static
+FabricTable.h:81:5:chip::Transport::FabricInfo::~FabricInfo()	16	static
+FabricTable.h:313:46:chip::Transport::FabricTable::~FabricTable()	16	static
+FabricTable.h:299:27:chip::Transport::ConstFabricIterator& chip::Transport::ConstFabricIterator::Advance()	8	static
+PeerAddress.h:64:5:chip::Transport::PeerAddress::PeerAddress()	8	static
+UDP.h:115:10:virtual bool chip::Transport::UDP::CanSendToPeer(const chip::Transport::PeerAddress&)	8	static
+Tuple.h:84:16:CHIP_ERROR chip::Transport::Tuple<TransportTypes>::SendMessage(const chip::Transport::PeerAddress&, chip::System::PacketBufferHandle&&) [with TransportTypes = {chip::Transport::UDP, chip::Transport::UDP, chip::Transport::BLE<1>}]	32	static
+Tuple.h:89:10:bool chip::Transport::Tuple<TransportTypes>::CanSendToPeer(const chip::Transport::PeerAddress&) [with TransportTypes = {chip::Transport::UDP, chip::Transport::UDP, chip::Transport::BLE<1>}]	16	static
+TLVPacketBufferBackingStore.h:45:13:chip::System::TLVPacketBufferBackingStore::~TLVPacketBufferBackingStore()	8	static
+TLVPacketBufferBackingStore.h:45:13:virtual chip::System::TLVPacketBufferBackingStore::~TLVPacketBufferBackingStore()	8	static
+MessageCounterManager.h:43:5:virtual chip::secure_channel::MessageCounterManager::~MessageCounterManager()	8	static
+FabricTable.h:313:46:chip::Transport::FabricTable::FabricTable()	32	static
+Server.cpp:428:12:CHIP_ERROR OpenDefaultPairingWindow(chip::ResetFabrics, chip::PairingWindowAdvertisement)	248	static
+Server.cpp:468:6:void InitServer(AppDelegate*)	80	static
+Server.cpp:624:12:CHIP_ERROR AddTestPairing()	136	static
+Server.cpp:660:15:chip::Transport::FabricTable& GetGlobalFabricTable()	0	static
+Optional.h:74:15:const T& chip::Optional<T>::Value() const [with T = long long unsigned int]	8	static
+Server.cpp:332:16:virtual CHIP_ERROR {anonymous}::ServerCallback::OnMessageReceived(chip::Messaging::ExchangeContext*, const chip::PacketHeader&, const chip::PayloadHeader&, chip::System::PacketBufferHandle&&)	392	static
+ExchangeMgr.h:53:46:virtual chip::Messaging::ExchangeManager::~ExchangeManager()	8	static
+RendezvousServer.h:29:7:chip::RendezvousServer::~RendezvousServer()	8	static
+RendezvousServer.h:29:7:virtual chip::RendezvousServer::~RendezvousServer()	8	static
+CASEServer.h:31:5:chip::CASEServer::~CASEServer()	16	static
+CASEServer.h:31:5:virtual chip::CASEServer::~CASEServer()	8	static
+Server.cpp:663:1:cpp)	16	static

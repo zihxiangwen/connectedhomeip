@@ -1,0 +1,14 @@
+esi-management.cpp:52:13:void performDeletionAnnouncement(uint8_t)	24	static
+esi-management.cpp:63:38:EmberAfPluginEsiManagementEsiEntry* emberAfPluginEsiManagementGetFreeEntry()	16	static
+esi-management.cpp:126:9:uint8_t emberAfPluginEsiManagementIndexLookUpByShortIdAndEndpoint(EmberNodeId, chip::EndpointId)	20	static
+esi-management.cpp:99:38:EmberAfPluginEsiManagementEsiEntry* emberAfPluginEsiManagementEsiLookUpByShortIdAndEndpoint(EmberNodeId, chip::EndpointId)	8	static
+esi-management.cpp:141:9:uint8_t emberAfPluginEsiManagementIndexLookUpByLongIdAndEndpoint(uint8_t*, chip::EndpointId)	24	static
+esi-management.cpp:113:38:EmberAfPluginEsiManagementEsiEntry* emberAfPluginEsiManagementEsiLookUpByLongIdAndEndpoint(uint8_t*, chip::EndpointId)	8	static
+esi-management.cpp:155:38:EmberAfPluginEsiManagementEsiEntry* emberAfPluginEsiManagementEsiLookUpByIndex(uint8_t)	20	static
+esi-management.cpp:167:38:EmberAfPluginEsiManagementEsiEntry* emberAfPluginEsiManagementGetNextEntry(EmberAfPluginEsiManagementEsiEntry*, uint8_t)	28	static
+esi-management.cpp:193:6:void emberAfPluginEsiManagementDeleteEntry(uint8_t)	16	static
+esi-management.cpp:201:6:void emberAfPluginEsiManagementAgeAllEntries()	20	static
+esi-management.cpp:214:6:void emberAfPluginEsiManagementClearTable()	8	static
+esi-management.cpp:223:6:bool emberAfPluginEsiManagementSubscribeToDeletionAnnouncements(EmberAfEsiManagementDeletionCallback)	0	static
+esi-management.cpp:236:9:uint8_t emberAfPluginEsiManagementUpdateEsiAndGetIndex(const EmberAfClusterCommand*)	32	static
+esi-management.cpp:291:6:void emberAfPluginEsiManagementInitCallback()	0	static

@@ -1,0 +1,2 @@
+DataModelHandler.cpp:41:6:void InitDataModelHandler(chip::Messaging::ExchangeManager*)	8	static
+DataModelHandler.cpp:61:6:void HandleDataModelMessage(chip::Messaging::ExchangeContext*, chip::System::PacketBufferHandle&&)	48	static

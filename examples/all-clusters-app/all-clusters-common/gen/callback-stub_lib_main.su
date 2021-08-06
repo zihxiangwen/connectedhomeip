@@ -1,0 +1,75 @@
+callback-stub.cpp:184:28:void emberAfAccountLoginClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:189:28:void emberAfApplicationBasicClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:194:28:void emberAfApplicationLauncherClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:199:28:void emberAfAudioOutputClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:204:28:void emberAfBarrierControlClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:209:28:void emberAfBasicClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:214:28:void emberAfBinaryInputBasicClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:219:28:void emberAfBindingClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:224:28:void emberAfBridgedDeviceBasicClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:229:28:void emberAfColorControlClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:234:28:void emberAfContentLauncherClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:239:28:void emberAfDescriptorClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:244:28:void emberAfDiagnosticLogsClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:249:28:void emberAfDoorLockClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:254:28:void emberAfElectricalMeasurementClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:259:28:void emberAfEthernetNetworkDiagnosticsClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:264:28:void emberAfFixedLabelClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:269:28:void emberAfFlowMeasurementClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:274:28:void emberAfGeneralCommissioningClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:279:28:void emberAfGeneralDiagnosticsClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:284:28:void emberAfGroupKeyManagementClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:289:28:void emberAfGroupsClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:294:28:void emberAfIasZoneClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:299:28:void emberAfIdentifyClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:304:28:void emberAfKeypadInputClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:309:28:void emberAfLevelControlClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:314:28:void emberAfLowPowerClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:319:28:void emberAfMediaInputClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:324:28:void emberAfMediaPlaybackClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:329:28:void emberAfNetworkCommissioningClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:334:28:void emberAfOtaSoftwareUpdateProviderClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:339:28:void emberAfOccupancySensingClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:344:28:void emberAfOnOffClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:349:28:void emberAfOperationalCredentialsClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:354:28:void emberAfPressureMeasurementClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:359:28:void emberAfPumpConfigurationAndControlClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:364:28:void emberAfRelativeHumidityMeasurementClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:369:28:void emberAfScenesClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:374:28:void emberAfSoftwareDiagnosticsClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:379:28:void emberAfSwitchClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:384:28:void emberAfTvChannelClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:389:28:void emberAfTargetNavigatorClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:394:28:void emberAfTemperatureMeasurementClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:399:28:void emberAfTestClusterClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:404:28:void emberAfThermostatClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:409:28:void emberAfThreadNetworkDiagnosticsClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:414:28:void emberAfWakeOnLanClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:419:28:void emberAfWiFiNetworkDiagnosticsClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:424:28:void emberAfWindowCoveringClusterInitCallback(chip::EndpointId)	0	static
+callback-stub.cpp:27:6:void emberAfClusterInitCallback(chip::EndpointId, chip::ClusterId)	8	static
+callback-stub.cpp:445:28:void emberAfAddToCurrentAppTasksCallback(EmberAfApplicationTask)	0	static
+callback-stub.cpp:459:28:void emberAfRemoveFromCurrentAppTasksCallback(EmberAfApplicationTask)	0	static
+callback-stub.cpp:495:1:EmberAfAttributeWritePermission emberAfAllowNetworkWriteAttributeCallback(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint8_t, uint16_t, uint8_t*, uint8_t)	0	static
+callback-stub.cpp:512:1:bool emberAfAttributeReadAccessCallback(chip::EndpointId, chip::ClusterId, uint16_t, chip::AttributeId)	0	static
+callback-stub.cpp:528:1:bool emberAfAttributeWriteAccessCallback(chip::EndpointId, chip::ClusterId, uint16_t, chip::AttributeId)	0	static
+callback-stub.cpp:545:28:bool emberAfDefaultResponseCallback(chip::ClusterId, chip::CommandId, EmberAfStatus)	0	static
+callback-stub.cpp:562:28:bool emberAfConfigureReportingResponseCallback(chip::ClusterId, uint8_t*, uint16_t)	0	static
+callback-stub.cpp:579:28:bool emberAfReadReportingConfigurationResponseCallback(chip::ClusterId, uint8_t*, uint16_t)	0	static
+callback-stub.cpp:604:28:bool emberAfDiscoverAttributesResponseCallback(chip::ClusterId, bool, uint8_t*, uint16_t, bool)	0	static
+callback-stub.cpp:625:1:bool emberAfDiscoverCommandsGeneratedResponseCallback(chip::ClusterId, uint16_t, bool, chip::CommandId*, uint16_t)	0	static
+callback-stub.cpp:646:1:bool emberAfDiscoverCommandsReceivedResponseCallback(chip::ClusterId, uint16_t, bool, chip::CommandId*, uint16_t)	0	static
+callback-stub.cpp:665:28:bool emberAfPreCommandReceivedCallback(EmberAfClusterCommand*)	0	static
+callback-stub.cpp:689:28:bool emberAfPreMessageSendCallback(EmberAfMessageStruct*, EmberStatus*)	0	static
+callback-stub.cpp:712:28:bool emberAfMessageSentCallback(const chip::MessageSendDestination&, EmberApsFrame*, uint16_t, uint8_t*, EmberStatus)	0	static
+callback-stub.cpp:736:1:EmberAfStatus emberAfPreAttributeChangeCallback(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint8_t, uint16_t, uint8_t, uint16_t, uint8_t*)	0	static
+callback-stub.cpp:758:1:void emberAfPostAttributeChangeCallback(chip::EndpointId, chip::ClusterId, chip::AttributeId, uint8_t, uint16_t, uint8_t, uint16_t, uint8_t*)	0	static
+callback-stub.cpp:800:1:EmberAfStatus emberAfExternalAttributeReadCallback(chip::EndpointId, chip::ClusterId, EmberAfAttributeMetadata*, uint16_t, uint8_t*, uint16_t, int32_t)	0	static
+callback-stub.cpp:817:28:bool emberAfWriteAttributesResponseCallback(chip::ClusterId, uint8_t*, uint16_t)	0	static
+callback-stub.cpp:870:1:EmberAfStatus emberAfExternalAttributeWriteCallback(chip::EndpointId, chip::ClusterId, EmberAfAttributeMetadata*, uint16_t, uint8_t*, int32_t)	0	static
+callback-stub.cpp:887:28:bool emberAfReportAttributesCallback(chip::ClusterId, uint8_t*, uint16_t)	0	static
+callback-stub.cpp:901:32:uint32_t emberAfGetCurrentTimeCallback()	0	static
+callback-stub.cpp:924:1:bool emberAfGetEndpointInfoCallback(chip::EndpointId, uint8_t*, EmberAfEndpointInfoStruct*)	0	static
+callback-stub.cpp:935:28:void emberAfRegistrationAbortCallback()	0	static
+callback-stub.cpp:948:1:EmberStatus emberAfInterpanSendMessageCallback(EmberAfInterpanHeader*, uint16_t, uint8_t*)	0	static
+callback-stub.cpp:959:28:bool emberAfStartMoveCallback()	0	static

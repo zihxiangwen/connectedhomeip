@@ -1,0 +1,5 @@
+ember-compatibility-functions.cpp:130:6:void chip::app::Compatibility::SetupEmberAfObjects(chip::app::Command*, chip::ClusterId, chip::CommandId, chip::EndpointId)	12	static
+ember-compatibility-functions.cpp:149:6:bool chip::app::Compatibility::IMEmberAfSendDefaultResponseWithCallback(EmberAfStatus)	40	static
+ember-compatibility-functions.cpp:172:6:void chip::app::Compatibility::ResetEmberAfObjects()	0	static
+ember-compatibility-functions.cpp:180:6:bool chip::app::ServerClusterCommandExists(chip::ClusterId, chip::CommandId, chip::EndpointId)	0	static
+ember-compatibility-functions.cpp:187:12:CHIP_ERROR chip::app::ReadSingleClusterData(chip::app::ClusterInfo&, chip::TLV::TLVWriter*, bool*)	64	static

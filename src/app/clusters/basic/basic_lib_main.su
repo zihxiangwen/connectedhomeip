@@ -1,0 +1,2 @@
+basic.cpp:38:11:uint8_t* {anonymous}::MakeZclCharString(uint8_t (&)[BufferLength], char (&)[BufferLength]) [with unsigned int BufferLength = 65]	16	static
+basic.cpp:47:6:void emberAfBasicClusterServerInitCallback(chip::EndpointId)	176	static

@@ -1,0 +1,37 @@
+/home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/examples/all-clusters-app/all-clusters-common/gen/CHIPClusters_lib_main.oo: \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/examples/all-clusters-app/all-clusters-common/gen/CHIPClusters.cpp \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/examples/all-clusters-app/all-clusters-common/gen/CHIPClusters.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/examples/all-clusters-app/all-clusters-common/gen/chip-zcl-zpro-codec-api.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/examples/all-clusters-app/all-clusters-common/gen/CHIPClientCallbacks.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/src/lib/support/Span.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/src/lib/support/CodeUtils.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/src/lib/core/CHIPError.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/src/lib/core/CHIPConfig.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/examples/all-clusters-app/ambd/build/chip/gen/include/core/CHIPBuildConfig.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/src/ble/BleConfig.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/examples/all-clusters-app/ambd/build/chip/gen/include/ble/BleBuildConfig.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/src/system/SystemConfig.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/examples/all-clusters-app/ambd/build/chip/gen/include/system/SystemBuildConfig.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/src/platform/AMBD/CHIPPlatformConfig.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/src/platform/AMBD/SystemPlatformConfig.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../component/common/network/lwip/lwip_v2.1.2/src/include/lwip/opt.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../component/common/api/network/include/lwipopts.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../component/common/api/platform/platform_stdlib.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../component/common/api/platform/platform_stdlib_rtl8710c.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../component/soc/realtek/8710c/cmsis/rtl8710c/include/basic_types.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../inc/platform_opts.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../component/common/network/lwip/lwip_v2.1.2/src/include/lwip/init.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../component/common/network/lwip/lwip_v2.1.2/src/include/lwip/debug.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../component/common/network/lwip/lwip_v2.1.2/src/include/lwip/arch.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../component/common/network/lwip/lwip_v2.1.2/port/realtek/arch/cc.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../component/common/network/lwip/lwip_v2.1.2/port/realtek/arch/cpu.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/src/platform/AMBD/BlePlatformConfig.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/src/lib/support/TypeTraits.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/src/lib/support/ErrorStr.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/src/lib/support/DLLUtil.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/src/lib/support/logging/CHIPLogging.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/src/platform/logging/LogV.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/src/lib/support/logging/Constants.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/third_party/nlassert/repo/include/nlassert.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/third_party/nlassert/repo/include/nlassert-production.h \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/third_party/nlassert/repo/include/nlassert-internal.h

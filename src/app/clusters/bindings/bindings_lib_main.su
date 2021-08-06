@@ -1,0 +1,5 @@
+bindings.cpp:31:13:EmberStatus prepareBinding(EmberBindingTableEntry&, chip::NodeId, chip::GroupId, chip::EndpointId, chip::ClusterId)	12	static
+bindings.cpp:59:13:EmberStatus getBindingIndex(EmberBindingTableEntry&, uint8_t*)	56	static
+bindings.cpp:75:13:EmberStatus getUnusedBindingIndex(uint8_t*)	48	static
+bindings.cpp:91:6:bool emberAfBindingClusterBindCallback(chip::app::CommandHandler*, chip::NodeId, chip::GroupId, chip::EndpointId, chip::ClusterId)	72	static
+bindings.cpp:121:6:bool emberAfBindingClusterUnbindCallback(chip::app::CommandHandler*, chip::NodeId, chip::GroupId, chip::EndpointId, chip::ClusterId)	72	static

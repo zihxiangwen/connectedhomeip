@@ -1,0 +1,2 @@
+/home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/examples/all-clusters-app/all-clusters-common/gen/CHIPClientCallbacks_lib_main.oo: \
+ /home/zhanglu/CHIP/BLE_porting/BLE_B0728_gn_dev/ambz2_sdk_with_chip/project/realtek_amebaz2_v0_example/GCC-RELEASE/../../../third_party/connectedhomeip/examples/all-clusters-app/all-clusters-common/gen/CHIPClientCallbacks.cpp
