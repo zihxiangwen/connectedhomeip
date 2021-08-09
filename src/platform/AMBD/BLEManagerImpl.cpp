@@ -579,7 +579,7 @@ printf("platform EVENTTYPE: %d\r\n", event->Type);
     }
 #endif // CHIP_DEVICE_CONFIG_CHIPOBLE_DISABLE_ADVERTISING_WHEN_PROVISIONED
     ChipLogProgress(DeviceLayer, "Updating advertising data");
-
+    StartAdvertising();
     /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     [zl_dbg] See if the kAdvertisingRefresh is needed. If so, set flag and call DriveBLEState
 
