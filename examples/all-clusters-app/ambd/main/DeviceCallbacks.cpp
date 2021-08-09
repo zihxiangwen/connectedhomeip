@@ -54,16 +54,16 @@ constexpr uint32_t kIdentifyTimerDelayMS = 250;
 
 void DeviceCallbacks::DeviceEventCallback(const ChipDeviceEvent * event, intptr_t arg)
 {
-    // switch (event->Type)
-    // {
-    // case DeviceEventType::kInternetConnectivityChange:
-    //     OnInternetConnectivityChange(event);
-    //     break;
+     switch (event->Type)
+     {
+     case DeviceEventType::kInternetConnectivityChange:
+         OnInternetConnectivityChange(event);
+         break;
 
     // case DeviceEventType::kSessionEstablished:
     //     OnSessionEstablished(event);
     //     break;
-    // }
+     }
 
     // ESP_LOGI(TAG, "Current free heap: %d\n", heap_caps_get_free_size(MALLOC_CAP_8BIT));
 }
@@ -92,18 +92,18 @@ void DeviceCallbacks::PostAttributeChangeCallback(EndpointId endpointId, Cluster
     // ESP_LOGI(TAG, "Current free heap: %d\n", heap_caps_get_free_size(MALLOC_CAP_8BIT));
 }
 
-// void DeviceCallbacks::OnInternetConnectivityChange(const ChipDeviceEvent * event)
-// {
-//     // if (event->InternetConnectivityChange.IPv4 == kConnectivity_Established)
-//     // {
-//     //     ESP_LOGI(TAG, "Server ready at: %s:%d", event->InternetConnectivityChange.address, CHIP_PORT);
-//     //     wifiLED.Set(true);
+ void DeviceCallbacks::OnInternetConnectivityChange(const ChipDeviceEvent * event)
+ {
+      if (event->InternetConnectivityChange.IPv4 == kConnectivity_Established)
+      {
+          printf("Server ready at: %s:%d", event->InternetConnectivityChange.address, CHIP_PORT);
+          //wifiLED.Set(true);
 
-//     //     if (chip::Mdns::ServiceAdvertiser::Instance().Start(&DeviceLayer::InetLayer, chip::Mdns::kMdnsPort) != CHIP_NO_ERROR)
-//     //     {
-//     //         ESP_LOGE(TAG, "Failed to start mDNS advertisement");
-//     //     }
-//     // }
+          if (chip::Mdns::ServiceAdvertiser::Instance().Start(&DeviceLayer::InetLayer, chip::Mdns::kMdnsPort) != CHIP_NO_ERROR)
+          {
+              printf("Failed to start mDNS advertisement");
+          }
+      }
 //     // else if (event->InternetConnectivityChange.IPv4 == kConnectivity_Lost)
 //     // {
 //     //     ESP_LOGE(TAG, "Lost IPv4 connectivity...");
@@ -121,7 +121,7 @@ void DeviceCallbacks::PostAttributeChangeCallback(EndpointId endpointId, Cluster
 //     // {
 //     //     ESP_LOGE(TAG, "Lost IPv6 connectivity...");
 //     // }
-// }
+}
 
 // void DeviceCallbacks::OnSessionEstablished(const ChipDeviceEvent * event)
 // {
