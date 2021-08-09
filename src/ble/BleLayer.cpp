@@ -496,7 +496,8 @@ bool BleLayer::HandleWriteReceived(BLE_CONNECTION_OBJECT connObj, const ChipBleU
             CHIP_ERROR status = HandleBleTransportConnectionInitiated(connObj, std::move(pBuf));
             if (status != CHIP_NO_ERROR)
             {
-                ChipLogError(Ble, "failed handle new chip BLE connection, status = %" CHIP_ERROR_FORMAT, status.Format());
+                ChipLogError(Ble, "failed handle new chip BLE connection, status = %" CHIP_ERROR_FORMAT, ChipError::FormatError(status));
+	        ChipLogError(Ble, "HandleBleTransportConnectionInitiated called here");
             }
         }
     }
