@@ -485,9 +485,7 @@ void ConnectivityManagerImpl::_OnPlatformEvent(const ChipDeviceEvent * event)
                     ChangeWiFiStationState(kWiFiStationState_Connecting_Succeeded);
                 }
                 DriveStationState();
-                LwIP_DHCP(0, DHCP_START);
-                OnStationIPv4AddressAvailable();
-                
+                DHCPProcess();   
     }
 #else
     // Handle ESP system events...
@@ -1091,14 +1089,28 @@ void ConnectivityManagerImpl::OnStationIPv4AddressLost(void)
     event.InterfaceIpAddressChanged.Type = InterfaceIpChangeType::kIpV4_Lost;
     PlatformMgr().PostEvent(&event);
 }
-#if 0
-void ConnectivityManagerImpl::OnIPv6AddressAvailable(const ip_event_got_ip6_t & got_ip)
+
+void ConnectivityManagerImpl::OnIPv6AddressAvailable(void)
 {
     printf("%s %d ToDo\r\n", __func__,__LINE__);
+#if LWIP_VERSION_MAJOR >= 2 && LWIP_VERSION_MINOR >= 1
+#if LWIP_IPV6
+	u8 *ipv6_0 = LwIP_GetIPv6_linklocal(&xnetif[0]);
+	u8 *ipv6_1 = LwIP_GetIPv6_global(&xnetif[0]);
+#endif
+#endif
 #if CHIP_PROGRESS_LOGGING
     {
-        ChipLogProgress(DeviceLayer, "IPv6 addr available. Ready on %s interface: " IPV6STR, esp_netif_get_ifkey(got_ip.esp_netif),
-                        IPV62STR(got_ip.ip6_info.ip));
+#if LWIP_VERSION_MAJOR >= 2 && LWIP_VERSION_MINOR >= 1
+#if LWIP_IPV6
+			printf("\n\r\tLink-local IPV6 => %02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x",
+				ipv6_0[0], ipv6_0[1],  ipv6_0[2],  ipv6_0[3],  ipv6_0[4],  ipv6_0[5],  ipv6_0[6], ipv6_0[7],
+				ipv6_0[8], ipv6_0[9], ipv6_0[10], ipv6_0[11], ipv6_0[12], ipv6_0[13], ipv6_0[14], ipv6_0[15]);
+			printf("\n\r\tIPV6            => %02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x",
+				ipv6_1[0], ipv6_1[1],  ipv6_1[2],  ipv6_1[3],  ipv6_1[4],  ipv6_1[5],  ipv6_1[6], ipv6_1[7],
+				ipv6_1[8], ipv6_1[9], ipv6_1[10], ipv6_1[11], ipv6_1[12], ipv6_1[13], ipv6_1[14], ipv6_1[15]);
+#endif
+#endif
     }
 #endif // CHIP_PROGRESS_LOGGING
 
@@ -1111,7 +1123,7 @@ void ConnectivityManagerImpl::OnIPv6AddressAvailable(const ip_event_got_ip6_t & 
     event.InterfaceIpAddressChanged.Type = InterfaceIpChangeType::kIpV6_Assigned;
     PlatformMgr().PostEvent(&event);
 }
-#endif
+
 void ConnectivityManagerImpl::RefreshMessageLayer(void) {
     printf("%s %d ToDo\r\n", __func__,__LINE__);
 }
@@ -1122,6 +1134,32 @@ void ConnectivityManagerImpl::RtkWiFiStationConnectedHandler( char* buf, int buf
     memset(&event, 0, sizeof(event));
     event.Type                         = DeviceEventType::kRtkWiFiStationConnectedEvent;
     PlatformMgr().PostEvent(&event);
+}
+
+void ConnectivityManagerImpl::DHCPProcessThread(void *param)
+{
+    printf("%s %d ToDo\r\n", __func__,__LINE__);
+                LwIP_DHCP(0, DHCP_START);
+                PlatformMgr().LockChipStack();
+                sInstance.OnStationIPv4AddressAvailable();
+                PlatformMgr().UnlockChipStack();
+#if LWIP_VERSION_MAJOR >= 2 && LWIP_VERSION_MINOR >= 1
+#if LWIP_IPV6
+		LwIP_DHCP6(0, DHCP6_START);
+		PlatformMgr().LockChipStack();
+		sInstance.OnIPv6AddressAvailable();
+		PlatformMgr().UnlockChipStack();
+#endif
+#endif
+    vTaskDelete(NULL);
+}
+
+void ConnectivityManagerImpl::DHCPProcess(void)
+{
+    printf("%s %d ToDo\r\n", __func__,__LINE__);
+    xTaskCreate(DHCPProcessThread, "DHCPProcess",
+                                4096 / sizeof(StackType_t), this,
+                                1, NULL);
 }
 
 } // namespace DeviceLayer
