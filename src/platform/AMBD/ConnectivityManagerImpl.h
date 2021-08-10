@@ -123,10 +123,12 @@ private:
     void UpdateInternetConnectivityState(void);
     void OnStationIPv4AddressAvailable(void);
     void OnStationIPv4AddressLost(void);
-    //void OnIPv6AddressAvailable(const ip_event_got_ip6_t & got_ip);
+    void OnIPv6AddressAvailable(void);
 
     static void RefreshMessageLayer(void);
     static void RtkWiFiStationConnectedHandler( char* buf, int buf_len, int flags, void* userdata);
+    void DHCPProcess(void);
+    static void DHCPProcessThread(void *param);
 };
 
 inline bool ConnectivityManagerImpl::_IsWiFiStationApplicationControlled(void)
