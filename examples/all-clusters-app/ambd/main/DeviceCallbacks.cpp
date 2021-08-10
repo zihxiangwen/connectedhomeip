@@ -60,9 +60,22 @@ void DeviceCallbacks::DeviceEventCallback(const ChipDeviceEvent * event, intptr_
          OnInternetConnectivityChange(event);
          break;
 
-    // case DeviceEventType::kSessionEstablished:
-    //     OnSessionEstablished(event);
-    //     break;
+     case DeviceEventType::kSessionEstablished:
+     printf("%s %d kSessionEstablished todo\r\n", __func__, __LINE__);
+         OnSessionEstablished(event);
+         break;
+    case DeviceEventType::kInterfaceIpAddressChanged:
+        if ((event->InterfaceIpAddressChanged.Type == InterfaceIpChangeType::kIpV4_Assigned) ||
+            (event->InterfaceIpAddressChanged.Type == InterfaceIpChangeType::kIpV6_Assigned))
+        {
+            // MDNS server restart on any ip assignment: if link local ipv6 is configured, that
+            // will not trigger a 'internet connectivity change' as there is no internet
+            // connectivity. MDNS still wants to refresh its listening interfaces to include the
+            // newly selected address.
+            printf("%s %d start mdns server\r\n", __func__, __LINE__);
+            chip::app::Mdns::StartServer();
+        }
+        break;
      }
 
     // ESP_LOGI(TAG, "Current free heap: %d\n", heap_caps_get_free_size(MALLOC_CAP_8BIT));
@@ -123,13 +136,13 @@ void DeviceCallbacks::PostAttributeChangeCallback(EndpointId endpointId, Cluster
 //     // }
 }
 
-// void DeviceCallbacks::OnSessionEstablished(const ChipDeviceEvent * event)
-// {
-//     // if (event->SessionEstablished.IsCommissioner)
-//     // {
-//     //     ESP_LOGI(TAG, "Commissioner detected!");
-//     // }
-// }
+ void DeviceCallbacks::OnSessionEstablished(const ChipDeviceEvent * event)
+ {
+      if (event->SessionEstablished.IsCommissioner)
+      {
+          printf("Commissioner detected!");
+      }
+ }
 
 void DeviceCallbacks::OnOnOffPostAttributeChangeCallback(EndpointId endpointId, AttributeId attributeId, uint8_t * value)
 {

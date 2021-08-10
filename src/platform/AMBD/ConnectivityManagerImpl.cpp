@@ -36,6 +36,7 @@
 #include <lwip/netif.h>
 
 #include <wifi_conf.h>
+#include <lwip_netconf.h>
 
 using namespace ::chip;
 using namespace ::chip::TLV;
@@ -484,6 +485,9 @@ void ConnectivityManagerImpl::_OnPlatformEvent(const ChipDeviceEvent * event)
                     ChangeWiFiStationState(kWiFiStationState_Connecting_Succeeded);
                 }
                 DriveStationState();
+                LwIP_DHCP(0, DHCP_START);
+                OnStationIPv4AddressAvailable();
+                
     }
 #else
     // Handle ESP system events...
@@ -959,11 +963,11 @@ void ConnectivityManagerImpl::UpdateInternetConnectivityState(void)
     {
         // Get the LwIP netif for the WiFi station interface.
         //struct netif * netif = Internal::ESP32Utils::GetStationNetif();
-        #if 1
+        #if 0
         printf("%s %d todo\r\n", __func__, __LINE__);
         struct netif * netif = NULL;
         #else
-        	extern struct netif xnetif[];
+        	
         struct netif * netif = &xnetif[0];
         #endif
 
@@ -991,6 +995,10 @@ void ConnectivityManagerImpl::UpdateInternetConnectivityState(void)
                     }
 #else
 					printf("%s %d todo\r\n", __func__, __LINE__);
+                        char addrStr[INET_ADDRSTRLEN];
+                        // ToDo: change the code to using IPv6 address
+                        ip4addr_ntoa_r((const ip4_addr_t *)LwIP_GetIP(&xnetif[0]), addrStr, sizeof(addrStr));
+                        IPAddress::FromString(addrStr, addr);
 #endif
                 }
 
@@ -1024,7 +1032,7 @@ void ConnectivityManagerImpl::UpdateInternetConnectivityState(void)
         // Alert other components of the state change.
         ChipDeviceEvent event;
         event.Type                            = DeviceEventType::kInternetConnectivityChange;
-        #if 1
+        #if 0
         printf("%s %d todo\r\n", __func__, __LINE__);
         #else
         event.InternetConnectivityChange.IPv4 = GetConnectivityChange(hadIPv4Conn, haveIPv4Conn);
@@ -1044,15 +1052,18 @@ void ConnectivityManagerImpl::UpdateInternetConnectivityState(void)
         }
     }
 }
-#if 0
-void ConnectivityManagerImpl::OnStationIPv4AddressAvailable(const ip_event_got_ip_t & got_ip)
+
+void ConnectivityManagerImpl::OnStationIPv4AddressAvailable(void)
 {
     printf("%s %d ToDo\r\n", __func__,__LINE__);
+    	u8 *ip = LwIP_GetIP(&xnetif[0]);
+    	u8 *gw = LwIP_GetGW(&xnetif[0]);
+	u8 *msk = LwIP_GetMASK(&xnetif[0]);
 #if CHIP_PROGRESS_LOGGING
     {
-        ChipLogProgress(DeviceLayer, "IPv4 address %s on WiFi station interface: " IPSTR "/" IPSTR " gateway " IPSTR,
-                        (got_ip.ip_changed) ? "changed" : "ready", IP2STR(&got_ip.ip_info.ip), IP2STR(&got_ip.ip_info.netmask),
-                        IP2STR(&got_ip.ip_info.gw));
+        printf("\n\r\tIP              => %d.%d.%d.%d", ip[0], ip[1], ip[2], ip[3]);
+			printf("\n\r\tGW              => %d.%d.%d.%d\n\r", gw[0], gw[1], gw[2], gw[3]);
+			printf("\n\r\tmsk             => %d.%d.%d.%d\n\r", msk[0], msk[1], msk[2], msk[3]);
     }
 #endif // CHIP_PROGRESS_LOGGING
 
@@ -1065,7 +1076,7 @@ void ConnectivityManagerImpl::OnStationIPv4AddressAvailable(const ip_event_got_i
     event.InterfaceIpAddressChanged.Type = InterfaceIpChangeType::kIpV4_Assigned;
     PlatformMgr().PostEvent(&event);
 }
-#endif
+
 void ConnectivityManagerImpl::OnStationIPv4AddressLost(void)
 {
     printf("%s %d ToDo\r\n", __func__,__LINE__);
