@@ -30,17 +30,17 @@ class AMBDUtils
 {
 public:
     static CHIP_ERROR IsAPEnabled(bool & apEnabled);
-    static bool IsStationProvisioned(void);
+    static CHIP_ERROR IsStationProvisioned(void);
     static CHIP_ERROR IsStationConnected(bool & connected);
     static CHIP_ERROR StartWiFiLayer(void);
     static CHIP_ERROR EnableStationMode(void);
     static CHIP_ERROR SetAPMode(bool enabled);
-    static int OrderScanResultsByRSSI(const void * _res1, const void * _res2);
+    static CHIP_ERROR OrderScanResultsByRSSI(const void * _res1, const void * _res2);
     static const char * WiFiModeToStr(int wifiMode);
-    static struct netif * GetNetif(const char * ifKey);
-    static struct netif * GetStationNetif(void);
-    static bool IsInterfaceUp(const char * ifKey);
-    static bool HasIPv6LinkLocalAddress(const char * ifKey);
+    //static struct netif * GetNetif(const char * ifKey);
+    //static struct netif * GetStationNetif(void);
+    static CHIP_ERROR IsInterfaceUp(const char * ifKey);
+    static CHIP_ERROR HasIPv6LinkLocalAddress(const char * ifKey);
 
     static CHIP_ERROR GetWiFiStationProvision(Internal::DeviceNetworkInfo & netInfo, bool includeCredentials);
     static CHIP_ERROR SetWiFiStationProvision(const Internal::DeviceNetworkInfo & netInfo);
