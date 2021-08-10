@@ -121,7 +121,7 @@ private:
     static void DriveAPState(::chip::System::Layer * aLayer, void * aAppState, ::CHIP_ERROR aError);
 
     void UpdateInternetConnectivityState(void);
-    //void OnStationIPv4AddressAvailable(const ip_event_got_ip_t & got_ip);
+    void OnStationIPv4AddressAvailable(void);
     void OnStationIPv4AddressLost(void);
     //void OnIPv6AddressAvailable(const ip_event_got_ip6_t & got_ip);
 
