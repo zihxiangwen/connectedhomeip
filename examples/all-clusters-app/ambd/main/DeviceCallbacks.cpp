@@ -105,36 +105,30 @@ void DeviceCallbacks::PostAttributeChangeCallback(EndpointId endpointId, Cluster
     // ESP_LOGI(TAG, "Current free heap: %d\n", heap_caps_get_free_size(MALLOC_CAP_8BIT));
 }
 
- void DeviceCallbacks::OnInternetConnectivityChange(const ChipDeviceEvent * event)
- {
-      if (event->InternetConnectivityChange.IPv4 == kConnectivity_Established)
-      {
-          printf("Server ready at: %s:%d", event->InternetConnectivityChange.address, CHIP_PORT);
-          //wifiLED.Set(true);
-
-          if (chip::Mdns::ServiceAdvertiser::Instance().Start(&DeviceLayer::InetLayer, chip::Mdns::kMdnsPort) != CHIP_NO_ERROR)
-          {
-              printf("Failed to start mDNS advertisement");
-          }
-      }
-//     // else if (event->InternetConnectivityChange.IPv4 == kConnectivity_Lost)
-//     // {
-//     //     ESP_LOGE(TAG, "Lost IPv4 connectivity...");
-//     //     wifiLED.Set(false);
-//     // }
-//     // if (event->InternetConnectivityChange.IPv6 == kConnectivity_Established)
-//     // {
-//     //     ESP_LOGI(TAG, "IPv6 Server ready...");
-//     //     if (chip::Mdns::ServiceAdvertiser::Instance().Start(&DeviceLayer::InetLayer, chip::Mdns::kMdnsPort) != CHIP_NO_ERROR)
-//     //     {
-//     //         ESP_LOGE(TAG, "Failed to start mDNS advertisement");
-//     //     }
-//     // }
-//     // else if (event->InternetConnectivityChange.IPv6 == kConnectivity_Lost)
-//     // {
-//     //     ESP_LOGE(TAG, "Lost IPv6 connectivity...");
-//     // }
+void DeviceCallbacks::OnInternetConnectivityChange(const ChipDeviceEvent * event)
+{
+    if (event->InternetConnectivityChange.IPv4 == kConnectivity_Established)
+    {
+        printf("Server ready at: %s:%d", event->InternetConnectivityChange.address, CHIP_PORT);
+        //wifiLED.Set(true);
+        chip::app::Mdns::StartServer();
+    }
+    else if (event->InternetConnectivityChange.IPv4 == kConnectivity_Lost)
+    {
+        printf("Lost IPv4 connectivity...");
+        //wifiLED.Set(false);
+    }
+    if (event->InternetConnectivityChange.IPv6 == kConnectivity_Established)
+    {
+        printf("IPv6 Server ready...");
+        chip::app::Mdns::StartServer();
+    }
+    else if (event->InternetConnectivityChange.IPv6 == kConnectivity_Lost)
+    {
+        printf("Lost IPv6 connectivity...");
+    }
 }
+
 
  void DeviceCallbacks::OnSessionEstablished(const ChipDeviceEvent * event)
  {
