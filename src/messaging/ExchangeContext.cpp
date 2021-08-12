@@ -227,38 +227,48 @@ void ExchangeContextDeletor::Release(ExchangeContext * ec)
 ExchangeContext::ExchangeContext(ExchangeManager * em, uint16_t ExchangeId, SessionHandle session, bool Initiator,
                                  ExchangeDelegate * delegate)
 {
+    printf("ExchangeContext================\r\n");
     VerifyOrDie(mExchangeMgr == nullptr);
 
+    printf("0\r\n");
     mExchangeMgr = em;
     mExchangeId  = ExchangeId;
     mSession.SetValue(session);
     mFlags.Set(Flags::kFlagInitiator, Initiator);
     mDelegate = delegate;
 
+    printf("1\r\n");
     ExchangeMessageDispatch * dispatch = nullptr;
+    printf("2\r\n");
     if (delegate != nullptr)
     {
         dispatch = delegate->GetMessageDispatch(em->GetReliableMessageMgr(), em->GetSessionManager());
         if (dispatch == nullptr)
         {
+            printf("5\r\n");
             dispatch = &em->mDefaultExchangeDispatch;
         }
     }
     else
     {
+        printf("6\r\n");
         dispatch = &em->mDefaultExchangeDispatch;
     }
+    printf("7\r\n");
     VerifyOrDie(dispatch != nullptr);
     mDispatch = dispatch->Retain();
 
+    printf("8\r\n");
     SetDropAckDebug(false);
     SetAckPending(false);
     SetMsgRcvdFromPeer(false);
     SetAutoRequestAck(true);
 
 #if defined(CHIP_EXCHANGE_CONTEXT_DETAIL_LOGGING)
+    printf("9\r\n");
     ChipLogDetail(ExchangeManager, "ec++ id: " ChipLogFormatExchange, ChipLogValueExchange(this));
 #endif
+    printf("10\r\n");
     SYSTEM_STATS_INCREMENT(chip::System::Stats::kExchangeMgr_NumContexts);
 }
 
