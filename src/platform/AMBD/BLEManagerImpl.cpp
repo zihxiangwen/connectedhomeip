@@ -171,7 +171,7 @@ printf("BLEManagerImpl::_Init----------------------------------------------Start
             printf("_OnPlatformEvent kOperationalNetworkEnabled: %d\r\n", DeviceEventType::kOperationalNetworkEnabled);
 
     printf("\n************************************************Before bt_config_init**********************************************\r\n");
-    err = bt_config_init();
+    err = MapBLEError(bt_config_init());
 	chip_blemgr_set_callback_func((chip_blemgr_callback)(ble_callback_dispatcher), this);
     printf("\n***********************************************After bt_config_init((((((((((((((((((((((((((((((((((((((((((((((((\r\n");
     SuccessOrExit(err);
@@ -815,7 +815,7 @@ exit:
 CHIP_ERROR BLEManagerImpl::StartAdvertising(void)
 {
     printf("BLEManagerImpl::StartAdvertising:::::::::::::::\r\n");
-    CHIP_ERROR err           = CHIP_NO_ERROR;
+    CHIP_ERROR err = CHIP_NO_ERROR;
 
     err = ConfigureAdvertisingData();		
     SuccessOrExit(err);
@@ -898,7 +898,7 @@ printf("BLEManagerImpl::MapBLEError:::::::::::::::\r\n");
     /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     [zl_dbg] need to match Ameba BLE return code to CHIP's
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
-    case 1:
+    case 0:
         return CHIP_NO_ERROR;
     default:
         return CHIP_ERROR_INCORRECT_STATE;
@@ -1080,7 +1080,7 @@ printf("BLEManagerImpl::IsSubscribed:::::::::::::::OK\r\n");
     return false;
 }
 
-int BLEManagerImpl::ble_svr_gap_msg_event(void *param, T_IO_MSG *p_gap_msg)
+CHIP_ERROR BLEManagerImpl::ble_svr_gap_msg_event(void *param, T_IO_MSG *p_gap_msg)
 {
 printf("BLEManagerImpl::ble_svr_gap_msg_event xxxxxxxxxxevent->type=%dxxxxxxxxxxxxxxxxxxxx TB Verified \r\n", p_gap_msg->subtype);
     T_LE_GAP_MSG gap_msg;
@@ -1127,7 +1127,7 @@ exit:
     return err;
 }
 
-int BLEManagerImpl::ble_svr_gap_event(void *param, int cb_type, void *p_cb_data)
+CHIP_ERROR BLEManagerImpl::ble_svr_gap_event(void *param, int cb_type, void *p_cb_data)
 {
 printf("BLEManagerImpl::ble_svr_gap_event xxxxxxxxxxevent->type=%dxxxxxxxxxxxxxxxxxxxx TB Verified \r\n", cb_type);
     CHIP_ERROR err = CHIP_NO_ERROR;
@@ -1153,17 +1153,15 @@ printf("BLEManagerImpl::ble_svr_gap_event xxxxxxxxxxevent->type=%dxxxxxxxxxxxxxx
 			//APP_PRINT_ERROR1("bt_config_app_gap_callback: unhandled cb_type 0x%x", cb_type);
 			break;
 		}
-
-
     return err;
 }
 
 
 //int BLEManagerImpl::gatt_svr_chr_access(uint16_t conn_handle, uint16_t attr_handle, struct ble_gatt_access_ctxt * ctxt, void * arg)
-int BLEManagerImpl::gatt_svr_chr_access(void *param, T_SERVER_ID service_id, TBTCONFIG_CALLBACK_DATA *p_data)
+CHIP_ERROR BLEManagerImpl::gatt_svr_chr_access(void *param, T_SERVER_ID service_id, TBTCONFIG_CALLBACK_DATA *p_data)
 {
     //struct ble_gatt_char_context param;
-    int err = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
     //memset(&param, 0, sizeof(struct ble_gatt_char_context));
 
     if (service_id == SERVICE_PROFILE_GENERAL_ID)
