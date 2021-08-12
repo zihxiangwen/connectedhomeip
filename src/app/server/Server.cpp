@@ -404,9 +404,8 @@ void InitServer(AppDelegate * delegate)
     }
 
 // ESP32 and Mbed OS examples have a custom logic for enabling DNS-SD
-#if CHIP_DEVICE_CONFIG_ENABLE_MDNS && !CHIP_DEVICE_LAYER_TARGET_ESP32 && !CHIP_DEVICE_LAYER_TARGET_MBED
-printf("%s %d todo use MACRO for AMBD\r\n");
-    //app::Mdns::StartServer();
+#if CHIP_DEVICE_CONFIG_ENABLE_MDNS && !CHIP_DEVICE_LAYER_TARGET_ESP32 && !CHIP_DEVICE_LAYER_TARGET_MBED && !CHIP_DEVICE_LAYER_TARGET_AMBD
+    app::Mdns::StartServer();
 #endif
 
     gCallbacks.SetSessionMgr(&gSessions);
