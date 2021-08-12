@@ -37,12 +37,12 @@ CHIP_ERROR SetWiFiStationProvisioning(const char * ssid, const char * key)
     memcpy(wifiConfig.password, key, strlen(key) + 1);
     wifiConfig.mode = RTW_MODE_STA;
 
-    // Configure the ESP WiFi interface.
+    // Configure the WiFi interface.
     int err = CHIP_SetWiFiConfig(&wifiConfig);
     if (err != 0)
     {
         ChipLogError(DeviceLayer, "_SetWiFiConfig() failed: %d", err);
-        return err;
+        return CHIP_ERROR_INCORRECT_STATE;
     }
 
     ConnectivityMgr().SetWiFiStationMode(ConnectivityManager::kWiFiStationMode_Disabled);
