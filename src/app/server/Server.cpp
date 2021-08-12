@@ -422,11 +422,11 @@ void InitServer(AppDelegate * delegate)
     app::Mdns::SetSecuredPort(gSecuredServicePort);
     app::Mdns::SetUnsecuredPort(gUnsecuredServicePort);
 #endif // CHIP_DEVICE_CONFIG_ENABLE_MDNS
+
 // ESP32 and Mbed OS examples have a custom logic for enabling DNS-SD
-#if CHIP_DEVICE_CONFIG_ENABLE_MDNS && !CHIP_DEVICE_LAYER_TARGET_ESP32 && !CHIP_DEVICE_LAYER_TARGET_MBED
+#if CHIP_DEVICE_CONFIG_ENABLE_MDNS && !CHIP_DEVICE_LAYER_TARGET_ESP32 && !CHIP_DEVICE_LAYER_TARGET_MBED && !CHIP_DEVICE_LAYER_TARGET_AMBD
     // StartServer only enables commissioning mode if device has not been commissioned
-    printf("%s %d todo use MACRO for AMBD\r\n");
-    //app::Mdns::StartServer();
+    app::Mdns::StartServer();
 #endif
 
     gCallbacks.SetSessionMgr(&gSessions);

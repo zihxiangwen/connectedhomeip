@@ -52,7 +52,8 @@ public:
     Messaging::ExchangeMessageDispatch * GetMessageDispatch(Messaging::ReliableMessageMgr * reliableMessageManager,
                                                             SecureSessionMgr * sessionMgr) override
     {
-        return GetSession().GetMessageDispatch(reliableMessageManager, sessionMgr);
+	printf("CASEServer.h\r\n");
+        return mPairingSession.GetMessageDispatch(reliableMessageManager, sessionMgr);
     }
 
     virtual CASESession & GetSession() { return mPairingSession; }
