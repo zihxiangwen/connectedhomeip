@@ -234,6 +234,7 @@ public:
     Messaging::ExchangeMessageDispatch * GetMessageDispatch(Messaging::ReliableMessageMgr * rmMgr,
                                                             SessionManager * sessionManager) override
     {
+	printf("PASESession.h\r\n");
         return &mMessageDispatch;
     }
 
