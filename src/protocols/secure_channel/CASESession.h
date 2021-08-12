@@ -193,6 +193,7 @@ public:
     Messaging::ExchangeMessageDispatch * GetMessageDispatch(Messaging::ReliableMessageMgr * rmMgr,
                                                             SecureSessionMgr * sessionMgr) override
     {
+	printf("CASESession.h\r\n");
         return &mMessageDispatch;
     }
 
