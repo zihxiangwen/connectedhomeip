@@ -258,8 +258,7 @@ CHIP_ERROR GenericConfigurationManagerImpl<ImplClass>::GetSetupPinCode(uint32_t 
     err = Impl()->ReadConfigValue(ImplClass::kConfigKey_SetupPinCode, setupPinCode);
 #if defined(CHIP_DEVICE_CONFIG_USE_TEST_SETUP_PIN_CODE) && CHIP_DEVICE_CONFIG_USE_TEST_SETUP_PIN_CODE
     printf("config defined=====================\n");
-    if(1) //temporary fix
-    //if (err == CHIP_DEVICE_ERROR_CONFIG_NOT_FOUND)
+    if (err == CHIP_DEVICE_ERROR_CONFIG_NOT_FOUND)
     {
 	printf("SetupPinCode: %d\n", CHIP_DEVICE_CONFIG_USE_TEST_SETUP_PIN_CODE);
         setupPinCode = CHIP_DEVICE_CONFIG_USE_TEST_SETUP_PIN_CODE;
