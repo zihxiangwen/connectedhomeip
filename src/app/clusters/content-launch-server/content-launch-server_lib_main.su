@@ -1,2 +1,0 @@
-content-launch-server.cpp:44:6:bool emberAfContentLauncherClusterLaunchContentCallback(chip::app::CommandHandler*)	8	static
-content-launch-server.cpp:51:6:bool emberAfContentLauncherClusterLaunchURLCallback(chip::app::CommandHandler*)	8	static

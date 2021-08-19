@@ -1,5 +1,0 @@
-test-cluster-server.cpp:40:15:EmberAfStatus {anonymous}::writeAttribute(chip::EndpointId, chip::AttributeId, uint8_t*, int32_t)	40	static
-test-cluster-server.cpp:126:6:void emberAfPluginTestClusterServerInitCallback()	72	static
-test-cluster-server.cpp:149:6:bool emberAfTestClusterClusterTestCallback(chip::app::CommandHandler*)	8	static
-test-cluster-server.cpp:155:6:bool emberAfTestClusterClusterTestSpecificCallback(chip::app::CommandHandler*)	32	static
-test-cluster-server.cpp:179:6:bool emberAfTestClusterClusterTestNotHandledCallback(chip::app::CommandHandler*)	0	static

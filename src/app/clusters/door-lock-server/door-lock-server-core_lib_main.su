@@ -1,3 +1,0 @@
-door-lock-server-core.cpp:82:6:void emberAfPluginDoorLockServerInitCallback()	24	static
-door-lock-server-core.cpp:92:6:void emAfPluginDoorLockServerWriteAttributes(const EmAfPluginDoorLockServerAttributeData*, uint8_t, const char*)	32	static
-door-lock-server-core.cpp:106:15:EmberAfStatus emAfPluginDoorLockServerNoteDoorStateChanged(EmberAfDoorState)	0	static

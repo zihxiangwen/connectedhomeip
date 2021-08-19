@@ -1,2 +1,0 @@
-attribute-size-util.cpp:52:9:uint8_t emberAfGetDataSize(uint8_t)	8	static
-attribute-size-util.cpp:65:10:uint16_t emberAfAttributeValueSize(chip::ClusterId, chip::AttributeId, EmberAfAttributeType, const uint8_t*)	24	static

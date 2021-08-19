@@ -1,3 +1,0 @@
-binding-table.cpp:27:13:EmberStatus emberGetBinding(uint8_t, EmberBindingTableEntry*)	12	static
-binding-table.cpp:38:13:EmberStatus emberSetBinding(uint8_t, EmberBindingTableEntry*)	12	static
-binding-table.cpp:49:13:EmberStatus emberDeleteBinding(uint8_t)	0	static

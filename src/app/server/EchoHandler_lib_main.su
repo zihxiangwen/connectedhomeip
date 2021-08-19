@@ -1,5 +1,0 @@
-Echo.h:113:46:chip::Protocols::Echo::EchoServer::~EchoServer()	0	static
-EchoHandler.cpp:41:6:void {anonymous}::HandleEchoRequestReceived(chip::Messaging::ExchangeContext*, chip::System::PacketBufferHandle&&)	0	static
-EchoHandler.cpp:48:12:CHIP_ERROR InitEchoHandler(chip::Messaging::ExchangeManager*)	16	static
-Echo.h:113:46:virtual chip::Protocols::Echo::EchoServer::~EchoServer()	8	static
-EchoHandler.cpp:65:1:cpp)	0	static

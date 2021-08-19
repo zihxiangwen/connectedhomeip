@@ -1,2 +1,0 @@
-error-mapping.cpp:23:15:EmberAfStatus chip::app::ToEmberAfStatus(chip::Protocols::InteractionModel::ProtocolCode)	0	static
-error-mapping.cpp:115:43:chip::Protocols::InteractionModel::ProtocolCode chip::app::ToInteractionModelProtocolCode(EmberAfStatus)	0	static

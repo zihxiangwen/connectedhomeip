@@ -1,6 +1,0 @@
-on-off-server.cpp:71:15:EmberAfStatus emberAfOnOffClusterSetValueCallback(chip::EndpointId, uint8_t, bool)	48	static
-on-off-server.cpp:168:6:bool emberAfOnOffClusterOffCallback(chip::app::CommandHandler*)	8	static
-on-off-server.cpp:181:6:bool emberAfOnOffClusterOnCallback(chip::app::CommandHandler*)	8	static
-on-off-server.cpp:194:6:bool emberAfOnOffClusterToggleCallback(chip::app::CommandHandler*)	8	static
-on-off-server.cpp:207:6:void emberAfOnOffClusterServerInitCallback(chip::EndpointId)	0	static
-on-off-server.cpp:292:6:void emberAfPluginOnOffClusterServerPostInitCallback(chip::EndpointId)	0	static

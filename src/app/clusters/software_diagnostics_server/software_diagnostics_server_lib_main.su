@@ -1,1 +1,0 @@
-software_diagnostics_server.cpp:21:6:bool emberAfSoftwareDiagnosticsClusterResetWatermarksCallback(chip::app::CommandHandler*)	8	static
