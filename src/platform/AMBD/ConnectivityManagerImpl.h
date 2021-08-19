@@ -113,12 +113,12 @@ private:
     void OnStationConnected(void);
     void OnStationDisconnected(void);
     void ChangeWiFiStationState(WiFiStationState newState);
-    static void DriveStationState(::chip::System::Layer * aLayer, void * aAppState, ::CHIP_ERROR aError);
+    static void DriveStationState(::chip::System::Layer * aLayer, void * aAppState);
 
     void DriveAPState(void);
     CHIP_ERROR ConfigureWiFiAP(void);
     void ChangeWiFiAPState(WiFiAPState newState);
-    static void DriveAPState(::chip::System::Layer * aLayer, void * aAppState, ::CHIP_ERROR aError);
+    static void DriveAPState(::chip::System::Layer * aLayer, void * aAppState);
 
     void UpdateInternetConnectivityState(void);
     void OnStationIPv4AddressAvailable(void);
@@ -201,7 +201,7 @@ inline ConnectivityManager & ConnectivityMgr(void)
  * Returns the platform-specific implementation of the ConnectivityManager singleton object.
  *
  * Chip applications can use this to gain access to features of the ConnectivityManager
- * that are specific to the ESP32 platform.
+ * that are specific to the platform.
  */
 inline ConnectivityManagerImpl & ConnectivityMgrImpl(void)
 {
