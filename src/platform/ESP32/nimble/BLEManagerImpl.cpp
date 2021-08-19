@@ -277,7 +277,6 @@ void BLEManagerImpl::_OnPlatformEvent(const ChipDeviceEvent * event)
     switch (event->Type)
     {
     case DeviceEventType::kCHIPoBLESubscribe:
-	printf("kCHIPoBLESubscribe\r\n");
         HandleSubscribeReceived(event->CHIPoBLESubscribe.ConId, &CHIP_BLE_SVC_ID, &chipUUID_CHIPoBLEChar_TX);
         {
             ChipDeviceEvent connectionEvent;
@@ -287,23 +286,19 @@ void BLEManagerImpl::_OnPlatformEvent(const ChipDeviceEvent * event)
         break;
 
     case DeviceEventType::kCHIPoBLEUnsubscribe:
-	printf("kCHIPoBLEUnsubscribe\r\n");
         HandleUnsubscribeReceived(event->CHIPoBLEUnsubscribe.ConId, &CHIP_BLE_SVC_ID, &chipUUID_CHIPoBLEChar_TX);
         break;
 
     case DeviceEventType::kCHIPoBLEWriteReceived:
-	printf("kCHIPoBLEWriteReceived\r\n");
         HandleWriteReceived(event->CHIPoBLEWriteReceived.ConId, &CHIP_BLE_SVC_ID, &chipUUID_CHIPoBLEChar_RX,
                             PacketBufferHandle::Adopt(event->CHIPoBLEWriteReceived.Data));
         break;
 
     case DeviceEventType::kCHIPoBLEIndicateConfirm:
-	printf("kCHIPoBLEIndicateConfirm\r\n");
         HandleIndicationConfirmation(event->CHIPoBLEIndicateConfirm.ConId, &CHIP_BLE_SVC_ID, &chipUUID_CHIPoBLEChar_TX);
         break;
 
     case DeviceEventType::kCHIPoBLEConnectionError:
-	printf("kCHIPoBLEConnectionError\r\n");
         HandleConnectionError(event->CHIPoBLEConnectionError.ConId, event->CHIPoBLEConnectionError.Reason);
         break;
 
@@ -311,7 +306,6 @@ void BLEManagerImpl::_OnPlatformEvent(const ChipDeviceEvent * event)
     case DeviceEventType::kServiceProvisioningChange:
     case DeviceEventType::kAccountPairingChange:
     case DeviceEventType::kWiFiConnectivityChange:
-	printf("kWiFiConnectivityChange\r\n");
 
         // If CHIPOBLE_DISABLE_ADVERTISING_WHEN_PROVISIONED is enabled, and there is a change to the
         // device's provisioning state, then automatically disable CHIPoBLE advertising if the device
@@ -333,7 +327,6 @@ void BLEManagerImpl::_OnPlatformEvent(const ChipDeviceEvent * event)
         break;
 
     default:
-	printf("Onplatform default\r\n");
         break;
     }
 }
@@ -1006,24 +999,20 @@ int BLEManagerImpl::ble_svr_gap_event(struct ble_gap_event * event, void * arg)
     {
     case BLE_GAP_EVENT_CONNECT:
         /* A new connection was established or a connection attempt failed */
-	printf("BLE_GAP_EVENT_CONNECT\r\n");
         err = sInstance.HandleGAPConnect(event);
         SuccessOrExit(err);
         break;
 
     case BLE_GAP_EVENT_DISCONNECT:
-	printf("BLE_GAP_EVENT_DISCONNECT\r\n");
         err = sInstance.HandleGAPDisconnect(event);
         SuccessOrExit(err);
         break;
 
     case BLE_GAP_EVENT_ADV_COMPLETE:
-	printf("BLE_GAP_EVENT_ADV_COMPLETE\r\n");
         ESP_LOGD(TAG, "BLE_GAP_EVENT_ADV_COMPLETE event");
         break;
 
     case BLE_GAP_EVENT_SUBSCRIBE:
-	printf("BLE_GAP_EVENT_SUBSCRIBE\r\n");
         if (event->subscribe.attr_handle == sInstance.mTXCharCCCDAttrHandle)
         {
             sInstance.HandleTXCharCCCDWrite(event);
@@ -1032,13 +1021,11 @@ int BLEManagerImpl::ble_svr_gap_event(struct ble_gap_event * event, void * arg)
         break;
 
     case BLE_GAP_EVENT_NOTIFY_TX:
-	printf("BLE_GAP_EVENT_NOTIFY_TX\r\n");
         err = sInstance.HandleTXComplete(event);
         SuccessOrExit(err);
         break;
 
     case BLE_GAP_EVENT_MTU:
-	printf("BLE_GAP_EVENT_MTU\r\n");
         ESP_LOGD(TAG, "BLE_GAP_EVENT_MTU = %d channel id = %d", event->mtu.value, event->mtu.channel_id);
         break;
 
@@ -1066,12 +1053,10 @@ int BLEManagerImpl::gatt_svr_chr_access(uint16_t conn_handle, uint16_t attr_hand
 
     memset(&param, 0, sizeof(struct ble_gatt_char_context));
 
-    printf("GATT_SVR CASE: %d\r\n", ctxt->op);
     switch (ctxt->op)
     {
     case BLE_GATT_ACCESS_OP_READ_CHR:
 
-	printf("BLE_GATT_ACCESS_OP_READ_CHR\r\n");
         param.conn_handle = conn_handle;
         param.attr_handle = attr_handle;
         param.ctxt        = ctxt;
@@ -1081,7 +1066,6 @@ int BLEManagerImpl::gatt_svr_chr_access(uint16_t conn_handle, uint16_t attr_hand
 
     case BLE_GATT_ACCESS_OP_READ_DSC:
 
-	printf("BLE_GATT_ACCESS_OP_READ_DSC\r\n");
         param.conn_handle = conn_handle;
         param.attr_handle = attr_handle;
         param.ctxt        = ctxt;
@@ -1090,7 +1074,6 @@ int BLEManagerImpl::gatt_svr_chr_access(uint16_t conn_handle, uint16_t attr_hand
         break;
 
     case BLE_GATT_ACCESS_OP_WRITE_CHR:
-	printf("BLE_GATT_ACCESS_OP_WRITE_CHR\r\n");
         param.conn_handle = conn_handle;
         param.attr_handle = attr_handle;
         param.ctxt        = ctxt;
@@ -1099,7 +1082,6 @@ int BLEManagerImpl::gatt_svr_chr_access(uint16_t conn_handle, uint16_t attr_hand
         break;
 
     default:
-	printf("GATT_SVR Default\r\n");
         err = BLE_ATT_ERR_UNLIKELY;
         break;
     }
