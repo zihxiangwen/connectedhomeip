@@ -184,7 +184,6 @@ public:
     Messaging::ExchangeMessageDispatch * GetMessageDispatch(Messaging::ReliableMessageMgr * rmMgr,
                                                             SessionManager * sessionManager) override
     {
-	printf("CASESession.h\r\n");
         return &mMessageDispatch;
     }
 
