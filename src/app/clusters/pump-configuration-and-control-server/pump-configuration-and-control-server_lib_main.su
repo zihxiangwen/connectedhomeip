@@ -1,2 +1,0 @@
-pump-configuration-and-control-server.cpp:30:6:void emberAfPumpConfigurationAndControlClusterServerInitCallback(chip::EndpointId)	0	static
-pump-configuration-and-control-server.cpp:36:6:void emberAfPumpConfigurationAndControlClusterServerAttributeChangedCallback(chip::EndpointId, chip::AttributeId)	0	static

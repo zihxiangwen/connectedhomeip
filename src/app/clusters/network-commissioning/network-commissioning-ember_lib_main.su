@@ -1,9 +1,0 @@
-network-commissioning-ember.cpp:35:6:bool emberAfNetworkCommissioningClusterAddThreadNetworkCallback(chip::app::CommandHandler*, chip::ByteSpan, uint64_t, uint32_t)	40	static
-network-commissioning-ember.cpp:45:6:bool emberAfNetworkCommissioningClusterAddWiFiNetworkCallback(chip::app::CommandHandler*, chip::ByteSpan, chip::ByteSpan, uint64_t, uint32_t)	48	static
-network-commissioning-ember.cpp:55:6:bool emberAfNetworkCommissioningClusterEnableNetworkCallback(chip::app::CommandHandler*, chip::ByteSpan, uint64_t, uint32_t)	40	static
-network-commissioning-ember.cpp:68:6:bool emberAfNetworkCommissioningClusterDisableNetworkCallback(chip::app::CommandHandler*, chip::ByteSpan, uint64_t, uint32_t)	8	static
-network-commissioning-ember.cpp:74:6:bool emberAfNetworkCommissioningClusterGetLastNetworkCommissioningResultCallback(chip::app::CommandHandler*, uint32_t)	0	static
-network-commissioning-ember.cpp:80:6:bool emberAfNetworkCommissioningClusterRemoveNetworkCallback(chip::app::CommandHandler*, chip::ByteSpan, uint64_t, uint32_t)	8	static
-network-commissioning-ember.cpp:86:6:bool emberAfNetworkCommissioningClusterScanNetworksCallback(chip::app::CommandHandler*, chip::ByteSpan, uint64_t, uint32_t)	8	static
-network-commissioning-ember.cpp:91:6:bool emberAfNetworkCommissioningClusterUpdateThreadNetworkCallback(chip::app::CommandHandler*, chip::ByteSpan, uint64_t, uint32_t)	8	static
-network-commissioning-ember.cpp:98:6:bool emberAfNetworkCommissioningClusterUpdateWiFiNetworkCallback(chip::app::CommandHandler*, chip::ByteSpan, chip::ByteSpan, uint64_t, uint32_t)	8	static

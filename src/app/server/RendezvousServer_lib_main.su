@@ -1,8 +1,0 @@
-RendezvousServer.cpp:48:6:void chip::RendezvousServer::OnPlatformEvent(const chip::DeviceLayer::ChipDeviceEvent*)	8	static
-RendezvousServer.cpp:39:6:void chip::{anonymous}::OnPlatformEventWrapper(const chip::DeviceLayer::ChipDeviceEvent*, intptr_t)	0	static
-RendezvousServer.cpp:70:12:CHIP_ERROR chip::RendezvousServer::WaitForPairing(const chip::RendezvousParameters&, chip::Messaging::ExchangeManager*, chip::TransportMgrBase*, chip::SecureSessionMgr*, chip::Transport::FabricInfo*)	80	static
-RendezvousServer.cpp:124:6:void chip::RendezvousServer::Cleanup()	8	static
-RendezvousServer.cpp:134:6:virtual void chip::RendezvousServer::OnSessionEstablishmentError(CHIP_ERROR)	16	static
-RendezvousServer.cpp:147:6:virtual void chip::RendezvousServer::OnSessionEstablished()	88	static
-RendezvousServer.h:29:7:chip::RendezvousServer::~RendezvousServer()	8	static
-RendezvousServer.h:29:7:virtual chip::RendezvousServer::~RendezvousServer()	8	static

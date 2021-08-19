@@ -1,3 +1,0 @@
-general-commissioning-server.cpp:32:6:bool emberAfGeneralCommissioningClusterArmFailSafeCallback(chip::app::CommandHandler*, uint16_t, uint64_t, uint32_t)	8	static
-general-commissioning-server.cpp:41:6:bool emberAfGeneralCommissioningClusterCommissioningCompleteCallback(chip::app::CommandHandler*)	8	static
-general-commissioning-server.cpp:49:6:bool emberAfGeneralCommissioningClusterSetRegulatoryConfigCallback(chip::app::CommandHandler*, uint8_t, uint8_t*, uint64_t, uint32_t)	24	static

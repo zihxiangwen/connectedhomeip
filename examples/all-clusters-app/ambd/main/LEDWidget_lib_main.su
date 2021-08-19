@@ -1,3 +1,0 @@
-LEDWidget.cpp:30:6:void LEDWidget::Init(PinName)	16	static
-LEDWidget.cpp:51:6:void LEDWidget::DoSet(bool)	0	static
-LEDWidget.cpp:46:6:void LEDWidget::Set(bool)	0	static

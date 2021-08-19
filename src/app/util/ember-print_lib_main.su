@@ -1,4 +1,0 @@
-ember-print.cpp:32:6:)	12	static
-ember-print.cpp:43:6:)	12	static
-ember-print.cpp:56:6:void emberAfPrintBuffer(int, const uint8_t*, uint16_t, bool)	312	static
-ember-print.cpp:87:6:void emberAfPrintString(int, const uint8_t*)	16	static
