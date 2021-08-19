@@ -44,7 +44,6 @@ void CHIPDeviceManager::CommonDeviceEventHandler(const ChipDeviceEvent * event, 
     CHIPDeviceManagerCallbacks * cb = reinterpret_cast<CHIPDeviceManagerCallbacks *>(arg);
     if (cb != nullptr)
     {
-        printf("Common EventHandler hit!");
         cb->DeviceEventCallback(event, reinterpret_cast<intptr_t>(cb));
     }
 }
@@ -56,13 +55,12 @@ CHIP_ERROR CHIPDeviceManager::Init(CHIPDeviceManagerCallbacks * cb)
 {
     CHIP_ERROR err;
     mCB = cb;
-    bool Rendezvous_BLE = true; //TBD with self-adjustable way
 
     // Initialize the CHIP stack.
     err = PlatformMgr().InitChipStack();
     SuccessOrExit(err);
 
-    if(Rendezvous_BLE)
+    if(CONFIG_NETWORK_LAYER_BLE)
     {
         ConnectivityMgr().SetBLEAdvertisingEnabled(true);
     }
