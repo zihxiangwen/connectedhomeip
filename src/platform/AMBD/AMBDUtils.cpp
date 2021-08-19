@@ -29,63 +29,48 @@
 #include <support/ErrorStr.h>
 #include <support/logging/CHIPLogging.h>
 
-//#include "wifi_conf.h"
-//#include "wlan_intf.h"
-//#include "wifi_constants.h"
-//#include "lwip_netconf.h"
-//#include <wifi/wifi_conf.h>
-//#include <wifi/wifi_util.h>
-//#include <device_lock.h>
-
 using namespace ::chip::DeviceLayer::Internal;
 using chip::DeviceLayer::Internal::DeviceNetworkInfo;
 
 CHIP_ERROR AMBDUtils::IsAPEnabled(bool & apEnabled)
 {
     // TODO
-    printf("%s %d ToDo\r\n", __func__,__LINE__);
     return CHIP_NO_ERROR;
 }
 
 CHIP_ERROR AMBDUtils::IsStationProvisioned(void)
 {
     // TODO
-    printf("%s %d ToDo\r\n", __func__,__LINE__);
     return CHIP_NO_ERROR;
 }
 
 CHIP_ERROR AMBDUtils::IsStationConnected(bool & connected)
 {
     // TODO
-    printf("%s %d ToDo\r\n", __func__,__LINE__);
     return CHIP_NO_ERROR;
 }
 
 CHIP_ERROR AMBDUtils::StartWiFiLayer(void)
 {
     // TODO
-    printf("%s %d ToDo\r\n", __func__,__LINE__);
     return CHIP_NO_ERROR;
 }
 
 CHIP_ERROR AMBDUtils::EnableStationMode(void)
 {
     // TODO
-    printf("%s %d ToDo\r\n", __func__,__LINE__);
     return CHIP_NO_ERROR;
 }
 
 CHIP_ERROR AMBDUtils::SetAPMode(bool enabled)
 {
     // TODO
-    printf("%s %d ToDo\r\n", __func__,__LINE__);
     return CHIP_NO_ERROR;
 }
 
 CHIP_ERROR AMBDUtils::OrderScanResultsByRSSI(const void * _res1, const void * _res2)
 {
     // TODO
-    printf("%s %d ToDo\r\n", __func__,__LINE__);
     return CHIP_NO_ERROR;
 }
 
@@ -93,7 +78,6 @@ CHIP_ERROR AMBDUtils::OrderScanResultsByRSSI(const void * _res1, const void * _r
 const char * AMBDUtils::WiFiModeToStr(int wifiMode)
 {
     // TODO
-    printf("%s %d ToDo\r\n", __func__,__LINE__);
     return "(unknown)";
 }
 
@@ -113,34 +97,29 @@ const char * AMBDUtils::WiFiModeToStr(int wifiMode)
 CHIP_ERROR AMBDUtils::IsInterfaceUp(const char * ifKey)
 {
     // TODO
-    printf("%s %d ToDo\r\n", __func__,__LINE__);
     return CHIP_NO_ERROR;
 }
 
 CHIP_ERROR AMBDUtils::HasIPv6LinkLocalAddress(const char * ifKey)
 {
     // TODO
-    printf("%s %d ToDo\r\n", __func__,__LINE__);
     return CHIP_NO_ERROR;
 }
 
 CHIP_ERROR AMBDUtils::GetWiFiStationProvision(Internal::DeviceNetworkInfo & netInfo, bool includeCredentials)
 {
     // TODO
-    printf("%s %d ToDo\r\n", __func__,__LINE__);
     return CHIP_NO_ERROR;
 }
 
 CHIP_ERROR AMBDUtils::SetWiFiStationProvision(const Internal::DeviceNetworkInfo & netInfo)
 {
     // TODO
-    printf("%s %d ToDo\r\n", __func__,__LINE__);
     return CHIP_NO_ERROR;
 }
 
 CHIP_ERROR AMBDUtils::ClearWiFiStationProvision(void)
 {
     // TODO
-    printf("%s %d ToDo\r\n", __func__,__LINE__);
     return CHIP_NO_ERROR;
 }
