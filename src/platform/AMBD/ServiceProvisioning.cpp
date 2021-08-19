@@ -26,9 +26,7 @@ using namespace ::chip::DeviceLayer;
 
 CHIP_ERROR SetWiFiStationProvisioning(const char * ssid, const char * key)
 {
-    printf("%s %d %s %sToDo\r\n", __func__,__LINE__, ssid, key);
     ConnectivityMgr().SetWiFiStationMode(ConnectivityManager::kWiFiStationMode_Disabled);
-
     rtw_wifi_setting_t wifiConfig;
 
     // Set the wifi configuration
