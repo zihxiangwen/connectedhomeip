@@ -422,9 +422,8 @@ void InitServer(AppDelegate * delegate)
     app::Mdns::SetSecuredPort(gSecuredServicePort);
     app::Mdns::SetUnsecuredPort(gUnsecuredServicePort);
 #endif // CHIP_DEVICE_CONFIG_ENABLE_MDNS
-
 // ESP32 and Mbed OS examples have a custom logic for enabling DNS-SD
-#if CHIP_DEVICE_CONFIG_ENABLE_MDNS && !CHIP_DEVICE_LAYER_TARGET_ESP32 && !CHIP_DEVICE_LAYER_TARGET_MBED && !CHIP_DEVICE_LAYER_TARGET_AMBD
+#if CHIP_DEVICE_CONFIG_ENABLE_MDNS && !CHIP_DEVICE_LAYER_TARGET_ESP32 && !CHIP_DEVICE_LAYER_TARGET_MBED && (!CHIP_DEVICE_LAYER_TARGET_AMBD || CHIP_DEVICE_CONFIG_ENABLE_CHIPOBLE)
     // StartServer only enables commissioning mode if device has not been commissioned
     app::Mdns::StartServer();
 #endif
