@@ -18,7 +18,7 @@
 /**
  *    @file
  *          Defines platform-specific event types and data for the chip
- *          Device Layer on AmebaD platforms.
+ *          Device Layer on Ameba platforms.
  */
 
 #pragma once

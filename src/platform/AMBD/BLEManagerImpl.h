@@ -104,8 +104,8 @@ private:
         kRestartAdvertising      = 0x0008,
         kAMEBABLEStackInitialized = 0x0010,
         kDeviceNameSet           = 0x0020,
-        kAdvertisingRefreshNeeded = 0x030, /**< The advertising configuration/state in ESP BLE layer needs to be updated. */
-        kAdvertisingConfigured    = 0x040, /**< CHIPoBLE advertising has been configured in the ESP BLE layer. */
+        kAdvertisingRefreshNeeded = 0x030,
+        kAdvertisingConfigured    = 0x040,
     };
     BitFlags<BLEManagerImpl::Flags> mFlags;
 

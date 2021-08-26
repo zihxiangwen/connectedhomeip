@@ -348,10 +348,10 @@ CHIP_ERROR ConnectivityManagerImpl::_Init()
 
     // TODO Initialize the Chip Addressing and Routing Module.
 
-    // Ensure that ESP station mode is enabled.
+    // Ensure that station mode is enabled.
     wifi_on(RTW_MODE_STA);
-	
-    // Ensure that station mode is enabled in the ESP WiFi layer.
+    
+    // Ensure that station mode is enabled in the WiFi layer.
     wifi_set_mode(RTW_MODE_STA);;
 
     // If there is no persistent station provision...
@@ -374,7 +374,7 @@ CHIP_ERROR ConnectivityManagerImpl::_Init()
             memcpy(wifiConfig.password, CONFIG_DEFAULT_WIFI_PASSWORD, strlen(CONFIG_DEFAULT_WIFI_PASSWORD) + 1);
             wifiConfig.mode = RTW_MODE_STA;
 
-            // Configure the ESP WiFi interface.
+            // Configure the WiFi interface.
             int err = CHIP_SetWiFiConfig(&wifiConfig);
             if (err != 0)
             {
@@ -448,7 +448,7 @@ void ConnectivityManagerImpl::DriveStationState()
         // Ensure that the WiFi layer is started.
         wifi_on(RTW_MODE_STA);
 
-        // Ensure that station mode is enabled in the ESP WiFi layer.
+        // Ensure that station mode is enabled in the WiFi layer.
         wifi_set_mode(RTW_MODE_STA);;
     }
 

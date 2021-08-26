@@ -20,7 +20,7 @@
 /**
  *    @file
  *          Provides an implementation of the ConfigurationManager object
- *          for the AmebaD platform.
+ *          for the Ameba platform.
  */
 
 #pragma once
@@ -34,7 +34,7 @@ namespace chip {
 namespace DeviceLayer {
 
 /**
- * Concrete implementation of the ConfigurationManager singleton object for the AmebaD platform.
+ * Concrete implementation of the ConfigurationManager singleton object for the Ameba platform.
  */
 class ConfigurationManagerImpl final : public ConfigurationManager,
                                        public Internal::GenericConfigurationManagerImpl<ConfigurationManagerImpl>,
@@ -89,7 +89,7 @@ inline ConfigurationManager & ConfigurationMgr(void)
  * Returns the platform-specific implementation of the ConfigurationManager singleton object.
  *
  * Chip applications can use this to gain access to features of the ConfigurationManager
- * that are specific to the AmebaD platform.
+ * that are specific to the Ameba platform.
  */
 inline ConfigurationManagerImpl & ConfigurationMgrImpl(void)
 {

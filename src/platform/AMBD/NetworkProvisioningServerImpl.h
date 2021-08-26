@@ -26,7 +26,7 @@ namespace DeviceLayer {
 namespace Internal {
 
 /**
- * Concrete implementation of the NetworkProvisioningServer singleton object for the AmebaD platform.
+ * Concrete implementation of the NetworkProvisioningServer singleton object for the Ameba platform.
  */
 class NetworkProvisioningServerImpl final : public NetworkProvisioningServer,
                                             public GenericNetworkProvisioningServerImpl<NetworkProvisioningServerImpl>
