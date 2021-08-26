@@ -18,7 +18,7 @@
 
 /**
  *    @file
- *          Platform-specific key value storage implementation for AmebaD
+ *          Platform-specific key value storage implementation for Ameba
  */
 /* this file behaves like a config.h, comes first */
 #include <platform/KeyValueStoreManager.h>
