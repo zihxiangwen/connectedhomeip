@@ -22,9 +22,9 @@
 #include "FreeRTOS.h"
 #include "event_groups.h"
 #include "timers.h"
-#include "bt_config_service.h"
+#include "bt_matter_adapter_service.h"
 #include "app_msg.h"
-#include "bt_config_peripheral_app.h"
+#include "bt_matter_adapter_peripheral_app.h"
 #include "gap_msg.h"
 
 namespace chip {
