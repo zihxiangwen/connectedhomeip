@@ -20,7 +20,7 @@
 /**
  *    @file
  *          Provides implementations of the CHIP System Layer platform
- *          time/clock functions that are suitable for use on the AmebaD platform.
+ *          time/clock functions that are suitable for use on the Ameba platform.
  */
 /* this file behaves like a config.h, comes first */
 #include <platform/internal/CHIPDeviceLayerInternal.h>
