@@ -35,7 +35,7 @@
 #include <lwip/nd6.h>
 #include <lwip/netif.h>
 
-#include <wifi_conf.h>
+#include <chip_porting.h>
 #include <lwip_netconf.h>
 
 using namespace ::chip;

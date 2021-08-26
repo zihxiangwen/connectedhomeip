@@ -20,7 +20,7 @@
 #include <support/logging/CHIPLogging.h>
 
 #include "ServiceProvisioning.h"
-#include <wifi_conf.h>
+#include <chip_porting.h>
 
 using namespace ::chip::DeviceLayer;
 

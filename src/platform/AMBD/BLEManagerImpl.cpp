@@ -34,10 +34,10 @@
 
 //Ameba BLE related header files
 #include "gap_conn_le.h"
-#include "bt_config_service.h"
-#include "bt_config_app_task.h"
-#include "bt_config_app_main.h"
-#include "bt_config_peripheral_app.h"
+#include "bt_matter_adapter_service.h"
+#include "bt_matter_adapter_app_task.h"
+#include "bt_matter_adapter_app_main.h"
+#include "bt_matter_adapter_peripheral_app.h"
 #include "bte.h"
 #include "rtk_coex.h"
 #include "trace_app.h"
@@ -46,7 +46,7 @@
 #include "gap_adv.h"
 #include "gap.h"
 #include "os_sched.h"
-#include "bt_config_service.h"
+#include "bt_matter_adapter_service.h"
 #include "profile_server.h"
 //#include "complete_ble_service.h"
 #include "app_msg.h"
@@ -138,7 +138,7 @@ CHIP_ERROR BLEManagerImpl::_Init()
     // Check if BLE stack is initialized
     VerifyOrExit(!mFlags.Has(Flags::kAMEBABLEStackInitialized), err = CHIP_ERROR_INCORRECT_STATE);
 
-    err = MapBLEError(bt_config_init());
+    err = MapBLEError(bt_matter_adapter_init());
     chip_blemgr_set_callback_func((chip_blemgr_callback)(ble_callback_dispatcher), this);
     SuccessOrExit(err);
 
@@ -554,7 +554,7 @@ bool BLEManagerImpl::SendIndication(BLE_CONNECTION_OBJECT conId, const ChipBleUU
     //struct os_mbuf * om;
     
     VerifyOrExit(IsSubscribed(conId), err = CHIP_ERROR_INVALID_ARGUMENT);
-    server_send_data(conId, bt_config_service_id, BT_CONFIG_SERVICE_CHAR_NOTIFY_CCCD_INDEX-1, data->Start(), data->DataLength(), GATT_PDU_TYPE_NOTIFICATION);
+    server_send_data(conId, bt_matter_adapter_service_id, BT_MATTER_ADAPTER_SERVICE_CHAR_NOTIFY_CCCD_INDEX-1, data->Start(), data->DataLength(), GATT_PDU_TYPE_NOTIFICATION);
 
 exit:
     if (err != CHIP_NO_ERROR)
