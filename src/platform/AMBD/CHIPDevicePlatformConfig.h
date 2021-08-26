@@ -18,7 +18,7 @@
 /**
  *    @file
  *          Platform-specific configuration overrides for the chip Device Layer
- *          on AmebaD platform.
+ *          on Ameba platform.
  */
 
 #pragma once

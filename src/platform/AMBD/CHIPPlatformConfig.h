@@ -18,7 +18,7 @@
 /**
  *    @file
  *          Platform-specific configuration overrides for CHIP on
- *          AmebaD platforms.
+ *          Ameba platforms.
  */
 
 #pragma once
