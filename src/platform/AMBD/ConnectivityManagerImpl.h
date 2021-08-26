@@ -41,7 +41,7 @@ namespace DeviceLayer {
 class PlatformManagerImpl;
 
 /**
- * Concrete implementation of the ConnectivityManager singleton object for the ESP32 platform.
+ * Concrete implementation of the ConnectivityManager singleton object.
  */
 class ConnectivityManagerImpl final : public ConnectivityManager,
                                       public Internal::GenericConnectivityManagerImpl<ConnectivityManagerImpl>,
