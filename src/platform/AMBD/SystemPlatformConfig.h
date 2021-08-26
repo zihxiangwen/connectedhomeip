@@ -20,7 +20,7 @@
 /**
  *    @file
  *          Platform-specific configuration overrides for the CHIP System
- *          Layer on the AmebaD platform.
+ *          Layer on the Ameba platform.
  *
  */
 

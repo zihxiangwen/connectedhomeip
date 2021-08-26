@@ -15,9 +15,6 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-# If this file is sourced, it exports a function called "idf" that initializes
-# the espressif environment via the espressive export.sh script and runs
-# a command presented as arguments
 #
 # This file can also be used as an executable
 

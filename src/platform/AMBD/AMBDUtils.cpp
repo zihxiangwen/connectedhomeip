@@ -19,7 +19,7 @@
 
 /**
  *    @file
- *          General utility methods for the AmebaD platform.
+ *          General utility methods for the Ameba platform.
  */
 /* this file behaves like a config.h, comes first */
 #include <platform/internal/CHIPDeviceLayerInternal.h>

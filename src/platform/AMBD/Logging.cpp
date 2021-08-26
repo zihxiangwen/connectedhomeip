@@ -20,7 +20,7 @@
 /**
  *    @file
  *          Provides implementations for the CHIP logging functions
- *          on the AmebaD platform.
+ *          on the Ameba platform.
  */
 /* this file behaves like a config.h, comes first */
 #include <platform/logging/LogV.h>
@@ -51,11 +51,14 @@ void LogV(const char * module, uint8_t category, const char * msg, va_list v)
         switch (category)
         {
         case kLogCategory_Error:
+            printf("%s %s\r\n", tag, formattedMsg);
             break;
         case kLogCategory_Progress:
         default:
+            printf("%s %s\r\n", tag, formattedMsg);
             break;
         case kLogCategory_Detail:
+            printf("%s %s\r\n", tag, formattedMsg);
             break;
         }
 }

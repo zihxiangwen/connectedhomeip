@@ -28,7 +28,7 @@ CHIP_ERROR DeviceNetworkProvisioningDelegateImpl::_ProvisionWiFiNetwork(const ch
 {
     CHIP_ERROR err = CHIP_NO_ERROR;
 
-    ChipLogProgress(NetworkProvisioning, "AmebaDNetworkProvisioningDelegate: SSID: %s", ssid);
+    ChipLogProgress(NetworkProvisioning, "AmebaNetworkProvisioningDelegate: SSID: %s", ssid);
     err = SetWiFiStationProvisioning(ssid, key);
     if (err != CHIP_NO_ERROR)
     {
