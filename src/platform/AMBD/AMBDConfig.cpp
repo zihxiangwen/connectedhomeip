@@ -246,11 +246,17 @@ CHIP_ERROR AMBDConfig::ClearConfigValue(Key key)
 
 bool AMBDConfig::ConfigValueExists(Key key)
 {
-    int32_t success;
+    int32_t exist;
+    CHIP_ERROR err;
 
-    success = checkExist(key.Namespace, key.Name);
+    exist = checkExist(key.Namespace, key.Name);
 
-    return success;
+    if(exist == 1)
+        err = CHIP_NO_ERROR;
+    else
+        err = CHIP_DEVICE_ERROR_CONFIG_NOT_FOUND;
+
+    return (err == CHIP_NO_ERROR);
 }
 
 CHIP_ERROR AMBDConfig::EnsureNamespace(const char * ns)
