@@ -3,7 +3,7 @@
 #include "Globals.h"
 #include "LEDWidget.h"
 #include "CHIPDeviceManager.h"
-//#include "DeviceCallbacks.h"
+#include "DeviceCallbacks.h"
 #include "Server.h"
 
 #include <platform/CHIPDeviceLayer.h>
@@ -45,6 +45,8 @@ namespace
 #define STATUS_LED_GPIO_NUM NC
 #endif
 
+static DeviceCallbacks EchoCallbacks;
+
 extern "C" void ChipTest(void)
 {
     printf("In ChipTest()\r\n");
@@ -55,8 +57,7 @@ extern "C" void ChipTest(void)
 
     CHIPDeviceManager &deviceMgr = CHIPDeviceManager::GetInstance();
 
-
-    err = deviceMgr.Init();
+    err = deviceMgr.Init(&EchoCallbacks);
 
     if (err != CHIP_NO_ERROR)
     {
