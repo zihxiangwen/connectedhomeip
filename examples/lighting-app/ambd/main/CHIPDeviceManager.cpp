@@ -43,15 +43,32 @@ namespace DeviceManager {
 
 using namespace ::chip::DeviceLayer;
 
-CHIP_ERROR CHIPDeviceManager::Init(void)
+void CHIPDeviceManager::CommonDeviceEventHandler(const ChipDeviceEvent * event, intptr_t arg)
+{
+    CHIPDeviceManagerCallbacks * cb = reinterpret_cast<CHIPDeviceManagerCallbacks *>(arg);
+    if (cb != nullptr)
+    {
+        cb->DeviceEventCallback(event, reinterpret_cast<intptr_t>(cb));
+    }
+}
+
+CHIP_ERROR CHIPDeviceManager::Init(CHIPDeviceManagerCallbacks * cb)
 {
     CHIP_ERROR err;
+    mCB = cb;
 
     err = PlatformMgr().InitChipStack();
     SuccessOrExit(err);
 
+    if(CONFIG_NETWORK_LAYER_BLE)
+    {
+        ConnectivityMgr().SetBLEAdvertisingEnabled(true);
+    }
+
     err = Platform::MemoryInit();
     SuccessOrExit(err);
+
+    PlatformMgr().AddEventHandler(CHIPDeviceManager::CommonDeviceEventHandler, reinterpret_cast<intptr_t>(cb));
 
     // // Start a task to run the CHIP Device event loop.
     err = PlatformMgr().StartEventLoopTask();
