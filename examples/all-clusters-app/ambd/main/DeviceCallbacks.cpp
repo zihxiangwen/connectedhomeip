@@ -28,9 +28,8 @@
 #include <app/util/af.h>
 #include "Globals.h"
 #include "LEDWidget.h"
-//#include "WiFiWidget.h"
-#include <app/common/gen/attribute-id.h> //Base0528
-#include <app/common/gen/cluster-id.h> //Base0528
+#include <app-common/zap-generated/attribute-id.h>
+#include <app-common/zap-generated/cluster-id.h>
 #include <app/Command.h>
 #include <app/server/Mdns.h>
 #include <app/util/basic-types.h>
