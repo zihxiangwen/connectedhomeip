@@ -42,6 +42,10 @@ CHIP_ERROR KeyValueStoreManagerImpl::_Get(const char * key, void * value, size_t
     {
         return(err = CHIP_ERROR_INVALID_ARGUMENT);
     }
+    if (_key == NULL)
+    {
+        return(err = CHIP_ERROR_NO_MEMORY);
+    }
     if (offset_bytes > 0)
     {
         // Offset and partial reads are not supported in nvs, for now just return NOT_IMPLEMENTED. Support can be added in the
@@ -50,11 +54,14 @@ CHIP_ERROR KeyValueStoreManagerImpl::_Get(const char * key, void * value, size_t
     }
 
     strcpy(_key, key);
-    ret = getPref_bin_new("CHIP_KVS", _key, (uint8_t *) value, value_size, read_bytes_size);
+    ret = getPref_bin_new(_key, _key, (uint8_t *)value, value_size, read_bytes_size);
     if(TRUE == ret)
     {
         err = CHIP_NO_ERROR;
-        *read_bytes_size = value_size;
+        if (read_bytes_size)
+        {
+            *read_bytes_size = value_size;
+        }
     }
     else
     {
@@ -75,9 +82,13 @@ CHIP_ERROR KeyValueStoreManagerImpl::_Put(const char * key, const void * value, 
     {
         return(err = CHIP_ERROR_INVALID_ARGUMENT);
     }
+    if (_key == NULL)
+    {
+        return(err = CHIP_ERROR_NO_MEMORY);
+    }
 
     strcpy(_key,key);
-    ret = setPref_new("CHIP_KVS", _key, (uint8_t *)value, value_size);
+    ret = setPref_new(_key, _key, (uint8_t *)value, value_size);
     if(TRUE == ret)
         err = CHIP_NO_ERROR;
     else
@@ -93,10 +104,14 @@ CHIP_ERROR KeyValueStoreManagerImpl::_Delete(const char * key)
 {
     CHIP_ERROR err = CHIP_NO_ERROR;
     char* _key = (char*) malloc(strlen(key) + 1);
+    if (_key == NULL)
+    {
+        return(err = CHIP_ERROR_NO_MEMORY);
+    }
 
     strcpy(_key,key);
-    registerPref("CHIP_KVS");
-    if(TRUE == deleteKey("CHIP_KVS",_key))
+    registerPref(_key);
+    if(TRUE == deleteKey(_key,_key))
         err = CHIP_NO_ERROR;
     else
         err = CHIP_ERROR_INTERNAL;
