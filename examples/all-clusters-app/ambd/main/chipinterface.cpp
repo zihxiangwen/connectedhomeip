@@ -55,6 +55,7 @@ namespace
 #endif
 
 static DeviceCallbacks EchoCallbacks;
+struct netif xnetif[NET_IF_NUM]; /* network interface structure */
 
 void GetGatewayIP(char * ip_buf, size_t ip_len)
 {
@@ -164,7 +165,7 @@ std::string createSetupPayload()
 
     if (err != CHIP_NO_ERROR)
     {
-        printf("Couldn't get payload string %\r\n" CHIP_ERROR_FORMAT, err.Format());
+        printf("Couldn't get payload string \r\n");
     }
     return result;
 };
