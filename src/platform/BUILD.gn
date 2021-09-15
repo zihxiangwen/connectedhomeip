@@ -463,6 +463,7 @@ if (chip_device_platform != "none" && chip_device_platform != "external") {
     } else if (chip_device_platform == "ambd") {
       sources += [
         "AMBD/BLEManagerImpl.h",
+        "AMBD/BLEManagerImpl.cpp",
         "AMBD/CHIPDevicePlatformConfig.h",
         "AMBD/CHIPDevicePlatformEvent.h",
         "AMBD/ConfigurationManagerImpl.cpp",

@@ -44,7 +44,6 @@ void CHIPDeviceManager::CommonDeviceEventHandler(const ChipDeviceEvent * event, 
     CHIPDeviceManagerCallbacks * cb = reinterpret_cast<CHIPDeviceManagerCallbacks *>(arg);
     if (cb != nullptr)
     {
-        printf("Common EventHandler hit!");
         cb->DeviceEventCallback(event, reinterpret_cast<intptr_t>(cb));
     }
 }
@@ -61,26 +60,10 @@ CHIP_ERROR CHIPDeviceManager::Init(CHIPDeviceManagerCallbacks * cb)
     err = PlatformMgr().InitChipStack();
     SuccessOrExit(err);
 
-    // switch (static_cast<RendezvousInformationFlags>(CONFIG_RENDEZVOUS_MODE))
-    // {
-    // case RendezvousInformationFlags::kBLE:
-    //     ConnectivityMgr().SetBLEAdvertisingEnabled(true);
-    //     break;
-
-    // case RendezvousInformationFlags::kWiFi:
-    //     ConnectivityMgr().SetBLEAdvertisingEnabled(false);
-    //     ConnectivityMgr().SetWiFiAPMode(ConnectivityManager::kWiFiAPMode_Enabled);
-    //     break;
-
-    // case RendezvousInformationFlags::kNone:
-    //     // If rendezvous is bypassed, enable SoftAP so that the device can still
-    //     // be communicated with via its SoftAP as needed.
-    //     ConnectivityMgr().SetWiFiAPMode(ConnectivityManager::kWiFiAPMode_Enabled);
-    //     break;
-
-    // default:
-    //     break;
-    // }
+    if(CONFIG_NETWORK_LAYER_BLE)
+    {
+        ConnectivityMgr().SetBLEAdvertisingEnabled(true);
+    }
 
     err = Platform::MemoryInit();
 

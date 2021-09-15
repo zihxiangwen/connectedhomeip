@@ -18,7 +18,7 @@
 /**
  *    @file
  *          Platform-specific configuration overrides for the chip Device Layer
- *          on AmebaD platform.
+ *          on Ameba platform.
  */
 
 #pragma once
@@ -32,7 +32,7 @@
 #define CHIP_DEVICE_CONFIG_ENABLE_THREAD 1
 #endif
 
-#define CHIP_DEVICE_CONFIG_ENABLE_CHIPOBLE 0
+#define CHIP_DEVICE_CONFIG_ENABLE_CHIPOBLE 1
 
 #define CHIP_DEVICE_CONFIG_ENABLE_CHIP_TIME_SERVICE_TIME_SYNC 0
 
@@ -62,7 +62,6 @@
 #define CHIP_DEVICE_CONFIG_ENABLE_THREAD_TELEMETRY 0
 #define CHIP_DEVICE_CONFIG_ENABLE_THREAD_TELEMETRY_FULL 0
 #define CHIP_DEVICE_CONFIG_LOG_PROVISIONING_HASH 0
-
 
 // Use a default pairing code if one hasn't been provisioned in flash.
 #define CHIP_DEVICE_CONFIG_USE_TEST_SETUP_PIN_CODE 20202021

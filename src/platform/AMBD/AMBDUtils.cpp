@@ -19,7 +19,7 @@
 
 /**
  *    @file
- *          General utility methods for the AmebaD platform.
+ *          General utility methods for the Ameba platform.
  */
 /* this file behaves like a config.h, comes first */
 #include <platform/internal/CHIPDeviceLayerInternal.h>
@@ -28,14 +28,6 @@
 #include <support/CodeUtils.h>
 #include <support/ErrorStr.h>
 #include <support/logging/CHIPLogging.h>
-
-//#include "wifi_conf.h"
-//#include "wlan_intf.h"
-//#include "wifi_constants.h"
-//#include "lwip_netconf.h"
-//#include <wifi/wifi_conf.h>
-//#include <wifi/wifi_util.h>
-//#include <device_lock.h>
 
 using namespace ::chip::DeviceLayer::Internal;
 using chip::DeviceLayer::Internal::DeviceNetworkInfo;
@@ -46,7 +38,7 @@ CHIP_ERROR AMBDUtils::IsAPEnabled(bool & apEnabled)
     return CHIP_NO_ERROR;
 }
 
-bool AMBDUtils::IsStationProvisioned(void)
+CHIP_ERROR AMBDUtils::IsStationProvisioned(void)
 {
     // TODO
     return CHIP_NO_ERROR;
@@ -76,7 +68,7 @@ CHIP_ERROR AMBDUtils::SetAPMode(bool enabled)
     return CHIP_NO_ERROR;
 }
 
-int AMBDUtils::OrderScanResultsByRSSI(const void * _res1, const void * _res2)
+CHIP_ERROR AMBDUtils::OrderScanResultsByRSSI(const void * _res1, const void * _res2)
 {
     // TODO
     return CHIP_NO_ERROR;
@@ -90,25 +82,25 @@ const char * AMBDUtils::WiFiModeToStr(int wifiMode)
 }
 
 
-struct netif * AMBDUtils::GetStationNetif(void)
+//struct netif * AMBDUtils::GetStationNetif(void)
+//{
+//    // TODO
+//    return CHIP_NO_ERROR;
+//}
+
+//struct netif * AMBDUtils::GetNetif(const char * ifKey)
+//{
+//    // TODO
+//    return CHIP_NO_ERROR;
+//}
+
+CHIP_ERROR AMBDUtils::IsInterfaceUp(const char * ifKey)
 {
     // TODO
     return CHIP_NO_ERROR;
 }
 
-struct netif * AMBDUtils::GetNetif(const char * ifKey)
-{
-    // TODO
-    return CHIP_NO_ERROR;
-}
-
-bool AMBDUtils::IsInterfaceUp(const char * ifKey)
-{
-    // TODO
-    return CHIP_NO_ERROR;
-}
-
-bool AMBDUtils::HasIPv6LinkLocalAddress(const char * ifKey)
+CHIP_ERROR AMBDUtils::HasIPv6LinkLocalAddress(const char * ifKey)
 {
     // TODO
     return CHIP_NO_ERROR;

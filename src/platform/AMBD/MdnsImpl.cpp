@@ -16,14 +16,6 @@
  */
 
 #include "lib/mdns/platform/Mdns.h"
-
-/*
-#include <esp_err.h>
-#include <lwip/ip4_addr.h>
-#include <lwip/ip6_addr.h>
-#include <mdns.h>
-*/
-
 #include "platform/CHIPDeviceLayer.h"
 #include "support/CHIPMem.h"
 #include "support/CodeUtils.h"
@@ -64,7 +56,7 @@ exit:
     return error;
 }
 
-static const char * GetProtocolString(MdnsServiceProtocol protocol)
+const char * GetProtocolString(MdnsServiceProtocol protocol)
 {
     return protocol == MdnsServiceProtocol::kMdnsProtocolTcp ? "_tcp" : "_udp";
 }

@@ -273,6 +273,8 @@ extern "C" void ChipTest(void)
         }
     }
 
+    printf("\n\n");
+
     statusLED1.Init(STATUS_LED_GPIO_NUM);
 
     while(true)
