@@ -128,7 +128,7 @@ CHIP_ERROR BLEManagerImpl::_Init()
     CHIP_ERROR err;
 
     // Initialize the CHIP BleLayer.
-    err = BleLayer::Init(this, this, &SystemLayer);
+    err = BleLayer::Init(this, this, &DeviceLayer::SystemLayer());
     SuccessOrExit(err);
 
     mServiceMode = ConnectivityManager::kCHIPoBLEServiceMode_Enabled;
@@ -194,7 +194,7 @@ void BLEManagerImpl::HandleTXCharCCCDWrite(int conn_id, int indicationsEnabled, 
         event.Type = (indicationsEnabled || notificationsEnabled) ? DeviceEventType::kCHIPoBLESubscribe
                                                                   : DeviceEventType::kCHIPoBLEUnsubscribe;
         event.CHIPoBLESubscribe.ConId = conn_id;
-        PlatformMgr().PostEvent(&event);
+        PlatformMgr().PostEventOrDie(&event);
     }
 
     ChipLogProgress(DeviceLayer, "CHIPoBLE %s received",
@@ -215,7 +215,7 @@ CHIP_ERROR BLEManagerImpl::HandleTXComplete(int conn_id)
     ChipDeviceEvent event;
     event.Type                          = DeviceEventType::kCHIPoBLEIndicateConfirm;
     event.CHIPoBLEIndicateConfirm.ConId = conn_id;
-    PlatformMgr().PostEvent(&event);
+    PlatformMgr().PostEventOrDie(&event);
     return CHIP_NO_ERROR;
 }
 
@@ -438,7 +438,7 @@ void BLEManagerImpl::_OnPlatformEvent(const ChipDeviceEvent * event)
         {
             ChipDeviceEvent connEstEvent;
             connEstEvent.Type = DeviceEventType::kCHIPoBLEConnectionEstablished;
-            PlatformMgr().PostEvent(&connEstEvent);
+            PlatformMgr().PostEventOrDie(&connEstEvent);
         }
 	break;
 
@@ -653,7 +653,7 @@ CHIP_ERROR BLEManagerImpl::StartAdvertising(void)
         ChipDeviceEvent advChange;
         advChange.Type = DeviceEventType::kCHIPoBLEAdvertisingChange;
         advChange.CHIPoBLEAdvertisingChange.Result = kActivity_Started;
-        PlatformMgr().PostEvent(&advChange);
+        PlatformMgr().PostEventOrDie(&advChange);
     }
 
 exit:
@@ -680,7 +680,7 @@ CHIP_ERROR BLEManagerImpl::StopAdvertising(void)
             ChipDeviceEvent advChange;
             advChange.Type                             = DeviceEventType::kCHIPoBLEAdvertisingChange;
             advChange.CHIPoBLEAdvertisingChange.Result = kActivity_Stopped;
-            PlatformMgr().PostEvent(&advChange);
+            PlatformMgr().PostEventOrDie(&advChange);
         }
     }
     return CHIP_NO_ERROR;
@@ -1008,7 +1008,7 @@ void BLEManagerImpl::HandleRXCharWrite(uint8_t *p_value, uint16_t len, uint8_t c
         event.Type                        = DeviceEventType::kCHIPoBLEWriteReceived;
         event.CHIPoBLEWriteReceived.ConId = (uint16_t) conn_id;
         event.CHIPoBLEWriteReceived.Data  = std::move(buf).UnsafeRelease();
-        PlatformMgr().PostEvent(&event);
+        PlatformMgr().PostEventOrDie(&event);
     }
 
     if (err != CHIP_NO_ERROR)
