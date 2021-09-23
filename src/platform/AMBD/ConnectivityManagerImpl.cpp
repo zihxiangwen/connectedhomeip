@@ -72,7 +72,7 @@ CHIP_ERROR ConnectivityManagerImpl::_SetWiFiStationMode(WiFiStationMode val)
 
     if (val != kWiFiStationMode_ApplicationControlled)
     {
-        SystemLayer.ScheduleWork(DriveStationState, NULL);
+        DeviceLayer::SystemLayer().ScheduleWork(DriveStationState, NULL);
     }
 
     if (mWiFiStationMode != val)
@@ -112,7 +112,7 @@ CHIP_ERROR ConnectivityManagerImpl::_SetWiFiAPMode(WiFiAPMode val)
 
     mWiFiAPMode = val;
 
-    SystemLayer.ScheduleWork(DriveAPState, NULL);
+    DeviceLayer::SystemLayer().ScheduleWork(DriveAPState, NULL);
 
 exit:
     return err;
@@ -123,7 +123,7 @@ void ConnectivityManagerImpl::_DemandStartWiFiAP(void)
     if (mWiFiAPMode == kWiFiAPMode_OnDemand || mWiFiAPMode == kWiFiAPMode_OnDemand_NoStationProvision)
     {
         mLastAPDemandTime = System::Clock::GetMonotonicMilliseconds();
-        SystemLayer.ScheduleWork(DriveAPState, NULL);
+        DeviceLayer::SystemLayer().ScheduleWork(DriveAPState, NULL);
     }
 }
 
@@ -132,7 +132,7 @@ void ConnectivityManagerImpl::_StopOnDemandWiFiAP(void)
     if (mWiFiAPMode == kWiFiAPMode_OnDemand || mWiFiAPMode == kWiFiAPMode_OnDemand_NoStationProvision)
     {
         mLastAPDemandTime = 0;
-        SystemLayer.ScheduleWork(DriveAPState, NULL);
+        DeviceLayer::SystemLayer().ScheduleWork(DriveAPState, NULL);
     }
 }
 
@@ -150,7 +150,7 @@ void ConnectivityManagerImpl::_MaintainOnDemandWiFiAP(void)
 void ConnectivityManagerImpl::_SetWiFiAPIdleTimeoutMS(uint32_t val)
 {
     mWiFiAPIdleTimeoutMS = val;
-    SystemLayer.ScheduleWork(DriveAPState, NULL);
+    DeviceLayer::SystemLayer().ScheduleWork(DriveAPState, NULL);
 }
 
 #define WIFI_BAND_2_4GHZ 2400
@@ -396,8 +396,8 @@ CHIP_ERROR ConnectivityManagerImpl::_Init()
     // Force AP mode off for now.
 
     // Queue work items to bootstrap the AP and station state machines once the Chip event loop is running.
-    ReturnErrorOnFailure(SystemLayer.ScheduleWork(DriveStationState, NULL));
-    ReturnErrorOnFailure(SystemLayer.ScheduleWork(DriveAPState, NULL));
+    ReturnErrorOnFailure(DeviceLayer::SystemLayer().ScheduleWork(DriveStationState, NULL));
+    ReturnErrorOnFailure(DeviceLayer::SystemLayer().ScheduleWork(DriveAPState, NULL));
 
     return CHIP_NO_ERROR;
 }
@@ -425,13 +425,13 @@ void ConnectivityManagerImpl::_OnWiFiScanDone()
 {
     // Schedule a call to DriveStationState method in case a station connect attempt was
     // deferred because the scan was in progress.
-    SystemLayer.ScheduleWork(DriveStationState, NULL);
+    DeviceLayer::SystemLayer().ScheduleWork(DriveStationState, NULL);
 }
 
 void ConnectivityManagerImpl::_OnWiFiStationProvisionChange()
 {
     // Schedule a call to the DriveStationState method to adjust the station state as needed.
-    SystemLayer.ScheduleWork(DriveStationState, NULL);
+    DeviceLayer::SystemLayer().ScheduleWork(DriveStationState, NULL);
 }
 
 // ==================== ConnectivityManager Private Methods ====================
@@ -533,7 +533,7 @@ void ConnectivityManagerImpl::DriveStationState()
 
                 ChipLogProgress(DeviceLayer, "Next WiFi station reconnect in %" PRIu32 " ms", timeToNextConnect);
 
-                ReturnOnFailure(SystemLayer.StartTimer(timeToNextConnect, DriveStationState, NULL));
+                ReturnOnFailure(DeviceLayer::SystemLayer().StartTimer(timeToNextConnect, DriveStationState, NULL));
             }
         }
     }
@@ -551,7 +551,7 @@ void ConnectivityManagerImpl::OnStationConnected()
     ChipDeviceEvent event;
     event.Type                          = DeviceEventType::kWiFiConnectivityChange;
     event.WiFiConnectivityChange.Result = kConnectivity_Established;
-    PlatformMgr().PostEvent(&event);
+    PlatformMgr().PostEventOrDie(&event);
 
     UpdateInternetConnectivityState();
 }
@@ -564,7 +564,7 @@ void ConnectivityManagerImpl::OnStationDisconnected()
     ChipDeviceEvent event;
     event.Type                          = DeviceEventType::kWiFiConnectivityChange;
     event.WiFiConnectivityChange.Result = kConnectivity_Lost;
-    PlatformMgr().PostEvent(&event);
+    PlatformMgr().PostEventOrDie(&event);
 
     UpdateInternetConnectivityState();
 }
@@ -673,7 +673,7 @@ void ConnectivityManagerImpl::UpdateInternetConnectivityState(void)
         event.InternetConnectivityChange.IPv4 = GetConnectivityChange(hadIPv4Conn, haveIPv4Conn);
         event.InternetConnectivityChange.IPv6 = GetConnectivityChange(hadIPv6Conn, haveIPv6Conn);
         addr.ToString(event.InternetConnectivityChange.address);
-        PlatformMgr().PostEvent(&event);
+        PlatformMgr().PostEventOrDie(&event);
 
         if (haveIPv4Conn != hadIPv4Conn)
         {
@@ -707,7 +707,7 @@ void ConnectivityManagerImpl::OnStationIPv4AddressAvailable(void)
     ChipDeviceEvent event;
     event.Type                           = DeviceEventType::kInterfaceIpAddressChanged;
     event.InterfaceIpAddressChanged.Type = InterfaceIpChangeType::kIpV4_Assigned;
-    PlatformMgr().PostEvent(&event);
+    PlatformMgr().PostEventOrDie(&event);
 }
 
 void ConnectivityManagerImpl::OnStationIPv4AddressLost(void)
@@ -721,7 +721,7 @@ void ConnectivityManagerImpl::OnStationIPv4AddressLost(void)
     ChipDeviceEvent event;
     event.Type                           = DeviceEventType::kInterfaceIpAddressChanged;
     event.InterfaceIpAddressChanged.Type = InterfaceIpChangeType::kIpV4_Lost;
-    PlatformMgr().PostEvent(&event);
+    PlatformMgr().PostEventOrDie(&event);
 }
 
 void ConnectivityManagerImpl::OnIPv6AddressAvailable(void)
@@ -754,18 +754,17 @@ void ConnectivityManagerImpl::OnIPv6AddressAvailable(void)
     ChipDeviceEvent event;
     event.Type                           = DeviceEventType::kInterfaceIpAddressChanged;
     event.InterfaceIpAddressChanged.Type = InterfaceIpChangeType::kIpV6_Assigned;
-    PlatformMgr().PostEvent(&event);
+    PlatformMgr().PostEventOrDie(&event);
 }
 
-void ConnectivityManagerImpl::RefreshMessageLayer(void) {
-}
+void ConnectivityManagerImpl::RefreshMessageLayer(void) {}
 
 void ConnectivityManagerImpl::RtkWiFiStationConnectedHandler( char* buf, int buf_len, int flags, void* userdata)
 {
     ChipDeviceEvent event;
     memset(&event, 0, sizeof(event));
     event.Type                         = DeviceEventType::kRtkWiFiStationConnectedEvent;
-    PlatformMgr().PostEvent(&event);
+    PlatformMgr().PostEventOrDie(&event);
 }
 
 void ConnectivityManagerImpl::DHCPProcessThread(void *param)

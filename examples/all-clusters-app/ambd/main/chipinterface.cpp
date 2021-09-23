@@ -254,7 +254,7 @@ extern "C" void ChipTest(void)
     }
 
     AppCallbacks callbacks;
-    InitServer(&callbacks);
+    chip::Server::GetInstance().Init(&callbacks);
 
     SetupPretendDevices();
 
@@ -271,6 +271,7 @@ extern "C" void ChipTest(void)
             printf("Copy/paste the below URL in a browser to see the QR CODE:\n\t%s?data=%s", QRCODE_BASE_URL, qrCode.data());
         }
     }
+    printf("\n\n");
 
     statusLED1.Init(STATUS_LED_GPIO_NUM);
 
