@@ -71,7 +71,7 @@ extern "C" void ChipTest(void)
     SetupPretendDevices();
 
     AppCallbacks callbacks;
-    InitServer(&callbacks);
+    chip::Server::GetInstance().Init(&callbacks);
 
     statusLED1.Init(STATUS_LED_GPIO_NUM);
 
