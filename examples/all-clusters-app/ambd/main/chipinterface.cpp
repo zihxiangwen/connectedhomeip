@@ -259,7 +259,6 @@ extern "C" void ChipTest(void)
     SetupPretendDevices();
 
     std::string qrCodeText = createSetupPayload();
-    //ESP_LOGI(TAG, "QR CODE Text: '%s'", qrCodeText.c_str());
     printf("QR CODE Text: '%s'\r\n", qrCodeText.c_str());
 
     {
@@ -267,8 +266,7 @@ extern "C" void ChipTest(void)
         err = EncodeQRCodeToUrl(qrCodeText.c_str(), qrCodeText.size(), qrCode.data(), qrCode.max_size());
         if (err == CHIP_NO_ERROR)
         {
-            //ESP_LOGI(TAG, "Copy/paste the below URL in a browser to see the QR CODE:\n\t%s?data=%s", QRCODE_BASE_URL, qrCode.data());
-            printf("Copy/paste the below URL in a browser to see the QR CODE:\n\t%s?data=%s", QRCODE_BASE_URL, qrCode.data());
+            printf("Copy/paste the below URL in a browser to see the QR CODE:\n\t%s?data=%s\n\n", QRCODE_BASE_URL, qrCode.data());
         }
     }
 
