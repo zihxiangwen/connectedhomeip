@@ -110,7 +110,7 @@ CHIP_ERROR KeyValueStoreManagerImpl::_Delete(const char * key)
     }
 
     strcpy(_key,key);
-    registerPref(_key);
+    //registerPref(_key);
     if(TRUE == deleteKey(_key,_key))
         err = CHIP_NO_ERROR;
     else
