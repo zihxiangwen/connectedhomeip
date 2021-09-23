@@ -20,11 +20,11 @@
 #pragma once
 
 #include <platform_stdlib.h>
-#include "rtl8710c_pin_name.h"
 //#include "gpio_api.h"
 // TODO : Need to include gpio_api.h and fix compile error from hal_layer
 
 #ifdef CONFIG_PLATFORM_8710C
+#include "rtl8710c_pin_name.h"
 
 typedef struct hal_gpio_pin_adapter_s {
     uint8_t pin_name;               ///< chip pin name to locate the GPIO pin by port & pin index
