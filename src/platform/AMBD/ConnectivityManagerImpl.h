@@ -27,8 +27,9 @@
 #else
 #include <platform/internal/GenericConnectivityManagerImpl_NoBLE.h>
 #endif
+#include <lib/support/BitFlags.h>
 #include <platform/internal/GenericConnectivityManagerImpl_NoThread.h>
-#include <support/BitFlags.h>
+
 #include <wifi_conf.h>
 
 namespace Inet {
@@ -81,9 +82,6 @@ private:
     uint32_t _GetWiFiAPIdleTimeoutMS(void);
     void _SetWiFiAPIdleTimeoutMS(uint32_t val);
     CHIP_ERROR _GetAndLogWifiStatsCounters(void);
-    bool _HaveIPv4InternetConnectivity(void);
-    bool _HaveIPv6InternetConnectivity(void);
-    bool _HaveServiceConnectivity(void);
     CHIP_ERROR _Init(void);
     void _OnPlatformEvent(const ChipDeviceEvent * event);
     bool _CanStartWiFiScan();
@@ -166,24 +164,9 @@ inline uint32_t ConnectivityManagerImpl::_GetWiFiAPIdleTimeoutMS(void)
     return mWiFiAPIdleTimeoutMS;
 }
 
-inline bool ConnectivityManagerImpl::_HaveIPv4InternetConnectivity(void)
-{
-    return mFlags.Has(Flags::kHaveIPv4InternetConnectivity);
-}
-
-inline bool ConnectivityManagerImpl::_HaveIPv6InternetConnectivity(void)
-{
-    return mFlags.Has(Flags::kHaveIPv6InternetConnectivity);
-}
-
 inline bool ConnectivityManagerImpl::_CanStartWiFiScan()
 {
     return mWiFiStationState != kWiFiStationState_Connecting;
-}
-
-inline bool ConnectivityManagerImpl::_HaveServiceConnectivity(void)
-{
-    return HaveServiceConnectivityViaThread();
 }
 
 /**
@@ -210,5 +193,3 @@ inline ConnectivityManagerImpl & ConnectivityMgrImpl(void)
 
 } // namespace DeviceLayer
 } // namespace chip
-
-
