@@ -7,6 +7,8 @@
 #include "Server.h"
 
 #include <platform/CHIPDeviceLayer.h>
+#include <credentials/DeviceAttestationCredsProvider.h>
+#include <credentials/examples/DeviceAttestationCredsExample.h>
 #include <support/CHIPMem.h>
 #include "chip_porting.h"
 
@@ -21,6 +23,7 @@
 extern "C"{ void * __dso_handle = 0 ;}
 
 using namespace ::chip;
+using namespace ::chip::Credentials;
 using namespace ::chip::DeviceManager;
 using namespace ::chip::DeviceLayer;
 
@@ -255,6 +258,9 @@ extern "C" void ChipTest(void)
 
     AppCallbacks callbacks;
     chip::Server::GetInstance().Init(&callbacks);
+
+    // Initialize device attestation config
+    SetDeviceAttestationCredentialsProvider(Examples::GetExampleDACProvider());
 
     SetupPretendDevices();
 
