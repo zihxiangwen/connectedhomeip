@@ -89,7 +89,16 @@ void DeviceCallbacks::PostAttributeChangeCallback(EndpointId endpointId, Cluster
         OnIdentifyPostAttributeChangeCallback(endpointId, attributeId, value);
         break;
 
+    case ZCL_LEVEL_CONTROL_CLUSTER_ID:
+        OnLevelControlAttributeChangeCallback(endpointId, attributeId, value);
+        break;
+
+    case ZCL_COLOR_CONTROL_CLUSTER_ID:
+        OnColorControlAttributeChangeCallback(endpointId, attributeId, value);
+        break;
+
     default:
+        ChipLogProgress(Zcl, "Unknown cluster ID: " ChipLogFormatMEI, ChipLogValueMEI(clusterId));
         break;
     }
 }
@@ -127,8 +136,8 @@ void DeviceCallbacks::OnInternetConnectivityChange(const ChipDeviceEvent * event
 
 void DeviceCallbacks::OnOnOffPostAttributeChangeCallback(EndpointId endpointId, AttributeId attributeId, uint8_t * value)
 {
-    VerifyOrExit(attributeId == ZCL_ON_OFF_ATTRIBUTE_ID, printf(TAG, "Unhandled Attribute ID: '0x%04x", attributeId));
-    VerifyOrExit(endpointId == 1 || endpointId == 2, printf(TAG, "Unexpected EndPoint ID: `0x%02x'", endpointId));
+    VerifyOrExit(attributeId == ZCL_ON_OFF_ATTRIBUTE_ID, printf("[%s] Unhandled Attribute ID: '0x%04x", TAG, attributeId));
+    VerifyOrExit(endpointId == 1 || endpointId == 2, printf("[%s] Unhandled Attribute ID: '0x%04x", TAG, attributeId));
 
     // At this point we can assume that value points to a bool value.
     statusLED1.Set(*value);
@@ -148,7 +157,7 @@ void IdentifyTimerHandler(Layer * systemLayer, void * appState, CHIP_ERROR error
 
 void DeviceCallbacks::OnIdentifyPostAttributeChangeCallback(EndpointId endpointId, AttributeId attributeId, uint8_t * value)
 {
-    VerifyOrExit(attributeId == ZCL_IDENTIFY_TIME_ATTRIBUTE_ID, printf ("[%s] Unhandled Attribute ID: '0x%04x", TAG, attributeId));
+    VerifyOrExit(attributeId == ZCL_IDENTIFY_TIME_ATTRIBUTE_ID, printf("[%s] Unhandled Attribute ID: '0x%04x", TAG, attributeId));
     VerifyOrExit(endpointId == 1, printf("[%s] Unexpected EndPoint ID: `0x%02x'", TAG, endpointId));
 
     // timerCount represents the number of callback executions before we stop the timer.
@@ -165,3 +174,39 @@ bool emberAfBasicClusterMfgSpecificPingCallback(chip::app::Command * commandObj)
     emberAfSendDefaultResponse(emberAfCurrentCommand(), EMBER_ZCL_STATUS_SUCCESS);
     return true;
 }
+
+void DeviceCallbacks::OnLevelControlAttributeChangeCallback(EndpointId endpointId, AttributeId attributeId, uint8_t * value)
+{
+    VerifyOrExit(attributeId == ZCL_CURRENT_LEVEL_ATTRIBUTE_ID, printf("[%s] Unhandled Attribute ID: '0x%04x", TAG, attributeId));
+
+    ChipLogProgress(Zcl, "New level: %u", *value);
+
+exit:
+    return;
+}
+
+void DeviceCallbacks::OnColorControlAttributeChangeCallback(EndpointId endpointId, AttributeId attributeId, uint8_t * value)
+{
+    VerifyOrExit(attributeId == ZCL_COLOR_CONTROL_CURRENT_HUE_ATTRIBUTE_ID ||
+                     attributeId == ZCL_COLOR_CONTROL_CURRENT_SATURATION_ATTRIBUTE_ID,
+                 printf("[%s] Unhandled Attribute ID: '0x%04x", TAG, attributeId));
+
+    uint8_t hue, saturation;
+    if (attributeId == ZCL_COLOR_CONTROL_CURRENT_HUE_ATTRIBUTE_ID)
+    {
+        hue = *value;
+        emberAfReadServerAttribute(endpointId, ZCL_COLOR_CONTROL_CLUSTER_ID, ZCL_COLOR_CONTROL_CURRENT_SATURATION_ATTRIBUTE_ID,
+                                   &saturation, sizeof(uint8_t));
+    }
+    else
+    {
+        saturation = *value;
+        emberAfReadServerAttribute(endpointId, ZCL_COLOR_CONTROL_CLUSTER_ID, ZCL_COLOR_CONTROL_CURRENT_HUE_ATTRIBUTE_ID, &hue,
+                                   sizeof(uint8_t));
+    }
+	ChipLogProgress(Zcl, "New hue: %d, New saturation: %d ", hue, saturation);
+
+exit:
+    return;
+}
+

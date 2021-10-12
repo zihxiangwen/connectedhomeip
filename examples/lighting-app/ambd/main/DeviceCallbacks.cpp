@@ -26,8 +26,6 @@
 
 #include "CHIPDeviceManager.h"
 #include <app/util/af.h>
-#include "Globals.h"
-#include "LEDWidget.h"
 #include <app-common/zap-generated/attribute-id.h>
 #include <app-common/zap-generated/cluster-id.h>
 #include <app/Command.h>
@@ -76,24 +74,6 @@ void DeviceCallbacks::DeviceEventCallback(const ChipDeviceEvent * event, intptr_
     }
 }
 
-void DeviceCallbacks::PostAttributeChangeCallback(EndpointId endpointId, ClusterId clusterId, AttributeId attributeId, uint8_t mask,
-                                                  uint16_t manufacturerCode, uint8_t type, uint16_t size, uint8_t * value)
-{
-    switch (clusterId)
-    {
-     case ZCL_ON_OFF_CLUSTER_ID:
-         OnOnOffPostAttributeChangeCallback(endpointId, attributeId, value);
-         break;
-
-    case ZCL_IDENTIFY_CLUSTER_ID:
-        OnIdentifyPostAttributeChangeCallback(endpointId, attributeId, value);
-        break;
-
-    default:
-        break;
-    }
-}
-
 void DeviceCallbacks::OnInternetConnectivityChange(const ChipDeviceEvent * event)
 {
     if (event->InternetConnectivityChange.IPv4 == kConnectivity_Established)
@@ -125,43 +105,3 @@ void DeviceCallbacks::OnInternetConnectivityChange(const ChipDeviceEvent * event
       }
  }
 
-void DeviceCallbacks::OnOnOffPostAttributeChangeCallback(EndpointId endpointId, AttributeId attributeId, uint8_t * value)
-{
-    VerifyOrExit(attributeId == ZCL_ON_OFF_ATTRIBUTE_ID, printf(TAG, "Unhandled Attribute ID: '0x%04x", attributeId));
-    VerifyOrExit(endpointId == 1 || endpointId == 2, printf(TAG, "Unexpected EndPoint ID: `0x%02x'", endpointId));
-
-    // At this point we can assume that value points to a bool value.
-    statusLED1.Set(*value);
-
-    exit:
-        return;
-}
-
-void IdentifyTimerHandler(Layer * systemLayer, void * appState, CHIP_ERROR error)
-{
-    if (identifyTimerCount)
-    {
-        // Decrement the timer count.
-        identifyTimerCount--;
-    }
-}
-
-void DeviceCallbacks::OnIdentifyPostAttributeChangeCallback(EndpointId endpointId, AttributeId attributeId, uint8_t * value)
-{
-    VerifyOrExit(attributeId == ZCL_IDENTIFY_TIME_ATTRIBUTE_ID, printf ("[%s] Unhandled Attribute ID: '0x%04x", TAG, attributeId));
-    VerifyOrExit(endpointId == 1, printf("[%s] Unexpected EndPoint ID: `0x%02x'", TAG, endpointId));
-
-    // timerCount represents the number of callback executions before we stop the timer.
-    // value is expressed in seconds and the timer is fired every 250ms, so just multiply value by 4.
-    // Also, we want timerCount to be odd number, so the ligth state ends in the same state it starts.
-    identifyTimerCount = (*value) * 4;
-
-exit:
-    return;
-}
-
-bool emberAfBasicClusterMfgSpecificPingCallback(chip::app::Command * commandObj)
-{
-    emberAfSendDefaultResponse(emberAfCurrentCommand(), EMBER_ZCL_STATUS_SUCCESS);
-    return true;
-}
