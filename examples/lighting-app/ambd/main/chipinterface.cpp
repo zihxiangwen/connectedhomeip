@@ -201,6 +201,7 @@ extern "C" void ChipTest(void)
     SetupPretendDevices();
 
     std::string qrCodeText = createSetupPayload();
+
     printf("QR CODE Text: '%s'\r\n", qrCodeText.c_str());
 
     {
