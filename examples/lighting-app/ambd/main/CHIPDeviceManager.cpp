@@ -31,6 +31,8 @@
 #include <support/ErrorStr.h>
 #include "Globals.h"
 #include "LEDWidget.h"
+
+#include <app/util/af.h>
 #include <app/common/gen/attribute-id.h>
 #include <app/common/gen/attribute-type.h>
 #include <app/common/gen/cluster-id.h>
@@ -100,6 +102,48 @@ void emberAfPostAttributeChangeCallback(EndpointId endpointId, ClusterId cluster
         }
 
         statusLED1.Set(*value);
+    }
+    else if (clusterId == ZCL_LEVEL_CONTROL_CLUSTER_ID)
+    {
+        if (attributeId != ZCL_CURRENT_LEVEL_ATTRIBUTE_ID)
+        {
+            ChipLogProgress(Zcl, "Unknown attribute ID: %" PRIx32, attributeId);
+            return;
+        }
+        if (size == 1)
+        {
+            ChipLogProgress(Zcl, "New level: %u ", *value);
+        }
+        else
+        {
+            ChipLogError(Zcl, "wrong length for level: %d\n", size);
+        }
+    }
+    else if (clusterId == ZCL_COLOR_CONTROL_CLUSTER_ID)
+    {
+        uint8_t hue, saturation;
+
+        if ((attributeId != ZCL_COLOR_CONTROL_CURRENT_HUE_ATTRIBUTE_ID) &&
+            (attributeId != ZCL_COLOR_CONTROL_CURRENT_SATURATION_ATTRIBUTE_ID))
+        {
+            ChipLogProgress(Zcl, "Unknown attribute ID: %" PRIx32, attributeId);
+            return;
+        }
+
+        if (attributeId == ZCL_COLOR_CONTROL_CURRENT_HUE_ATTRIBUTE_ID)
+        {
+            hue = *value;
+            emberAfReadServerAttribute(endpointId, ZCL_COLOR_CONTROL_CLUSTER_ID, ZCL_COLOR_CONTROL_CURRENT_SATURATION_ATTRIBUTE_ID,
+                                       &saturation, sizeof(uint8_t));
+
+        }
+        if (attributeId == ZCL_COLOR_CONTROL_CURRENT_SATURATION_ATTRIBUTE_ID)
+        {
+            saturation = *value;
+            emberAfReadServerAttribute(endpointId, ZCL_COLOR_CONTROL_CLUSTER_ID, ZCL_COLOR_CONTROL_CURRENT_HUE_ATTRIBUTE_ID, &hue,
+                                       sizeof(uint8_t));
+        }
+        ChipLogProgress(Zcl, "New hue: %d, New saturation: %d ", hue, saturation);
     }
     else
     {
