@@ -38,7 +38,7 @@ public:
     ResourceRecord & operator=(const ResourceRecord & other) = default;
 
     const FullQName & GetName() const { return mQName; }
-    QClass GetClass() const { return mCacheFlush ? QClass::IN_FLUSH : QClass::_IN; }
+    QClass GetClass() const { return mCacheFlush ? QClass::IN_FLUSH : QClass::IN; }
     QType GetType() const { return mType; }
 
     uint32_t GetTtl() const { return mTtl; }

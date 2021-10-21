@@ -80,7 +80,7 @@ public:
 private:
     const FullQName mQName;
     QType mType            = QType::ANY;
-    QClass mClass          = QClass::_IN;
+    QClass mClass          = QClass::IN;
     bool mAnswerViaUnicast = true;
 };
 

@@ -41,7 +41,7 @@ public:
     Responder(QType qType, const FullQName & qName) : mQType(qType), mQName(qName) {}
     virtual ~Responder() {}
 
-    QClass GetQClass() const { return QClass::_IN; }
+    QClass GetQClass() const { return QClass::IN; }
     QType GetQType() const { return mQType; }
 
     /// Full name as: "Instance"."Servicer"."Domain"

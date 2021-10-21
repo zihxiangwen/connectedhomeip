@@ -647,7 +647,7 @@ void AdvertiserMinMdns::AdvertiseRecords()
         packetInfo.DestPort  = kMdnsPort;
         packetInfo.Interface = interfaceAddress.GetInterfaceId();
 
-        QueryData queryData(QType::PTR, QClass::_IN, false /* unicast */);
+        QueryData queryData(QType::PTR, QClass::IN, false /* unicast */);
         queryData.SetIsBootAdvertising(true);
 
         mQueryResponderAllocatorOperational.GetQueryResponder()->ClearBroadcastThrottle();
