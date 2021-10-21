@@ -216,10 +216,10 @@ CHIP_ERROR TLVWriter::Put(uint64_t tag, float v)
     union
     {
         float f;
-        uint32_t u32;
+        uint32_t _u32;
     } cvt;
     cvt.f = v;
-    return WriteElementHead(TLVElementType::FloatingPointNumber32, tag, cvt.u32);
+    return WriteElementHead(TLVElementType::FloatingPointNumber32, tag, cvt._u32);
 }
 
 CHIP_ERROR TLVWriter::Put(uint64_t tag, double v)
@@ -227,10 +227,10 @@ CHIP_ERROR TLVWriter::Put(uint64_t tag, double v)
     union
     {
         double d;
-        uint64_t u64;
+        uint64_t _u64;
     } cvt;
     cvt.d = v;
-    return WriteElementHead(TLVElementType::FloatingPointNumber64, tag, cvt.u64);
+    return WriteElementHead(TLVElementType::FloatingPointNumber64, tag, cvt._u64);
 }
 
 CHIP_ERROR TLVWriter::Put(uint64_t tag, ByteSpan data)

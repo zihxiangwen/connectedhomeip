@@ -214,20 +214,20 @@ CHIP_ERROR TLVReader::Get(double & v)
     case TLVElementType::FloatingPointNumber32: {
         union
         {
-            uint32_t u32;
+            uint32_t _u32;
             float f;
         } cvt;
-        cvt.u32 = static_cast<uint32_t>(mElemLenOrVal);
+        cvt._u32 = static_cast<uint32_t>(mElemLenOrVal);
         v       = cvt.f;
         break;
     }
     case TLVElementType::FloatingPointNumber64: {
         union
         {
-            uint64_t u64;
+            uint64_t _u64;
             double d;
         } cvt;
-        cvt.u64 = mElemLenOrVal;
+        cvt._u64 = mElemLenOrVal;
         v       = cvt.d;
         break;
     }

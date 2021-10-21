@@ -51,12 +51,12 @@ constexpr uint16_t kQClassResponseFlushBit = 0x8000;
 
 enum class QClass : uint16_t
 {
-    IN  = 1,
+    _IN  = 1,
     ANY = 255,
 
     // Unicast version for the class
-    IN_UNICAST = IN | kQClassUnicastAnswerFlag,
-    IN_FLUSH   = IN | kQClassResponseFlushBit,
+    IN_UNICAST = _IN | kQClassUnicastAnswerFlag,
+    IN_FLUSH   = _IN | kQClassResponseFlushBit,
 };
 
 enum class ResourceType

@@ -401,7 +401,7 @@ CHIP_ERROR MinMdnsResolver::SendQuery(mdns::Minimal::FullQName qname, mdns::Mini
     builder.Header().SetMessageId(0);
 
     mdns::Minimal::Query query(qname);
-    query.SetType(type).SetClass(mdns::Minimal::QClass::IN);
+    query.SetType(type).SetClass(mdns::Minimal::QClass::_IN);
     // TODO(cecille): Not sure why unicast response isn't working - fix.
     query.SetAnswerViaUnicast(false);
 
@@ -494,7 +494,7 @@ CHIP_ERROR MinMdnsResolver::ResolveNodeId(const PeerId & peerId, Inet::IPAddress
         Query query(instanceQName);
 
         query
-            .SetClass(QClass::IN)       //
+            .SetClass(QClass::_IN)       //
             .SetType(QType::ANY)        //
             .SetAnswerViaUnicast(false) //
             ;
