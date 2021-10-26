@@ -1,7 +1,6 @@
 /*
  *
  *    Copyright (c) 2020 Project CHIP Authors
- *    Copyright (c) 2018 Nest Labs, Inc.
  *    All rights reserved.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,45 +19,43 @@
 /**
  *    @file
  *          Provides an implementation of the ConfigurationManager object
- *          for the Ameba platform.
+ *          for the AMBD platform.
  */
 
 #pragma once
 
+#include <platform/AMBD/AMBDConfig.h>
 #include <platform/ConnectivityManager.h>
 #include <platform/internal/GenericConfigurationManagerImpl.h>
-
-#include <platform/AMBD/AMBDConfig.h>
 
 namespace chip {
 namespace DeviceLayer {
 
 /**
- * Concrete implementation of the ConfigurationManager singleton object for the Ameba platform.
+ * Concrete implementation of the ConfigurationManager singleton object for the AMBD platform.
  */
-class ConfigurationManagerImpl final : public ConfigurationManager,
-                                       public Internal::GenericConfigurationManagerImpl<ConfigurationManagerImpl>,
+class ConfigurationManagerImpl final : public Internal::GenericConfigurationManagerImpl<ConfigurationManagerImpl>,
                                        private Internal::AMBDConfig
 {
     // Allow the ConfigurationManager interface class to delegate method calls to
     // the implementation methods provided by this class.
     friend class ConfigurationManager;
 
+private:
     // Allow the GenericConfigurationManagerImpl base class to access helper methods and types
     // defined on this class.
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
     friend class Internal::GenericConfigurationManagerImpl<ConfigurationManagerImpl>;
 #endif
 
-private:
     // ===== Members that implement the ConfigurationManager public interface.
 
-    CHIP_ERROR _Init(void);
-    CHIP_ERROR _GetPrimaryWiFiMACAddress(uint8_t * buf);
-    bool _CanFactoryReset(void);
-    void _InitiateFactoryReset(void);
-    CHIP_ERROR _ReadPersistedStorageValue(::chip::Platform::PersistedStorage::Key key, uint32_t & value);
-    CHIP_ERROR _WritePersistedStorageValue(::chip::Platform::PersistedStorage::Key key, uint32_t value);
+    CHIP_ERROR Init(void) override;
+    CHIP_ERROR GetPrimaryWiFiMACAddress(uint8_t * buf) override;
+    bool CanFactoryReset(void) override;
+    void InitiateFactoryReset(void) override;
+    CHIP_ERROR ReadPersistedStorageValue(::chip::Platform::PersistedStorage::Key key, uint32_t & value) override;
+    CHIP_ERROR WritePersistedStorageValue(::chip::Platform::PersistedStorage::Key key, uint32_t value) override;
 
     // NOTE: Other public interface methods are implemented by GenericConfigurationManagerImpl<>.
 
@@ -89,7 +86,7 @@ inline ConfigurationManager & ConfigurationMgr(void)
  * Returns the platform-specific implementation of the ConfigurationManager singleton object.
  *
  * Chip applications can use this to gain access to features of the ConfigurationManager
- * that are specific to the Ameba platform.
+ * that are specific to the AMBD platform.
  */
 inline ConfigurationManagerImpl & ConfigurationMgrImpl(void)
 {
