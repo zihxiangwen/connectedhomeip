@@ -1,7 +1,6 @@
 /*
  *
- *    Copyright (c) 2020-2021 Project CHIP Authors
- *    Copyright (c) 2018 Nest Labs, Inc.
+ *    Copyright (c) 2020 Project CHIP Authors
  *    All rights reserved.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,11 +38,6 @@ class IPAddress;
 namespace chip {
 namespace DeviceLayer {
 
-class PlatformManagerImpl;
-
-/**
- * Concrete implementation of the ConnectivityManager singleton object.
- */
 class ConnectivityManagerImpl final : public ConnectivityManager,
                                       public Internal::GenericConnectivityManagerImpl<ConnectivityManagerImpl>,
                                       public Internal::GenericConnectivityManagerImpl_WiFi<ConnectivityManagerImpl>,
@@ -54,7 +48,6 @@ class ConnectivityManagerImpl final : public ConnectivityManager,
 #endif
                                       public Internal::GenericConnectivityManagerImpl_NoThread<ConnectivityManagerImpl>
 {
-
     // Allow the ConnectivityManager interface class to delegate method calls to
     // the implementation methods provided by this class.
     friend class ConnectivityManager;
@@ -124,9 +117,9 @@ private:
     void OnIPv6AddressAvailable(void);
 
     static void RefreshMessageLayer(void);
-    static void RtkWiFiStationConnectedHandler( char* buf, int buf_len, int flags, void* userdata);
+    static void RtkWiFiStationConnectedHandler(char * buf, int buf_len, int flags, void * userdata);
     void DHCPProcess(void);
-    static void DHCPProcessThread(void *param);
+    static void DHCPProcessThread(void * param);
 };
 
 inline bool ConnectivityManagerImpl::_IsWiFiStationApplicationControlled(void)
@@ -184,7 +177,7 @@ inline ConnectivityManager & ConnectivityMgr(void)
  * Returns the platform-specific implementation of the ConnectivityManager singleton object.
  *
  * Chip applications can use this to gain access to features of the ConnectivityManager
- * that are specific to the platform.
+ * that are specific to the Ameba platform.
  */
 inline ConnectivityManagerImpl & ConnectivityMgrImpl(void)
 {
@@ -192,6 +185,4 @@ inline ConnectivityManagerImpl & ConnectivityMgrImpl(void)
 }
 
 } // namespace DeviceLayer
-} // namespace chip
-
-
+} // namespace chipd
