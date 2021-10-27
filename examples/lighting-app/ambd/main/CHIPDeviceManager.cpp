@@ -92,10 +92,13 @@ CHIP_ERROR CHIPDeviceManager::Init(CHIPDeviceManagerCallbacks * cb)
 } // namespace DeviceManager
 } // namespace chip
 
-void emberAfPostAttributeChangeCallback(EndpointId endpointId, ClusterId clusterId, AttributeId attributeId, uint8_t mask,
-                                        uint16_t manufacturerCode, uint8_t type, uint16_t size, uint8_t * value)
+void MatterPostAttributeChangeCallback(const chip::app::ConcreteAttributePath & attributePath, uint8_t mask, uint8_t type, uint16_t size,
+                                       uint8_t * value)
 {
-    ChipLogProgress(Zcl, "Cluster callback: %" PRIx32, clusterId);
+    EndpointId endpointId     = attributePath.mEndpointId;
+    ClusterId clusterId     = attributePath.mClusterId;
+    AttributeId attributeId = attributePath.mAttributeId;
+
     if (clusterId == ZCL_ON_OFF_CLUSTER_ID)
     {
         if (attributeId != ZCL_ON_OFF_ATTRIBUTE_ID)
