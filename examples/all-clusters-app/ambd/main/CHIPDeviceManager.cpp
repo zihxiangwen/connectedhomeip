@@ -25,11 +25,12 @@
 #include <stdlib.h>
 
 #include "CHIPDeviceManager.h"
+#include <app/ConcreteAttributePath.h>
 #include <app/util/basic-types.h>
-//#include <setup_payload/SetupPayload.h>
-#include <support/CHIPMem.h>
-#include <support/CodeUtils.h>
-#include <support/ErrorStr.h>
+#include <lib/support/CHIPMem.h>
+#include <lib/support/CodeUtils.h>
+#include <lib/support/ErrorStr.h>
+#include <setup_payload/SetupPayload.h>
 
 using namespace ::chip;
 
@@ -66,14 +67,13 @@ CHIP_ERROR CHIPDeviceManager::Init(CHIPDeviceManagerCallbacks * cb)
     }
 
     err = Platform::MemoryInit();
-
     SuccessOrExit(err);
 
-    // // Register a function to receive events from the CHIP device layer.  Note that calls to
-    // // this function will happen on the CHIP event loop thread, not the app_main thread.
+    // Register a function to receive events from the CHIP device layer.  Note that calls to
+    // this function will happen on the CHIP event loop thread, not the app_main thread.
     PlatformMgr().AddEventHandler(CHIPDeviceManager::CommonDeviceEventHandler, reinterpret_cast<intptr_t>(cb));
 
-    // // Start a task to run the CHIP Device event loop.
+    // Start a task to run the CHIP Device event loop.
     err = PlatformMgr().StartEventLoopTask();
     if (err != CHIP_NO_ERROR)
     {
@@ -92,13 +92,13 @@ CHIP_ERROR CHIPDeviceManager::Init(CHIPDeviceManagerCallbacks * cb)
 } // namespace DeviceManager
 } // namespace chip
 
-void emberAfPostAttributeChangeCallback(EndpointId endpointId, ClusterId clusterId, AttributeId attributeId, uint8_t mask,
-                                        uint16_t manufacturerCode, uint8_t type, uint16_t size, uint8_t * value)
+void MatterPostAttributeChangeCallback(const chip::app::ConcreteAttributePath & path, uint8_t mask, uint8_t type, uint16_t size,
+                                       uint8_t * value)
 {
     chip::DeviceManager::CHIPDeviceManagerCallbacks * cb =
         chip::DeviceManager::CHIPDeviceManager::GetInstance().GetCHIPDeviceManagerCallbacks();
     if (cb != nullptr)
     {
-        cb->PostAttributeChangeCallback(endpointId, clusterId, attributeId, mask, manufacturerCode, type, size, value);
+        cb->PostAttributeChangeCallback(path.mEndpointId, path.mClusterId, path.mAttributeId, mask, type, size, value);
     }
 }
