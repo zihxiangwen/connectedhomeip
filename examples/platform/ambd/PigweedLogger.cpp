@@ -16,12 +16,14 @@
  */
 
 #include "FreeRTOS.h"
-#include "esp_log.h"
-#include "pw_sys_io_esp32/init.h"
+#include "pw_sys_io_ambd/init.h"
 #include "semphr.h"
 #include <lib/support/logging/CHIPLogging.h>
 #include <pw_hdlc/encoder.h>
 #include <pw_stream/sys_io_stream.h>
+
+#include <assert.h>
+#include <span.h>
 
 namespace PigweedLogger {
 namespace {
@@ -29,7 +31,7 @@ namespace {
 constexpr uint8_t kLogHdlcAddress = 1;   // Send log messages to HDLC address 1 (other than RPC communication)
 constexpr size_t kWriteBufferSize = 128; // Buffer for constructing HDLC frames
 
-SemaphoreHandle_t esp_log_mutex;
+SemaphoreHandle_t ambd_log_mutex;
 
 pw::stream::SysIoWriter sWriter;
 size_t sWriteBufferPos;
@@ -47,15 +49,15 @@ void send()
 
 void init()
 {
-    esp_log_mutex = xSemaphoreCreateMutex();
-    assert(esp_log_mutex != NULL);
+    ambd_log_mutex = xSemaphoreCreateMutex();
+    assert(ambd_log_mutex != NULL);
     pw_sys_io_Init();
     uartInitialised = true;
 }
 
 int putString(const char * buffer, size_t size)
 {
-    xSemaphoreTake(esp_log_mutex, portMAX_DELAY);
+    xSemaphoreTake(ambd_log_mutex, portMAX_DELAY);
 
     assert(sWriteBufferPos < kWriteBufferSize);
 
@@ -77,32 +79,13 @@ int putString(const char * buffer, size_t size)
             send();
     }
 
-    xSemaphoreGive(esp_log_mutex);
+    xSemaphoreGive(ambd_log_mutex);
     return size;
 }
 
 SemaphoreHandle_t * getSemaphore()
 {
-    return &esp_log_mutex;
-}
-
-extern "C" void __wrap_esp_log_write(esp_log_level_t level, const char * tag, const char * format, ...)
-{
-    va_list v;
-    va_start(v, format);
-#ifndef CONFIG_LOG_DEFAULT_LEVEL_NONE
-    if (uartInitialised)
-    {
-        char formattedMsg[CHIP_CONFIG_LOG_MESSAGE_MAX_SIZE];
-        size_t len = vsnprintf(formattedMsg, sizeof formattedMsg, format, v);
-        if (len >= sizeof formattedMsg)
-        {
-            len = sizeof formattedMsg - 1;
-        }
-        PigweedLogger::putString(formattedMsg, len);
-    }
-#endif
-    va_end(v);
+    return &ambd_log_mutex;
 }
 
 } // namespace PigweedLogger
