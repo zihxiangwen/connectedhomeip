@@ -32,11 +32,13 @@ serial_t sobj;
 int console_getchar(uint8_t * chr)
 {
     serial_getc(&sobj);
+    return 1;
 }
 
 int console_putchar(const char * chr)
 {
-    serial_putc(&sobj, chr);
+    serial_putc(&sobj, *chr);
+    return 1;
 }
 
 void console_init(void)
