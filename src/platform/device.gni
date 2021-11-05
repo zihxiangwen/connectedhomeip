@@ -51,7 +51,8 @@ declare_args() {
   chip_enable_wifi =
       chip_device_platform == "linux" || chip_device_platform == "esp32" ||
       chip_device_platform == "mbed" || chip_device_platform == "tizen" ||
-      chip_device_platform == "android" || chip_device_platform == "ameba"
+      chip_device_platform == "android" || chip_device_platform == "ameba" ||
+      chip_device_platform == "ambd"
 
   # Enable ble support.
   if (chip_device_platform == "fake") {
@@ -66,7 +67,7 @@ declare_args() {
   # Select DNS-SD implementation
   if (chip_device_platform == "linux" || chip_device_platform == "esp32" ||
       chip_device_platform == "mbed" || chip_device_platform == "p6" ||
-      chip_device_platform == "ameba") {
+      chip_device_platform == "ameba" || chip_device_platform == "ambd") {
     chip_mdns = "minimal"
   } else if (chip_device_platform == "darwin" ||
              chip_device_platform == "cc13x2_26x2" || current_os == "android" ||
@@ -90,6 +91,8 @@ if (chip_device_platform == "cc13x2_26x2") {
   _chip_device_layer = "EFR32"
 } else if (chip_device_platform == "esp32") {
   _chip_device_layer = "ESP32"
+} else if (chip_device_platform == "ambd") {
+  _chip_device_layer = "AMBD"
 } else if (chip_device_platform == "linux") {
   _chip_device_layer = "Linux"
 } else if (chip_device_platform == "tizen") {
@@ -148,6 +151,7 @@ assert(
         chip_device_platform == "darwin" || chip_device_platform == "efr32" ||
         chip_device_platform == "esp32" || chip_device_platform == "external" ||
         chip_device_platform == "linux" || chip_device_platform == "tizen" ||
+        chip_device_platform == "ambd" ||
         chip_device_platform == "nrfconnect" ||
         chip_device_platform == "k32w0" || chip_device_platform == "qpg" ||
         chip_device_platform == "telink" || chip_device_platform == "mbed" ||
