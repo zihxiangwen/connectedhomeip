@@ -74,6 +74,13 @@ const AMBDConfig::Key AMBDConfig::kConfigKey_RegulatoryLocation          = { kCo
 const AMBDConfig::Key AMBDConfig::kConfigKey_CountryCode                 = { kConfigNamespace_ChipConfig, "country-code" };
 const AMBDConfig::Key AMBDConfig::kConfigKey_Breadcrumb                  = { kConfigNamespace_ChipConfig, "breadcrumb" };
 
+// Keys stored in the Chip-counters namespace
+const AMBDConfig::Key AMBDConfig::kCounterKey_RebootCount           = { kConfigNamespace_ChipCounters, "reboot-count" };
+const AMBDConfig::Key AMBDConfig::kCounterKey_UpTime                = { kConfigNamespace_ChipCounters, "up-time" };
+const AMBDConfig::Key AMBDConfig::kCounterKey_TotalOperationalHours = { kConfigNamespace_ChipCounters, "total-hours" };
+const AMBDConfig::Key AMBDConfig::kCounterKey_BootReason            = { kConfigNamespace_ChipCounters, "boot-reason" };
+
+
 CHIP_ERROR AMBDConfig::ReadConfigValue(Key key, bool & val)
 {
     uint32_t intVal;
