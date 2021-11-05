@@ -1,7 +1,6 @@
 /*
  *
  *    Copyright (c) 2020 Project CHIP Authors
- *    Copyright (c) 2018 Nest Labs, Inc.
  *    All rights reserved.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,17 +27,20 @@
 #else
 // TODO : Need to include gpio_api.h and fix compile error from hal_layer
 
-typedef enum {
+typedef enum
+{
 	PORT_A = 0,
 	PORT_B = 1,
 } GPIO_PORT;
 
-typedef enum {
+typedef enum
+{
 	PIN_INPUT=0,
 	PIN_OUTPUT
 } PinDirection;
 
-typedef enum {
+typedef enum
+{
 	PullNone  = 0, //IN HIGHZ
 	PullUp    = 1,
 	PullDown  = 2,
@@ -46,7 +48,8 @@ typedef enum {
 } PinMode;
 
 /* (((port)<<5)|(pin)) */
-typedef enum {
+typedef enum
+{
 	PA_0  = (PORT_A<<5|0),
 	PA_1  = (PORT_A<<5|1),
 	PA_2  = (PORT_A<<5|2),
@@ -127,7 +130,8 @@ typedef enum {
 	NC = (uint32_t)0xFFFFFFFF
 } PinName;
 
-typedef struct gpio_s {
+typedef struct gpio_s
+{
 	PinName pin;
 } gpio_t;
 

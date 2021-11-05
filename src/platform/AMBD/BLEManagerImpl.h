@@ -20,12 +20,12 @@
 
 #if CHIP_DEVICE_CONFIG_ENABLE_CHIPOBLE
 #include "FreeRTOS.h"
-#include "event_groups.h"
-#include "timers.h"
-#include "bt_matter_adapter_service.h"
 #include "app_msg.h"
 #include "bt_matter_adapter_peripheral_app.h"
+#include "bt_matter_adapter_service.h"
+#include "event_groups.h"
 #include "gap_msg.h"
+#include "timers.h"
 
 namespace chip {
 namespace DeviceLayer {
@@ -88,7 +88,8 @@ private:
 
     // ===== Private members reserved for use by this class only.
 
-    typedef enum {
+    typedef enum
+    {
 	BC_DEV_DISABLED            = 0x0,
 	BC_DEV_INIT                = 0x1,
 	BC_DEV_IDLE                = 0x2,

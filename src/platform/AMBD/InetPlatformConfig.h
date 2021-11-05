@@ -1,7 +1,6 @@
 /*
  *
  *    Copyright (c) 2020 Project CHIP Authors
- *    Copyright (c) 2018 Nest Labs, Inc.
  *    All rights reserved.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +25,6 @@
 
 #pragma once
 
-
 // ==================== Platform Adaptations ====================
 
 #define INET_CONFIG_ERROR_TYPE int32_t
@@ -45,3 +43,5 @@
 #ifndef INET_CONFIG_NUM_UDP_ENDPOINTS
 #define INET_CONFIG_NUM_UDP_ENDPOINTS 10
 #endif // INET_CONFIG_NUM_UDP_ENDPOINTS
+
+#define INET_CONFIG_ENABLE_IPV4 1

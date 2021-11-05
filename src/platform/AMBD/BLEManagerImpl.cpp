@@ -23,8 +23,8 @@
  */
 
 /* this file behaves like a config.h, comes first */
-#include <platform/internal/CHIPDeviceLayerInternal.h>
 #include <crypto/CHIPCryptoPAL.h>
+#include <platform/internal/CHIPDeviceLayerInternal.h>
 
 #if CHIP_DEVICE_CONFIG_ENABLE_CHIPOBLE
 #include <ble/CHIPBleServiceData.h>
@@ -33,21 +33,19 @@
 #include "timers.h"
 
 //Ameba BLE related header files
-#include "gap_conn_le.h"
-#include "bt_matter_adapter_service.h"
-#include "bt_matter_adapter_app_task.h"
 #include "bt_matter_adapter_app_main.h"
+#include "bt_matter_adapter_app_task.h"
 #include "bt_matter_adapter_peripheral_app.h"
+#include "bt_matter_adapter_service.h"
 #include "bte.h"
+#include "gap.h"
+#include "gap_adv.h"
+#include "gap_conn_le.h"
+#include "os_sched.h"
+#include "profile_server.h"
 #include "rtk_coex.h"
 #include "trace_app.h"
-#include "gap_adv.h"
 #include "wifi_conf.h"
-#include "gap_adv.h"
-#include "gap.h"
-#include "os_sched.h"
-#include "bt_matter_adapter_service.h"
-#include "profile_server.h"
 //#include "complete_ble_service.h"
 #include "app_msg.h"
 
@@ -92,7 +90,8 @@ EventGroupHandle_t bleAppTaskLoopEvent;
 uint8_t device_id;
 
 /** Type of UUID */
-enum {
+enum
+{
     /** 16-bit UUID (BT SIG assigned) */
     BLE_UUID_TYPE_16 = 16,
 
@@ -103,13 +102,15 @@ enum {
     BLE_UUID_TYPE_128 = 128,
 };
 
-typedef struct {
+typedef struct
+{
     /** Type of the UUID */
     uint8_t type;
 } ble_uuid_t;
 
 /** 16-bit UUID */
-typedef struct {
+typedef struct
+{
     ble_uuid_t u;
     uint16_t value;
 } ble_uuid16_t;
@@ -174,7 +175,7 @@ void BLEManagerImpl::HandleTXCharCCCDWrite(int conn_id, int indicationsEnabled, 
         // If indications are not already enabled for the connection...
         if (!IsSubscribed(conn_id))
         {
-            // Record that indications have been enabled for this connection.  If this fails because
+            // Record that indications have been enabled for this connection.
             err = SetSubscribed(conn_id);
             VerifyOrExit(err != CHIP_ERROR_NO_MEMORY, err = CHIP_NO_ERROR);
             SuccessOrExit(err);
@@ -410,10 +411,7 @@ CHIP_ERROR BLEManagerImpl::_SetDeviceName(const char * deviceName)
 
     if (deviceName != NULL && deviceName[0] != 0)
     {
-        if (strlen(deviceName) >= kMaxDeviceNameLength)
-        {
-            return CHIP_ERROR_INVALID_ARGUMENT;
-        }
+        VerifyOrExit(strlen(deviceName) >= kMaxDeviceNameLength, err = CHIP_ERROR_INVALID_ARGUMENT);
         strcpy(mDeviceName, deviceName);
         mFlags.Set(Flags::kDeviceNameSet);
         ChipLogProgress(DeviceLayer, "Setting device name to : \"%s\"", deviceName);
@@ -450,7 +448,8 @@ void BLEManagerImpl::_OnPlatformEvent(const ChipDeviceEvent * event)
 
     case DeviceEventType::kCHIPoBLEWriteReceived: {
             ChipLogProgress(DeviceLayer, "_OnPlatformEvent kCHIPoBLEWriteReceived");
-            HandleWriteReceived(event->CHIPoBLEWriteReceived.ConId, &CHIP_BLE_SVC_ID, &ChipUUID_CHIPoBLEChar_RX, PacketBufferHandle::Adopt(event->CHIPoBLEWriteReceived.Data));
+        HandleWriteReceived(event->CHIPoBLEWriteReceived.ConId, &CHIP_BLE_SVC_ID, &ChipUUID_CHIPoBLEChar_RX,
+                            PacketBufferHandle::Adopt(event->CHIPoBLEWriteReceived.Data));
         }
         break;
 
@@ -471,7 +470,8 @@ void BLEManagerImpl::_OnPlatformEvent(const ChipDeviceEvent * event)
     case DeviceEventType::kAccountPairingChange:
     case DeviceEventType::kWiFiConnectivityChange:
 
-// If CHIPOBLE_DISABLE_ADVERTISING_WHEN_PROVISIONED is enabled, when there is a change to the device's provisioning state and device is now fully provisioned, the CHIPoBLE advertising will be disabled.
+// If CHIPOBLE_DISABLE_ADVERTISING_WHEN_PROVISIONED is enabled, when there is a change to the device's provisioning state and device
+// is now fully provisioned, the CHIPoBLE advertising will be disabled.
 #if CHIP_DEVICE_CONFIG_CHIPOBLE_DISABLE_ADVERTISING_WHEN_PROVISIONED
     if (ConfigurationMgr().IsFullyProvisioned())
     {
@@ -523,19 +523,22 @@ uint16_t BLEManagerImpl::GetMTU(BLE_CONNECTION_OBJECT conId) const
     return mtu;
 }
 
-bool BLEManagerImpl::SendWriteRequest(BLE_CONNECTION_OBJECT conId, const ChipBleUUID * svcId, const ChipBleUUID * charId, PacketBufferHandle pBuf)
+bool BLEManagerImpl::SendWriteRequest(BLE_CONNECTION_OBJECT conId, const ChipBleUUID * svcId, const ChipBleUUID * charId,
+                                      PacketBufferHandle pBuf)
 {
     ChipLogError(DeviceLayer, "BLEManagerImpl::SendWriteRequest() not supported");
     return false;
 }
 
-bool BLEManagerImpl::SendReadRequest(BLE_CONNECTION_OBJECT conId, const ChipBleUUID * svcId, const ChipBleUUID * charId, PacketBufferHandle pBuf)
+bool BLEManagerImpl::SendReadRequest(BLE_CONNECTION_OBJECT conId, const ChipBleUUID * svcId, const ChipBleUUID * charId,
+                                     PacketBufferHandle pBuf)
 {
     ChipLogError(DeviceLayer, "BLEManagerImpl::SendReadRequest() not supported");
     return false;
 }
 
-bool BLEManagerImpl::SendReadResponse(BLE_CONNECTION_OBJECT conId, BLE_READ_REQUEST_CONTEXT requestContext, const ChipBleUUID * svcId, const ChipBleUUID * charId)
+bool BLEManagerImpl::SendReadResponse(BLE_CONNECTION_OBJECT conId, BLE_READ_REQUEST_CONTEXT requestContext,
+                                      const ChipBleUUID * svcId, const ChipBleUUID * charId)
 {
     ChipLogError(DeviceLayer, "BLEManagerImpl::SendReadResponse() not supported");
     return false;
@@ -546,13 +549,14 @@ void BLEManagerImpl::NotifyChipConnectionClosed(BLE_CONNECTION_OBJECT conId)
     // Nothing to do
 }
 
-bool BLEManagerImpl::SendIndication(BLE_CONNECTION_OBJECT conId, const ChipBleUUID * svcId, const ChipBleUUID * charId, PacketBufferHandle data)
+bool BLEManagerImpl::SendIndication(BLE_CONNECTION_OBJECT conId, const ChipBleUUID * svcId, const ChipBleUUID * charId,
+                                    PacketBufferHandle data)
 {
     CHIP_ERROR err = CHIP_NO_ERROR;
-    //struct os_mbuf * om;
     
     VerifyOrExit(IsSubscribed(conId), err = CHIP_ERROR_INVALID_ARGUMENT);
-    server_send_data(conId, bt_matter_adapter_service_id, BT_MATTER_ADAPTER_SERVICE_CHAR_NOTIFY_CCCD_INDEX-1, data->Start(), data->DataLength(), GATT_PDU_TYPE_NOTIFICATION);
+    server_send_data(conId, bt_matter_adapter_service_id, BT_MATTER_ADAPTER_SERVICE_CHAR_NOTIFY_CCCD_INDEX - 1, data->Start(),
+                     data->DataLength(), GATT_PDU_TYPE_NOTIFICATION);
 
 exit:
     if (err != CHIP_NO_ERROR)
@@ -614,12 +618,14 @@ CHIP_ERROR BLEManagerImpl::ConfigureAdvertisingData(void)
     memcpy(&advData[index], &deviceIdInfo, sizeof(deviceIdInfo));
     index = static_cast<uint8_t>(index + sizeof(deviceIdInfo));
 
-    if (mFlags.Has(Flags::kFastAdvertisingEnabled)) {
+    if (mFlags.Has(Flags::kFastAdvertisingEnabled))
+    {
 	    adv_int_min = CHIP_DEVICE_CONFIG_BLE_FAST_ADVERTISING_INTERVAL_MIN;
 	    adv_int_max = CHIP_DEVICE_CONFIG_BLE_FAST_ADVERTISING_INTERVAL_MAX;
 	    bleAdvTimeoutMs = CHIP_DEVICE_CONFIG_BLE_ADVERTISING_INTERVAL_CHANGE_TIME;
     }
-    else {
+    else
+    {
 	    adv_int_min = CHIP_DEVICE_CONFIG_BLE_SLOW_ADVERTISING_INTERVAL_MIN;
 	    adv_int_max = CHIP_DEVICE_CONFIG_BLE_SLOW_ADVERTISING_INTERVAL_MAX;
 	    bleAdvTimeoutMs = CHIP_DEVICE_CONFIG_BLE_ADVERTISING_TIMEOUT;
@@ -648,7 +654,6 @@ CHIP_ERROR BLEManagerImpl::StartAdvertising(void)
     mFlags.Clear(Flags::kRestartAdvertising);
 
     if (err == CHIP_NO_ERROR)
-    /* schedule NFC emulation stop */
     {
         ChipDeviceEvent advChange;
         advChange.Type = DeviceEventType::kCHIPoBLEAdvertisingChange;
@@ -704,7 +709,8 @@ void BLEManagerImpl::DriveBLEState(void)
     // Check if BLE stack is initialized
     VerifyOrExit(mFlags.Has(Flags::kAMEBABLEStackInitialized), /* */);
 
-// If CHIP_DEVICE_CONFIG_CHIPOBLE_DISABLE_ADVERTISING_WHEN_PROVISIONED is enabled and the device is fully provisioned, the CHIPoBLE advertising will be disabled.
+// If CHIP_DEVICE_CONFIG_CHIPOBLE_DISABLE_ADVERTISING_WHEN_PROVISIONED is enabled and the device is fully provisioned, the CHIPoBLE
+// advertising will be disabled.
 #if CHIP_DEVICE_CONFIG_CHIPOBLE_DISABLE_ADVERTISING_WHEN_PROVISIONED
     if (ConfigurationMgr().IsFullyProvisioned())
     {
@@ -749,16 +755,13 @@ void BLEManagerImpl::DriveBLEState(intptr_t arg)
  * BLE App Task Processing
  *******************************************************************************/
 
-
 /*******************************************************************************
  * BLE stack callbacks
  *******************************************************************************/
 
-
 /*******************************************************************************
  * Add to message queue functions
  *******************************************************************************/
-
 
 /*******************************************************************************
  * FreeRTOS Task Management Functions
@@ -768,7 +771,7 @@ void BLEManagerImpl::BleAdvTimeoutHandler(TimerHandle_t xTimer)
 {
     if (sInstance.mFlags.Has(Flags::kFastAdvertisingEnabled))
     {
-        ChipLogDetail(DeviceLayer, "bleAdv Timeout : Start slow advertisment");
+        ChipLogDetail(DeviceLayer, "bleAdv Timeout : Start slow advertisement");
 
         sInstance.mFlags.Clear(Flags::kFastAdvertisingEnabled);
         // Stop advertising, change interval and restart it;
@@ -876,11 +879,13 @@ CHIP_ERROR BLEManagerImpl::ble_svr_gap_msg_event(void *param, T_IO_MSG *p_gap_ms
     {
     case GAP_MSG_LE_CONN_STATE_CHANGE:
         /* A new connection was established or a connection attempt failed */
-        if(new_state==GAP_CONN_STATE_CONNECTED) {
+        if (new_state == GAP_CONN_STATE_CONNECTED)
+        {
                 err = sInstance.HandleGAPConnect(conn_id);
                 SuccessOrExit(err);
         }
-        else if(new_state==GAP_CONN_STATE_DISCONNECTED) {
+        else if (new_state == GAP_CONN_STATE_DISCONNECTED)
+        {
                 err = sInstance.HandleGAPDisconnect(conn_id, disc_cause);
                 SuccessOrExit(err);
         }
@@ -915,8 +920,7 @@ CHIP_ERROR BLEManagerImpl::ble_svr_gap_event(void *param, int cb_type, void *p_c
 #if defined(CONFIG_PLATFORM_8721D)
 		case GAP_MSG_LE_DATA_LEN_CHANGE_INFO:
             APP_PRINT_INFO3("GAP_MSG_LE_DATA_LEN_CHANGE_INFO: conn_id %d, tx octets 0x%x, max_tx_time 0x%x",
-							p_data->p_le_data_len_change_info->conn_id,
-							p_data->p_le_data_len_change_info->max_tx_octets,
+                        p_data->p_le_data_len_change_info->conn_id, p_data->p_le_data_len_change_info->max_tx_octets,
 							p_data->p_le_data_len_change_info->max_tx_time);
 			break;
 #endif
@@ -928,7 +932,6 @@ CHIP_ERROR BLEManagerImpl::ble_svr_gap_event(void *param, int cb_type, void *p_c
 		}
     return err;
 }
-
 
 CHIP_ERROR BLEManagerImpl::gatt_svr_chr_access(void *param, T_SERVER_ID service_id, TBTCONFIG_CALLBACK_DATA *p_data)
 {
@@ -950,7 +953,9 @@ CHIP_ERROR BLEManagerImpl::gatt_svr_chr_access(void *param, T_SERVER_ID service_
         default:
             break;
         }
-    } else {
+    }
+    else
+    {
 	    uint8_t conn_id = p_data->conn_id;
 	    T_SERVICE_CALLBACK_TYPE msg_type = p_data->msg_type;
 	    uint8_t *p_value = p_data->msg_data.write.p_value;
@@ -965,23 +970,20 @@ CHIP_ERROR BLEManagerImpl::gatt_svr_chr_access(void *param, T_SERVER_ID service_
             sInstance.HandleRXCharWrite(p_value, len, conn_id);
             break;
 
-		case SERVICE_CALLBACK_TYPE_INDIFICATION_NOTIFICATION:
-        {
+        case SERVICE_CALLBACK_TYPE_INDIFICATION_NOTIFICATION: {
 		    TSIMP_CALLBACK_DATA *pp_data;
 		    pp_data = (TSIMP_CALLBACK_DATA *)p_data;
 		    switch (pp_data->msg_data.notification_indification_index)
 		    {
-		    case SIMP_NOTIFY_INDICATE_V3_ENABLE:
-			    {
-				    sInstance.HandleTXCharCCCDWrite(conn_id, 0, 1);
-			    }
-			    break;
+                         case SIMP_NOTIFY_INDICATE_V3_ENABLE: {
+                             sInstance.HandleTXCharCCCDWrite(conn_id, 0, 1);
+			 }
+			 break;
 
-		    case SIMP_NOTIFY_INDICATE_V3_DISABLE:
-			    {
-				    sInstance.HandleTXCharCCCDWrite(conn_id, 0, 0);
-			    }
-			    break;
+                         case SIMP_NOTIFY_INDICATE_V3_DISABLE: {
+                             sInstance.HandleTXCharCCCDWrite(conn_id, 0, 0);
+                         }
+                         break;
 		    }
 	    }
 	    break;

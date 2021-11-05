@@ -1,7 +1,6 @@
 /*
  *
  *    Copyright (c) 2020 Project CHIP Authors
- *    Copyright (c) 2018 Nest Labs, Inc.
  *    All rights reserved.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,14 +27,15 @@
 #include <support/TimeUtils.h>
 #include <support/logging/CHIPLogging.h>
 
-#include <time.h>
 #include "task.h"
+#include <time.h>
 
 extern void rtc_init(void);
 extern time_t rtc_read(void);
 extern void rtc_write(time_t t);
 
-struct rtkTimeVal {
+struct rtkTimeVal
+{
     uint32_t    tv_sec;     /* seconds */
     uint32_t    tv_usec;    /* microseconds */
 };
@@ -63,11 +63,9 @@ uint64_t GetClock_MonotonicHiRes(void)
 CHIP_ERROR GetClock_RealTime(uint64_t & curTime)
 {
     time_t seconds;
-    //struct tm *timeinfo;
     struct rtkTimeVal tv;
 
     seconds = rtc_read();
-    //timeinfo = localtime(&seconds);
 
     tv.tv_sec = (uint32_t)seconds;
     tv.tv_usec = 0;
@@ -84,11 +82,9 @@ CHIP_ERROR GetClock_RealTime(uint64_t & curTime)
 CHIP_ERROR GetClock_RealTimeMS(uint64_t & curTime)
 {
     time_t seconds;
-    //struct tm *timeinfo;
     struct rtkTimeVal tv;
 
     seconds = rtc_read();
-    //timeinfo = localtime(&seconds);
 
     tv.tv_sec = (uint32_t)seconds;
     tv.tv_usec = 0;

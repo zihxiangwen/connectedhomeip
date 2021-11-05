@@ -25,19 +25,20 @@
 #include "DeviceCallbacks.h"
 
 #include "CHIPDeviceManager.h"
-#include <app/util/af.h>
-#include "Globals.h"
-#include "LEDWidget.h"
 #include <app-common/zap-generated/attribute-id.h>
 #include <app-common/zap-generated/cluster-id.h>
 #include <app/Command.h>
 #include <app/server/Dnssd.h>
+#include <app/util/af.h>
 #include <app/util/basic-types.h>
 #include <app/util/util.h>
 #include <lib/dnssd/Advertiser.h>
 #include <support/CodeUtils.h>
 #include <support/logging/CHIPLogging.h>
 #include <support/logging/Constants.h>
+
+#include "Globals.h"
+#include "LEDWidget.h"
 
 static const char * TAG = "app-devicecallbacks";
 
@@ -107,37 +108,38 @@ void DeviceCallbacks::OnInternetConnectivityChange(const ChipDeviceEvent * event
 {
     if (event->InternetConnectivityChange.IPv4 == kConnectivity_Established)
     {
-        printf("Server ready at: %s:%d", event->InternetConnectivityChange.address, CHIP_PORT);
+        ChipLogProgress(DeviceLayer, "Server ready at: %s:%d", event->InternetConnectivityChange.address, CHIP_PORT);
         chip::app::DnssdServer::Instance().StartServer();
     }
     else if (event->InternetConnectivityChange.IPv4 == kConnectivity_Lost)
     {
-        printf("Lost IPv4 connectivity...");
+        ChipLogProgress(DeviceLayer, "Lost IPv4 connectivity...");
     }
     if (event->InternetConnectivityChange.IPv6 == kConnectivity_Established)
     {
-        printf("IPv6 Server ready...");
+        ChipLogProgress(DeviceLayer, "IPv6 Server ready...");
         chip::app::DnssdServer::Instance().StartServer();
     }
     else if (event->InternetConnectivityChange.IPv6 == kConnectivity_Lost)
     {
-        printf("Lost IPv6 connectivity...");
+        ChipLogProgress(DeviceLayer, "Lost IPv6 connectivity...");
     }
 }
-
 
  void DeviceCallbacks::OnSessionEstablished(const ChipDeviceEvent * event)
  {
       if (event->SessionEstablished.IsCommissioner)
       {
-          printf("Commissioner detected!");
+        ChipLogProgress(DeviceLayer, "Commissioner detected!");
       }
  }
 
 void DeviceCallbacks::OnOnOffPostAttributeChangeCallback(EndpointId endpointId, AttributeId attributeId, uint8_t * value)
 {
-    VerifyOrExit(attributeId == ZCL_ON_OFF_ATTRIBUTE_ID, printf(TAG, "Unhandled Attribute ID: '0x%04x", attributeId));
-    VerifyOrExit(endpointId == 1 || endpointId == 2, printf(TAG, "Unexpected EndPoint ID: `0x%02x'", endpointId));
+    VerifyOrExit(attributeId == ZCL_ON_OFF_ATTRIBUTE_ID,
+                 ChipLogError(DeviceLayer, TAG, "Unhandled Attribute ID: '0x%04x", attributeId));
+    VerifyOrExit(endpointId == 1 || endpointId == 2,
+                 ChipLogError(DeviceLayer, TAG, "Unexpected EndPoint ID: `0x%02x'", endpointId));
 
     // At this point we can assume that value points to a bool value.
     statusLED1.Set(*value);
@@ -150,21 +152,20 @@ void IdentifyTimerHandler(Layer * systemLayer, void * appState, CHIP_ERROR error
 {
     if (identifyTimerCount)
     {
-        // Decrement the timer count.
         identifyTimerCount--;
     }
 }
 
 void DeviceCallbacks::OnIdentifyPostAttributeChangeCallback(EndpointId endpointId, AttributeId attributeId, uint8_t * value)
 {
-    VerifyOrExit(attributeId == ZCL_IDENTIFY_TIME_ATTRIBUTE_ID, printf ("[%s] Unhandled Attribute ID: '0x%04x", TAG, attributeId));
-    VerifyOrExit(endpointId == 1, printf("[%s] Unexpected EndPoint ID: `0x%02x'", TAG, endpointId));
+    VerifyOrExit(attributeId == ZCL_IDENTIFY_TIME_ATTRIBUTE_ID,
+                 ChipLogError(DeviceLayer, "[%s] Unhandled Attribute ID: '0x%04x", TAG, attributeId));
+    VerifyOrExit(endpointId == 1, ChipLogError(DeviceLayer, "[%s] Unexpected EndPoint ID: `0x%02x'", TAG, endpointId));
 
     // timerCount represents the number of callback executions before we stop the timer.
     // value is expressed in seconds and the timer is fired every 250ms, so just multiply value by 4.
     // Also, we want timerCount to be odd number, so the ligth state ends in the same state it starts.
     identifyTimerCount = (*value) * 4;
-
 exit:
     return;
 }
@@ -177,7 +178,8 @@ bool emberAfBasicClusterMfgSpecificPingCallback(chip::app::Command * commandObj)
 
 void DeviceCallbacks::OnLevelControlAttributeChangeCallback(EndpointId endpointId, AttributeId attributeId, uint8_t * value)
 {
-    VerifyOrExit(attributeId == ZCL_CURRENT_LEVEL_ATTRIBUTE_ID, printf("[%s] Unhandled Attribute ID: '0x%04x", TAG, attributeId));
+    VerifyOrExit(attributeId == ZCL_CURRENT_LEVEL_ATTRIBUTE_ID, 
+                 ChipLogError(DeviceLayer, TAG, "Unhandled Attribute ID: '0x%04x", attributeId));
 
     ChipLogProgress(Zcl, "New level: %u", *value);
 
@@ -188,8 +190,8 @@ exit:
 void DeviceCallbacks::OnColorControlAttributeChangeCallback(EndpointId endpointId, AttributeId attributeId, uint8_t * value)
 {
     VerifyOrExit(attributeId == ZCL_COLOR_CONTROL_CURRENT_HUE_ATTRIBUTE_ID ||
-                     attributeId == ZCL_COLOR_CONTROL_CURRENT_SATURATION_ATTRIBUTE_ID,
-                 printf("[%s] Unhandled Attribute ID: '0x%04x", TAG, attributeId));
+                 attributeId == ZCL_COLOR_CONTROL_CURRENT_SATURATION_ATTRIBUTE_ID,
+                 ChipLogError(DeviceLayer, TAG, "Unhandled Attribute ID: '0x%04x", attributeId));
 
     uint8_t hue, saturation;
     if (attributeId == ZCL_COLOR_CONTROL_CURRENT_HUE_ATTRIBUTE_ID)

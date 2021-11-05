@@ -1,6 +1,7 @@
 /*
  *
  *    Copyright (c) 2020 Project CHIP Authors
+ *    All rights reserved.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -26,16 +27,16 @@
 
 #pragma once
 
-#include <lib/core/CHIPCore.h>
-#include <lib/core/CHIPError.h>
+#include <core/CHIPCore.h>
+#include <core/CHIPError.h>
 #include <platform/CHIPDeviceLayer.h>
 
-#include <lib/support/DLLUtil.h>
+#include <support/DLLUtil.h>
 
 #include <stdarg.h>
 #include <stdlib.h>
 
-#include <app/util/af-types.h>
+#include "af-types.h"
 
 namespace chip {
 namespace DeviceManager {

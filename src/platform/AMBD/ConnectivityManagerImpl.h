@@ -185,4 +185,4 @@ inline ConnectivityManagerImpl & ConnectivityMgrImpl(void)
 }
 
 } // namespace DeviceLayer
-} // namespace chipd
+} // namespace chip

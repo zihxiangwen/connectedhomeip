@@ -1,27 +1,44 @@
+/*
+ *
+ *    Copyright (c) 2020 Project CHIP Authors
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 #include <platform_stdlib.h>
 
-#include "Globals.h"
-#include "LEDWidget.h"
 #include "CHIPDeviceManager.h"
 #include "DeviceCallbacks.h"
-#include "Server.h"
-
-#include <app/clusters/identify-server/identify-server.h>
-#include <platform/CHIPDeviceLayer.h>
-#include <credentials/DeviceAttestationCredsProvider.h>
-#include <credentials/examples/DeviceAttestationCredsExample.h>
-#include <support/CHIPMem.h>
+#include "Globals.h"
+#include "LEDWidget.h"
 #include "chip_porting.h"
-
-#include <platform/AMBD/AMBDConfig.h>
-#include <app/server/OnboardingCodesUtil.h>
-#include <lib/support/ErrorStr.h>
-#include <setup_payload/ManualSetupPayloadGenerator.h>
-#include <setup_payload/QRCodeSetupPayloadGenerator.h>
-
 #include <lwip_netconf.h>
 
-extern "C"{ void * __dso_handle = 0 ;}
+#include <app/clusters/identify-server/identify-server.h>
+#include <app/server/OnboardingCodesUtil.h>
+#include <app/server/Server.h>
+#include <credentials/DeviceAttestationCredsProvider.h>
+#include <credentials/examples/DeviceAttestationCredsExample.h>
+#include <lib/support/ErrorStr.h>
+#include <platform/AMBD/AMBDConfig.h>
+#include <platform/CHIPDeviceLayer.h>
+#include <setup_payload/ManualSetupPayloadGenerator.h>
+#include <setup_payload/QRCodeSetupPayloadGenerator.h>
+#include <support/CHIPMem.h>
+
+extern "C" {
+void * __dso_handle = 0;
+}
 
 using namespace ::chip;
 using namespace ::chip::Credentials;
@@ -30,25 +47,6 @@ using namespace ::chip::DeviceLayer;
 
 #define QRCODE_BASE_URL "https://dhrishi.github.io/connectedhomeip/qrcode.html"
 #define EXAMPLE_VENDOR_TAG_IP 1
-
-namespace
-{
-    void SetupPretendDevices(void)
-    {
-        //TODO
-    }
-
-    class AppCallbacks : public AppDelegate
-    {
-    public:
-        void OnReceiveError() override { };
-        void OnRendezvousStarted() override {  };
-        void OnRendezvousStopped() override {};
-        void OnPairingWindowOpened() override { };
-        void OnPairingWindowClosed() override { };
-    };
-
-} // namespace
 
 #ifdef CONFIG_PLATFORM_8721D
 #define STATUS_LED_GPIO_NUM PB_5
@@ -64,7 +62,7 @@ void GetGatewayIP(char * ip_buf, size_t ip_len)
 {
     uint8_t *gateway = LwIP_GetGW(&xnetif[0]);
     sprintf(ip_buf, "%d.%d.%d.%d", gateway[0], gateway[1], gateway[2], gateway[3]);
-    printf("Got gateway ip: %s\r\n", ip_buf);
+    ChipLogProgress(DeviceLayer, "Got gateway ip: %s\r\n", ip_buf);
 }
 
 // need to check CONFIG_RENDEZVOUS_MODE
@@ -83,25 +81,25 @@ std::string createSetupPayload()
     err = ConfigurationMgr().GetSetupDiscriminator(discriminator);
     if (err != CHIP_NO_ERROR)
     {
-        printf("Couldn't get discriminator: %s\r\n", ErrorStr(err));
+        ChipLogError(DeviceLayer, "Couldn't get discriminator: %s\r\n", ErrorStr(err));
         return result;
     }
-    printf("Setup discriminator: %u (0x%x)\r\n", discriminator, discriminator);
+    ChipLogProgress(DeviceLayer, "Setup discriminator: %u (0x%x)\r\n", discriminator, discriminator);
 
     uint32_t setupPINCode;
     err = ConfigurationMgr().GetSetupPinCode(setupPINCode);
     if (err != CHIP_NO_ERROR)
     {
-        printf("Couldn't get setupPINCode: %s\r\n", ErrorStr(err));
+        ChipLogError(DeviceLayer, "Couldn't get setupPINCode: %s\r\n", ErrorStr(err));
         return result;
     }
-    printf("Setup PIN code: %u (0x%x)\r\n", setupPINCode, setupPINCode);
+    ChipLogProgress(DeviceLayer, "Setup PIN code: %u (0x%x)\r\n", setupPINCode, setupPINCode);
 
     uint16_t vendorId;
     err = ConfigurationMgr().GetVendorId(vendorId);
     if (err != CHIP_NO_ERROR)
     {
-        printf("Couldn't get vendorId: %s\r\n", ErrorStr(err));
+        ChipLogError(DeviceLayer, "Couldn't get vendorId: %s\r\n", ErrorStr(err));
         return result;
     }
 
@@ -109,7 +107,7 @@ std::string createSetupPayload()
     err = ConfigurationMgr().GetProductId(productId);
     if (err != CHIP_NO_ERROR)
     {
-        printf("Couldn't get productId: %s\r\n", ErrorStr(err));
+        ChipLogError(DeviceLayer, "Couldn't get productId: %s\r\n", ErrorStr(err));
         return result;
     }
 
@@ -145,11 +143,11 @@ std::string createSetupPayload()
 
         if (generator.payloadDecimalStringRepresentation(outCode) == CHIP_NO_ERROR)
         {
-            printf("Short Manual(decimal) setup code: %s\r\n", outCode.c_str());
+            ChipLogProgress(DeviceLayer, "Short Manual(decimal) setup code: %s\r\n", outCode.c_str());
         }
         else
         {
-            printf("Failed to get decimal setup code\r\n");
+            ChipLogError(DeviceLayer, "Failed to get decimal setup code\r\n");
         }
 
         payload.commissioningFlow = CommissioningFlow::kCustom;
@@ -158,17 +156,17 @@ std::string createSetupPayload()
         if (generator.payloadDecimalStringRepresentation(outCode) == CHIP_NO_ERROR)
         {
             // intentional extra space here to align the log with the short code
-            printf("Long Manual(decimal) setup code:  %s\r\n", outCode.c_str());
+            ChipLogProgress(DeviceLayer, "Long Manual(decimal) setup code:  %s\r\n", outCode.c_str());
         }
         else
         {
-            printf("Failed to get decimal setup code\r\n");
+            ChipLogError(DeviceLayer, "Failed to get decimal setup code\r\n");
         }
     }
 
     if (err != CHIP_NO_ERROR)
     {
-        printf("Couldn't get payload string %\r\n" CHIP_ERROR_FORMAT, err.Format());
+        ChipLogError(DeviceLayer, "Couldn't get payload string %\r\n" CHIP_ERROR_FORMAT, err.Format());
     }
     return result;
 };
@@ -252,48 +250,42 @@ Identify gIdentify1 = {
 
 extern "C" void ChipTest(void)
 {
-    printf("In ChipTest()\r\n");
+    ChipLogProgress(DeviceLayer, "All Clusters Demo!");
     CHIP_ERROR err = CHIP_NO_ERROR;
 
-    printf("initPrefr\n");
     initPref();
 
     //DCTTest();
 
     CHIPDeviceManager &deviceMgr = CHIPDeviceManager::GetInstance();
-    err = deviceMgr.Init(&EchoCallbacks);
 
+    err = deviceMgr.Init(&EchoCallbacks);
     if (err != CHIP_NO_ERROR)
     {
-        printf("DeviceManagerInit() - ERROR!\r\n");
+        ChipLogError(DeviceLayer, "DeviceManagerInit() - ERROR!\r\n");
     }
     else
     {
-        printf("DeviceManagerInit() - OK\r\n");
+        ChipLogProgress(DeviceLayer, "DeviceManagerInit() - OK\r\n");
     }
 
-    AppCallbacks callbacks;
-    chip::Server::GetInstance().Init(&callbacks);
+    chip::Server::GetInstance().Init();
 
     // Initialize device attestation config
     SetDeviceAttestationCredentialsProvider(Examples::GetExampleDACProvider());
 
-    SetupPretendDevices();
-
     std::string qrCodeText = createSetupPayload();
-    //ESP_LOGI(TAG, "QR CODE Text: '%s'", qrCodeText.c_str());
-    printf("QR CODE Text: '%s'\r\n", qrCodeText.c_str());
+    ChipLogProgress(DeviceLayer, "QR CODE Text: '%s'\r\n", qrCodeText.c_str());
 
     {
         std::vector<char> qrCode(3 * qrCodeText.size() + 1);
         err = EncodeQRCodeToUrl(qrCodeText.c_str(), qrCodeText.size(), qrCode.data(), qrCode.max_size());
         if (err == CHIP_NO_ERROR)
         {
-            //ESP_LOGI(TAG, "Copy/paste the below URL in a browser to see the QR CODE:\n\t%s?data=%s", QRCODE_BASE_URL, qrCode.data());
-            printf("Copy/paste the below URL in a browser to see the QR CODE:\n\t%s?data=%s", QRCODE_BASE_URL, qrCode.data());
+            ChipLogProgress(DeviceLayer, "Copy/paste the below URL in a browser to see the QR CODE:\n\t%s?data=%s \r\n",
+                            QRCODE_BASE_URL, qrCode.data());
         }
     }
-    printf("\n\n");
 
     statusLED1.Init(STATUS_LED_GPIO_NUM);
 

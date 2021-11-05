@@ -1,7 +1,6 @@
 /*
  *
  *    Copyright (c) 2020 Project CHIP Authors
- *    Copyright (c) 2018 Nest Labs, Inc.
  *    All rights reserved.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -54,3 +53,11 @@ struct ChipDeviceEvent;
 #ifndef CHIP_SYSTEM_CONFIG_NUM_TIMERS
 #define CHIP_SYSTEM_CONFIG_NUM_TIMERS 16
 #endif // CHIP_SYSTEM_CONFIG_NUM_TIMERS
+
+#define CHIP_SYSTEM_CONFIG_USE_ZEPHYR_NET_IF 0
+#define CHIP_SYSTEM_CONFIG_USE_BSD_IFADDRS 0
+#define CHIP_SYSTEM_CONFIG_USE_ZEPHYR_SOCKET_EXTENSIONS00
+#define CHIP_SYSTEM_CONFIG_USE_LWIP 1
+#define CHIP_SYSTEM_CONFIG_USE_SOCKETS 0
+#define CHIP_SYSTEM_CONFIG_USE_NETWORK_FRAMEWORK 0
+#define CHIP_SYSTEM_CONFIG_POSIX_LOCKING 0

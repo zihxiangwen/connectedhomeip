@@ -1,6 +1,7 @@
 /*
  *
  *    Copyright (c) 2020 Project CHIP Authors
+ *    All rights reserved.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -27,10 +28,9 @@
 #include "CHIPDeviceManager.h"
 #include <app/ConcreteAttributePath.h>
 #include <app/util/basic-types.h>
-#include <lib/support/CHIPMem.h>
-#include <lib/support/CodeUtils.h>
-#include <lib/support/ErrorStr.h>
-#include <setup_payload/SetupPayload.h>
+#include <support/CHIPMem.h>
+#include <support/CodeUtils.h>
+#include <support/ErrorStr.h>
 
 using namespace ::chip;
 
@@ -49,9 +49,6 @@ void CHIPDeviceManager::CommonDeviceEventHandler(const ChipDeviceEvent * event, 
     }
 }
 
-/**
- *
- */
 CHIP_ERROR CHIPDeviceManager::Init(CHIPDeviceManagerCallbacks * cb)
 {
     CHIP_ERROR err;
@@ -75,16 +72,7 @@ CHIP_ERROR CHIPDeviceManager::Init(CHIPDeviceManagerCallbacks * cb)
 
     // Start a task to run the CHIP Device event loop.
     err = PlatformMgr().StartEventLoopTask();
-    if (err != CHIP_NO_ERROR)
-    {
-        printf("StartEventLoopTask() - ERROR!\r\n");
-    }
-    else
-    {
-        printf("StartEventLoopTask() - OK\r\n");
-    }
-
-    // SuccessOrExit(err);
+    SuccessOrExit(err);
 
  exit:
      return err;

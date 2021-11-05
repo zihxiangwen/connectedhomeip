@@ -18,15 +18,16 @@
 
 /* this file behaves like a config.h, comes first */
 #include <platform/internal/CHIPDeviceLayerInternal.h>
-#include <platform/AMBD/AMBDConfig.h>
+
 #include <core/CHIPEncoding.h>
+#include <platform/AMBD/AMBDConfig.h>
 #include <support/CHIPMem.h>
 #include <support/CHIPMemString.h>
 #include <support/CodeUtils.h>
 #include <support/logging/CHIPLogging.h>
-#include "chip_porting.h"
 
-enum {
+enum
+{
     kPrefsTypeBoolean = 1,
     kPrefsTypeInteger = 2,
     kPrefsTypeString = 3,
@@ -80,7 +81,7 @@ CHIP_ERROR AMBDConfig::ReadConfigValue(Key key, bool & val)
 
     success = getPref_bool_new(key.Namespace, key.Name, &intVal);
     if (!success)
-        printf("getPref_u32_new: %s/%s failed\n", key.Namespace, key.Name);
+        ChipLogProgress(DeviceLayer, "getPref_u32_new: %s/%s failed\n", key.Namespace, key.Name);
 
     val = (intVal != 0);
 
@@ -96,7 +97,7 @@ CHIP_ERROR AMBDConfig::ReadConfigValue(Key key, uint32_t & val)
 
     success = getPref_u32_new(key.Namespace, key.Name, &val);
     if (!success)
-        printf("getPref_u32_new: %s/%s failed\n", key.Namespace, key.Name);
+        ChipLogProgress(DeviceLayer, "getPref_u32_new: %s/%s failed\n", key.Namespace, key.Name);
 
     if (success == 1)
         return CHIP_NO_ERROR;
@@ -110,13 +111,12 @@ CHIP_ERROR AMBDConfig::ReadConfigValue(Key key, uint64_t & val)
 
     success = getPref_u64_new(key.Namespace, key.Name, &val);
     if (!success)
-        printf("getPref_u32_new: %s/%s failed\n", key.Namespace, key.Name);
+        ChipLogProgress(DeviceLayer, "getPref_u32_new: %s/%s failed\n", key.Namespace, key.Name);
 
     if (success == 1)
         return CHIP_NO_ERROR;
     else
         return CHIP_DEVICE_ERROR_CONFIG_NOT_FOUND;
-
 }
 
 CHIP_ERROR AMBDConfig::ReadConfigValueStr(Key key, char * buf, size_t bufSize, size_t & outLen)
@@ -125,7 +125,7 @@ CHIP_ERROR AMBDConfig::ReadConfigValueStr(Key key, char * buf, size_t bufSize, s
 
     success = getPref_str_new(key.Namespace, key.Name, buf, bufSize, &outLen);
     if (!success)
-        printf("getPref_str_new: %s/%s failed\n", key.Namespace, key.Name);
+        ChipLogProgress(DeviceLayer, "getPref_str_new: %s/%s failed\n", key.Namespace, key.Name);
 
     if (success == 1)
     {
@@ -144,7 +144,7 @@ CHIP_ERROR AMBDConfig::ReadConfigValueBin(Key key, uint8_t * buf, size_t bufSize
 
     success = getPref_bin_new(key.Namespace, key.Name, buf, bufSize, &outLen);
     if (!success)
-        printf("getPref_bin_new: %s/%s failed\n", key.Namespace, key.Name);
+        ChipLogProgress(DeviceLayer, "getPref_bin_new: %s/%s failed\n", key.Namespace, key.Name);
 
     if (success == 1)
     {
@@ -155,7 +155,6 @@ CHIP_ERROR AMBDConfig::ReadConfigValueBin(Key key, uint8_t * buf, size_t bufSize
         outLen = 0;
         return CHIP_DEVICE_ERROR_CONFIG_NOT_FOUND;
     }
-
 }
 
 CHIP_ERROR AMBDConfig::WriteConfigValue(Key key, bool val)
@@ -169,7 +168,7 @@ CHIP_ERROR AMBDConfig::WriteConfigValue(Key key, bool val)
         value = 0;
     success = setPref_new(key.Namespace, key.Name, &value, 1);
     if (!success)
-        printf("setPref: %s/%s = %s failed\n", key.Namespace, key.Name, value ? "true" : "false");
+        ChipLogError(DeviceLayer, "setPref: %s/%s = %s failed\n", key.Namespace, key.Name, value ? "true" : "false");
 
     return CHIP_NO_ERROR;
 }
@@ -180,7 +179,7 @@ CHIP_ERROR AMBDConfig::WriteConfigValue(Key key, uint32_t val)
 
     success = setPref_new(key.Namespace, key.Name, (uint8_t *)&val, sizeof(uint32_t));
     if (!success)
-        printf("setPref: %s/%s = %d(0x%x) failed\n", key.Namespace, key.Name, val, val);
+        ChipLogError(DeviceLayer, "setPref: %s/%s = %d(0x%x) failed\n", key.Namespace, key.Name, val, val);
 
     return CHIP_NO_ERROR;
 }
@@ -191,7 +190,7 @@ CHIP_ERROR AMBDConfig::WriteConfigValue(Key key, uint64_t val)
 
     success = setPref_new(key.Namespace, key.Name, (uint8_t *)&val, sizeof(uint64_t));
     if (!success)
-        printf("setPref: %s/%s = %d(0x%x) failed\n", key.Namespace, key.Name, val, val);
+        ChipLogError(DeviceLayer, "setPref: %s/%s = %d(0x%x) failed\n", key.Namespace, key.Name, val, val);
 
     return CHIP_NO_ERROR;
 }
@@ -202,7 +201,7 @@ CHIP_ERROR AMBDConfig::WriteConfigValueStr(Key key, const char * str)
 
     success = setPref_new(key.Namespace, key.Name, (uint8_t *)str, strlen(str) + 1);
     if (!success)
-        printf("setPref: %s/%s = %s failed\n", key.Namespace, key.Name, str);
+        ChipLogError(DeviceLayer, "setPref: %s/%s = %s failed\n", key.Namespace, key.Name, str);
     return CHIP_NO_ERROR;
 }
 
@@ -228,7 +227,7 @@ CHIP_ERROR AMBDConfig::WriteConfigValueBin(Key key, const uint8_t * data, size_t
 
     success = setPref_new(key.Namespace, key.Name, (uint8_t *)data, dataLen);
     if (!success)
-        printf("setPref: %s/%s failed\n", key.Namespace, key.Name);
+        ChipLogError(DeviceLayer, "setPref: %s/%s failed\n", key.Namespace, key.Name);
 
     return CHIP_NO_ERROR;
 }
@@ -239,7 +238,7 @@ CHIP_ERROR AMBDConfig::ClearConfigValue(Key key)
 
     success = deleteKey(key.Namespace, key.Name);
     if (!success)
-        printf("%s : %s/%s failed\n",__FUNCTION__, key.Namespace, key.Name);
+        ChipLogProgress(DeviceLayer, "%s : %s/%s failed\n", __FUNCTION__, key.Namespace, key.Name);
 
     return CHIP_NO_ERROR;
 }
@@ -266,7 +265,7 @@ CHIP_ERROR AMBDConfig::EnsureNamespace(const char * ns)
     success = registerPref(ns);
     if (success != 0)
     {
-        printf("dct_register_module failed\n");
+        ChipLogError(DeviceLayer, "dct_register_module failed\n");
     }
 
     return CHIP_NO_ERROR;
@@ -279,7 +278,7 @@ CHIP_ERROR AMBDConfig::ClearNamespace(const char * ns)
     success = clearPref(ns);
     if (success != 0)
     {
-        printf("ClearNamespace failed\n");
+        ChipLogError(DeviceLayer, "ClearNamespace failed\n");
     }
 
     return CHIP_NO_ERROR;

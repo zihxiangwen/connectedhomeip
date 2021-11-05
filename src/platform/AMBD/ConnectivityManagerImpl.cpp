@@ -787,4 +787,4 @@ void ConnectivityManagerImpl::DHCPProcess(void)
 }
 
 } // namespace DeviceLayer
-} // namespace chipg
+} // namespace chip

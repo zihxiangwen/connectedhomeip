@@ -1,7 +1,6 @@
 /*
  *
  *    Copyright (c) 2020 Project CHIP Authors
- *    Copyright (c) 2018 Nest Labs, Inc.
  *    All rights reserved.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,15 +36,14 @@ CHIP_ERROR InitLwIPCoreLock(void);
 
 PlatformManagerImpl PlatformManagerImpl::sInstance;
 
-extern "C"
-{
+extern "C" {
     extern int rtw_get_random_bytes(void* dst, size_t size);
 }
 static int app_entropy_source(void *data, unsigned char *output, size_t len, size_t *olen )
 {
     *olen = 0;
 
-    if( len < sizeof(unsigned char) )
+    if (len == 0)
         return( 0 );
 
     rtw_get_random_bytes(output,len);
@@ -58,13 +56,11 @@ CHIP_ERROR PlatformManagerImpl::_InitChipStack(void)
 {
 
     CHIP_ERROR err;
-    //wifi_init_config_t cfg;
 
     // Make sure the LwIP core lock has been initialized
     err = Internal::InitLwIPCoreLock();
 
     SuccessOrExit(err);
-
 
     // TODO Wi-Fi Initialzation currently done through the example app needs to be moved into here.
     // for now we will let this happen that way and assume all is OK
@@ -78,7 +74,6 @@ CHIP_ERROR PlatformManagerImpl::_InitChipStack(void)
 
 exit:
     return err;
-
 }
 
 CHIP_ERROR PlatformManagerImpl::_GetCurrentHeapFree(uint64_t & currentHeapFree)

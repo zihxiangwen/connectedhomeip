@@ -1,6 +1,7 @@
 /*
  *
  *    Copyright (c) 2020 Project CHIP Authors
+ *    All rights reserved.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -24,6 +25,7 @@
 #pragma once
 
 // ==================== Platform Adaptations ====================
+#define CHIP_CONFIG_ERROR_CLASS 1
 
 #define CHIP_DEVICE_CONFIG_ENABLE_WIFI_STATION 0
 #define CHIP_DEVICE_CONFIG_ENABLE_WIFI_AP 0
@@ -55,13 +57,15 @@
 #endif // CHIP_DEVICE_CONFIG_CHIP_TASK_STACK_SIZE
 
 #ifndef CHIP_DEVICE_CONFIG_THREAD_TASK_STACK_SIZE
-#define CHIP_DEVICE_CONFIG_THREAD_TASK_STACK_SIZE 8192
+#define CHIP_DEVICE_CONFIG_THREAD_TASK_STACK_SIZE 4096
 #endif // CHIP_DEVICE_CONFIG_THREAD_TASK_STACK_SIZE
 
 #define CHIP_DEVICE_CONFIG_ENABLE_WIFI_TELEMETRY 0
 #define CHIP_DEVICE_CONFIG_ENABLE_THREAD_TELEMETRY 0
 #define CHIP_DEVICE_CONFIG_ENABLE_THREAD_TELEMETRY_FULL 0
 #define CHIP_DEVICE_CONFIG_LOG_PROVISIONING_HASH 0
+
+#define CHIP_DEVICE_LAYER_NONE 0
 
 // Use a default pairing code if one hasn't been provisioned in flash.
 #define CHIP_DEVICE_CONFIG_USE_TEST_SETUP_PIN_CODE 20202021
