@@ -151,6 +151,13 @@ void MatterPostAttributeChangeCallback(const chip::app::ConcreteAttributePath & 
         }
         ChipLogProgress(Zcl, "New hue: %d, New saturation: %d ", hue, saturation);
     }
+    else if (clusterId == ZCL_IDENTIFY_CLUSTER_ID)
+    {
+        if (attributeId == ZCL_IDENTIFY_TIME_ATTRIBUTE_ID)
+        {
+            ChipLogProgress(Zcl, "ZCL_IDENTIFY_TIME_ATTRIBUTE_ID value: %u ", *value);
+        }
+    }
     else
     {
         ChipLogProgress(Zcl, "Unknown cluster ID: %" PRIx32, clusterId);

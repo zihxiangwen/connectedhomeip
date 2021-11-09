@@ -13,6 +13,7 @@
 #include "chip_porting.h"
 
 #include <platform/AMBD/AMBDConfig.h>
+#include <app/clusters/identify-server/identify-server.h>
 #include <app/server/OnboardingCodesUtil.h>
 #include <lib/support/ErrorStr.h>
 #include <setup_payload/ManualSetupPayloadGenerator.h>
@@ -170,6 +171,20 @@ std::string createSetupPayload()
         printf("Couldn't get payload string %\r\n" CHIP_ERROR_FORMAT, err.Format());
     }
     return result;
+};
+
+Identify gIdentify0 = {
+    chip::EndpointId{ 0 },
+    [](Identify *) { ChipLogProgress(Zcl, "onIdentifyStart"); },
+    [](Identify *) { ChipLogProgress(Zcl, "onIdentifyStop"); },
+    EMBER_ZCL_IDENTIFY_IDENTIFY_TYPE_VISIBLE_LED,
+};
+
+Identify gIdentify1 = {
+    chip::EndpointId{ 1 },
+    [](Identify *) { ChipLogProgress(Zcl, "onIdentifyStart"); },
+    [](Identify *) { ChipLogProgress(Zcl, "onIdentifyStop"); },
+    EMBER_ZCL_IDENTIFY_IDENTIFY_TYPE_VISIBLE_LED,
 };
 
 extern "C" void ChipTest(void)
