@@ -132,7 +132,7 @@ void MatterPostAttributeChangeCallback(const chip::app::ConcreteAttributePath & 
         if ((attributeId != ZCL_COLOR_CONTROL_CURRENT_HUE_ATTRIBUTE_ID) &&
             (attributeId != ZCL_COLOR_CONTROL_CURRENT_SATURATION_ATTRIBUTE_ID))
         {
-            ChipLogProgress(Zcl, "Unknown attribute ID: %" PRIx32, attributeId);
+            //ChipLogProgress(Zcl, "Unknown attribute ID: %" PRIx32, attributeId);
             return;
         }
 
@@ -149,7 +149,7 @@ void MatterPostAttributeChangeCallback(const chip::app::ConcreteAttributePath & 
             emberAfReadServerAttribute(endpointId, ZCL_COLOR_CONTROL_CLUSTER_ID, ZCL_COLOR_CONTROL_CURRENT_HUE_ATTRIBUTE_ID, &hue,
                                        sizeof(uint8_t));
         }
-        ChipLogProgress(Zcl, "New hue: %d, New saturation: %d ", hue, saturation);
+        //ChipLogProgress(Zcl, "New hue: %d, New saturation: %d ", hue, saturation);
     }
     else if (clusterId == ZCL_IDENTIFY_CLUSTER_ID)
     {
