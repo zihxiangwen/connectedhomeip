@@ -155,14 +155,6 @@ void DispatchServerCommand(CommandHandler * apCommandObj, const ConcreteCommandP
         }
             break;
         }
-        case Commands::MoveColor::Id: {
-        Commands::MoveColor::DecodableType commandData;
-        TLVError = DataModel::Decode(aDataTlv, commandData);
-        if (TLVError == CHIP_NO_ERROR) {
-        wasHandled = emberAfColorControlClusterMoveColorCallback(apCommandObj, aCommandPath, commandData);
-        }
-            break;
-        }
         case Commands::MoveColorTemperature::Id: {
         Commands::MoveColorTemperature::DecodableType commandData;
         TLVError = DataModel::Decode(aDataTlv, commandData);
@@ -184,14 +176,6 @@ void DispatchServerCommand(CommandHandler * apCommandObj, const ConcreteCommandP
         TLVError = DataModel::Decode(aDataTlv, commandData);
         if (TLVError == CHIP_NO_ERROR) {
         wasHandled = emberAfColorControlClusterMoveSaturationCallback(apCommandObj, aCommandPath, commandData);
-        }
-            break;
-        }
-        case Commands::MoveToColor::Id: {
-        Commands::MoveToColor::DecodableType commandData;
-        TLVError = DataModel::Decode(aDataTlv, commandData);
-        if (TLVError == CHIP_NO_ERROR) {
-        wasHandled = emberAfColorControlClusterMoveToColorCallback(apCommandObj, aCommandPath, commandData);
         }
             break;
         }
@@ -224,14 +208,6 @@ void DispatchServerCommand(CommandHandler * apCommandObj, const ConcreteCommandP
         TLVError = DataModel::Decode(aDataTlv, commandData);
         if (TLVError == CHIP_NO_ERROR) {
         wasHandled = emberAfColorControlClusterMoveToSaturationCallback(apCommandObj, aCommandPath, commandData);
-        }
-            break;
-        }
-        case Commands::StepColor::Id: {
-        Commands::StepColor::DecodableType commandData;
-        TLVError = DataModel::Decode(aDataTlv, commandData);
-        if (TLVError == CHIP_NO_ERROR) {
-        wasHandled = emberAfColorControlClusterStepColorCallback(apCommandObj, aCommandPath, commandData);
         }
             break;
         }
@@ -1146,6 +1122,12 @@ void DispatchSingleClusterCommand(const ConcreteCommandPath & aCommandPath, TLV:
     case Clusters::GeneralCommissioning::Id:
         Clusters::GeneralCommissioning::DispatchServerCommand(apCommandObj, aCommandPath, aReader);
         break;
+    case Clusters::Groups::Id:
+        Clusters::Groups::DispatchServerCommand(apCommandObj, aCommandPath, aReader);
+        break;
+    case Clusters::Identify::Id:
+        Clusters::Identify::DispatchServerCommand(apCommandObj, aCommandPath, aReader);
+        break;
     case Clusters::LevelControl::Id:
         Clusters::LevelControl::DispatchServerCommand(apCommandObj, aCommandPath, aReader);
         break;
@@ -1157,6 +1139,9 @@ void DispatchSingleClusterCommand(const ConcreteCommandPath & aCommandPath, TLV:
         break;
     case Clusters::OperationalCredentials::Id:
         Clusters::OperationalCredentials::DispatchServerCommand(apCommandObj, aCommandPath, aReader);
+        break;
+    case Clusters::Scenes::Id:
+        Clusters::Scenes::DispatchServerCommand(apCommandObj, aCommandPath, aReader);
         break;
     case Clusters::SoftwareDiagnostics::Id:
         Clusters::SoftwareDiagnostics::DispatchServerCommand(apCommandObj, aCommandPath, aReader);
