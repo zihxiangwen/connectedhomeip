@@ -309,12 +309,6 @@
   /* 2356 - FeatureMap, */\
   0x00, 0x00, 0x00, 0x00, \
 \
-\
-  /* Endpoint: 1, Cluster: Color Control (server), big-endian */\
-\
-  /* 2360 - compensation text, */\
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
-\
 }
 
 
@@ -602,17 +596,11 @@
   /* 2356 - FeatureMap, */\
   0x00, 0x00, 0x00, 0x00, \
 \
-\
-  /* Endpoint: 1, Cluster: Color Control (server), little-endian */\
-\
-  /* 2360 - compensation text, */\
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
-\
 }
 
 #endif // BIGENDIAN_CPU
 
-#define GENERATED_DEFAULTS_COUNT (86)
+#define GENERATED_DEFAULTS_COUNT (85)
 
 #define ZAP_TYPE(type) ZCL_ ## type ## _ATTRIBUTE_TYPE
 #define ZAP_LONG_DEFAULTS_INDEX(index) {(uint8_t*)(&generatedDefaults[index])}
@@ -630,6 +618,10 @@
 // This is an array of EmberAfAttributeMetadata structures.
 #define GENERATED_ATTRIBUTE_COUNT 202
 #define GENERATED_ATTRIBUTES { \
+\
+  /* Endpoint: 0, Cluster: On/Off (server) */ \
+  { 0x0000, ZAP_TYPE(BOOLEAN), 1, 0, ZAP_SIMPLE_DEFAULT(0x00) }, /* OnOff */  \
+  { 0xFFFD, ZAP_TYPE(INT16U), 2, 0, ZAP_SIMPLE_DEFAULT(2) }, /* ClusterRevision */  \
 \
   /* Endpoint: 0, Cluster: Descriptor (server) */ \
   { 0x0000, ZAP_TYPE(ARRAY), 0, ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE), ZAP_EMPTY_DEFAULT() }, /* device list */  \
@@ -841,8 +833,6 @@
   { 0x0002, ZAP_TYPE(INT16U), 2, 0, ZAP_SIMPLE_DEFAULT(0x0000) }, /* remaining time */  \
   { 0x0003, ZAP_TYPE(INT16U), 2, 0, ZAP_SIMPLE_DEFAULT(0x616B) }, /* current x */  \
   { 0x0004, ZAP_TYPE(INT16U), 2, 0, ZAP_SIMPLE_DEFAULT(0x607D) }, /* current y */  \
-  { 0x0005, ZAP_TYPE(ENUM8), 1, 0, ZAP_SIMPLE_DEFAULT(0x0) }, /* drift compensation */  \
-  { 0x0006, ZAP_TYPE(CHAR_STRING), 255, 0, ZAP_LONG_DEFAULTS_INDEX(2360) }, /* compensation text */  \
   { 0x0007, ZAP_TYPE(INT16U), 2, 0, ZAP_SIMPLE_DEFAULT(0x00FA) }, /* color temperature */  \
   { 0x0008, ZAP_TYPE(ENUM8), 1, 0, ZAP_SIMPLE_DEFAULT(0x01) }, /* color mode */  \
   { 0x000F, ZAP_TYPE(BITMAP8), 1, ZAP_ATTRIBUTE_MASK(WRITABLE), ZAP_SIMPLE_DEFAULT(0x00) }, /* color control options */  \
@@ -882,6 +872,9 @@
 
 // Cluster function static arrays
 #define GENERATED_FUNCTION_ARRAYS   \
+const EmberAfGenericClusterFunction chipFuncArrayOnOffServer[] = {\
+  (EmberAfGenericClusterFunction) emberAfOnOffClusterServerInitCallback,\
+};\
 const EmberAfGenericClusterFunction chipFuncArrayBasicServer[] = {\
   (EmberAfGenericClusterFunction) emberAfBasicClusterServerInitCallback,\
 };\
@@ -894,9 +887,6 @@ const EmberAfGenericClusterFunction chipFuncArrayGroupsServer[] = {\
 };\
 const EmberAfGenericClusterFunction chipFuncArrayScenesServer[] = {\
   (EmberAfGenericClusterFunction) emberAfScenesClusterServerInitCallback,\
-};\
-const EmberAfGenericClusterFunction chipFuncArrayOnOffServer[] = {\
-  (EmberAfGenericClusterFunction) emberAfOnOffClusterServerInitCallback,\
 };\
 const EmberAfGenericClusterFunction chipFuncArrayLevelControlServer[] = {\
   (EmberAfGenericClusterFunction) emberAfLevelControlClusterServerInitCallback,\
@@ -911,27 +901,28 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
 
 
 #define ZAP_CLUSTER_MASK(mask) CLUSTER_MASK_ ## mask
-#define GENERATED_CLUSTER_COUNT 22
+#define GENERATED_CLUSTER_COUNT 23
 #define GENERATED_CLUSTERS { \
-  { 0x001D, ZAP_ATTRIBUTE_INDEX(0), 5, 2, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 0, Cluster: Descriptor (server) */ \
-  { 0x0028, ZAP_ATTRIBUTE_INDEX(5), 19, 653, ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION), chipFuncArrayBasicServer }, /* Endpoint: 0, Cluster: Basic (server) */ \
-  { 0x0030, ZAP_ATTRIBUTE_INDEX(24), 3, 264, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 0, Cluster: General Commissioning (server) */ \
-  { 0x0031, ZAP_ATTRIBUTE_INDEX(27), 1, 2, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 0, Cluster: Network Commissioning (server) */ \
-  { 0x0032, ZAP_ATTRIBUTE_INDEX(28), 0, 0, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 0, Cluster: Diagnostic Logs (server) */ \
-  { 0x0033, ZAP_ATTRIBUTE_INDEX(28), 6, 271, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 0, Cluster: General Diagnostics (server) */ \
-  { 0x0034, ZAP_ATTRIBUTE_INDEX(34), 4, 26, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 0, Cluster: Software Diagnostics (server) */ \
-  { 0x0035, ZAP_ATTRIBUTE_INDEX(38), 64, 774, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 0, Cluster: Thread Network Diagnostics (server) */ \
-  { 0x0036, ZAP_ATTRIBUTE_INDEX(102), 14, 54, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 0, Cluster: WiFi Network Diagnostics (server) */ \
-  { 0x0037, ZAP_ATTRIBUTE_INDEX(116), 10, 53, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 0, Cluster: Ethernet Network Diagnostics (server) */ \
-  { 0x003C, ZAP_ATTRIBUTE_INDEX(126), 1, 2, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 0, Cluster: AdministratorCommissioning (server) */ \
-  { 0x003E, ZAP_ATTRIBUTE_INDEX(127), 6, 324, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 0, Cluster: Operational Credentials (server) */ \
-  { 0x0003, ZAP_ATTRIBUTE_INDEX(133), 2, 4, ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION) | ZAP_CLUSTER_MASK(ATTRIBUTE_CHANGED_FUNCTION), chipFuncArrayIdentifyServer }, /* Endpoint: 1, Cluster: Identify (server) */ \
-  { 0x0004, ZAP_ATTRIBUTE_INDEX(135), 2, 3, ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION), chipFuncArrayGroupsServer }, /* Endpoint: 1, Cluster: Groups (server) */ \
-  { 0x0005, ZAP_ATTRIBUTE_INDEX(137), 6, 8, ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION), chipFuncArrayScenesServer }, /* Endpoint: 1, Cluster: Scenes (server) */ \
-  { 0x0006, ZAP_ATTRIBUTE_INDEX(143), 7, 13, ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION), chipFuncArrayOnOffServer }, /* Endpoint: 1, Cluster: On/Off (server) */ \
-  { 0x0008, ZAP_ATTRIBUTE_INDEX(150), 15, 23, ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION), chipFuncArrayLevelControlServer }, /* Endpoint: 1, Cluster: Level Control (server) */ \
-  { 0x001D, ZAP_ATTRIBUTE_INDEX(165), 5, 2, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 1, Cluster: Descriptor (server) */ \
-  { 0x0300, ZAP_ATTRIBUTE_INDEX(170), 24, 292, ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION), chipFuncArrayColorControlServer }, /* Endpoint: 1, Cluster: Color Control (server) */ \
+  { 0x0006, ZAP_ATTRIBUTE_INDEX(0), 2, 3, ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION), chipFuncArrayOnOffServer }, /* Endpoint: 0, Cluster: On/Off (server) */ \
+  { 0x001D, ZAP_ATTRIBUTE_INDEX(2), 5, 2, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 0, Cluster: Descriptor (server) */ \
+  { 0x0028, ZAP_ATTRIBUTE_INDEX(7), 19, 653, ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION), chipFuncArrayBasicServer }, /* Endpoint: 0, Cluster: Basic (server) */ \
+  { 0x0030, ZAP_ATTRIBUTE_INDEX(26), 3, 264, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 0, Cluster: General Commissioning (server) */ \
+  { 0x0031, ZAP_ATTRIBUTE_INDEX(29), 1, 2, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 0, Cluster: Network Commissioning (server) */ \
+  { 0x0032, ZAP_ATTRIBUTE_INDEX(30), 0, 0, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 0, Cluster: Diagnostic Logs (server) */ \
+  { 0x0033, ZAP_ATTRIBUTE_INDEX(30), 6, 271, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 0, Cluster: General Diagnostics (server) */ \
+  { 0x0034, ZAP_ATTRIBUTE_INDEX(36), 4, 26, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 0, Cluster: Software Diagnostics (server) */ \
+  { 0x0035, ZAP_ATTRIBUTE_INDEX(40), 64, 774, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 0, Cluster: Thread Network Diagnostics (server) */ \
+  { 0x0036, ZAP_ATTRIBUTE_INDEX(104), 14, 54, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 0, Cluster: WiFi Network Diagnostics (server) */ \
+  { 0x0037, ZAP_ATTRIBUTE_INDEX(118), 10, 53, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 0, Cluster: Ethernet Network Diagnostics (server) */ \
+  { 0x003C, ZAP_ATTRIBUTE_INDEX(128), 1, 2, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 0, Cluster: AdministratorCommissioning (server) */ \
+  { 0x003E, ZAP_ATTRIBUTE_INDEX(129), 6, 324, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 0, Cluster: Operational Credentials (server) */ \
+  { 0x0003, ZAP_ATTRIBUTE_INDEX(135), 2, 4, ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION) | ZAP_CLUSTER_MASK(ATTRIBUTE_CHANGED_FUNCTION), chipFuncArrayIdentifyServer }, /* Endpoint: 1, Cluster: Identify (server) */ \
+  { 0x0004, ZAP_ATTRIBUTE_INDEX(137), 2, 3, ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION), chipFuncArrayGroupsServer }, /* Endpoint: 1, Cluster: Groups (server) */ \
+  { 0x0005, ZAP_ATTRIBUTE_INDEX(139), 6, 8, ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION), chipFuncArrayScenesServer }, /* Endpoint: 1, Cluster: Scenes (server) */ \
+  { 0x0006, ZAP_ATTRIBUTE_INDEX(145), 7, 13, ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION), chipFuncArrayOnOffServer }, /* Endpoint: 1, Cluster: On/Off (server) */ \
+  { 0x0008, ZAP_ATTRIBUTE_INDEX(152), 15, 23, ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION), chipFuncArrayLevelControlServer }, /* Endpoint: 1, Cluster: Level Control (server) */ \
+  { 0x001D, ZAP_ATTRIBUTE_INDEX(167), 5, 2, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 1, Cluster: Descriptor (server) */ \
+  { 0x0300, ZAP_ATTRIBUTE_INDEX(172), 22, 36, ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION), chipFuncArrayColorControlServer }, /* Endpoint: 1, Cluster: Color Control (server) */ \
   { 0x0406, ZAP_ATTRIBUTE_INDEX(194), 4, 5, ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION), chipFuncArrayOccupancySensingServer }, /* Endpoint: 1, Cluster: Occupancy Sensing (server) */ \
   { 0x0006, ZAP_ATTRIBUTE_INDEX(198), 1, 2, ZAP_CLUSTER_MASK(CLIENT), NULL }, /* Endpoint: 2, Cluster: On/Off (client) */ \
   { 0x0007, ZAP_ATTRIBUTE_INDEX(199), 3, 4, ZAP_CLUSTER_MASK(SERVER), NULL }, /* Endpoint: 2, Cluster: On/off Switch Configuration (server) */ \
@@ -943,9 +934,9 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
 
 // This is an array of EmberAfEndpointType structures.
 #define GENERATED_ENDPOINT_TYPES { \
-  { ZAP_CLUSTER_INDEX(0), 12, 2425 }, \
-  { ZAP_CLUSTER_INDEX(12), 8, 350 }, \
-  { ZAP_CLUSTER_INDEX(20), 2, 6 }, \
+  { ZAP_CLUSTER_INDEX(0), 13, 2428 }, \
+  { ZAP_CLUSTER_INDEX(13), 8, 94 }, \
+  { ZAP_CLUSTER_INDEX(21), 2, 6 }, \
 }
 
 
@@ -957,7 +948,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
 #define ATTRIBUTE_SINGLETONS_SIZE (653)
 
 // Total size of attribute storage
-#define ATTRIBUTE_MAX_SIZE (2781)
+#define ATTRIBUTE_MAX_SIZE (2528)
 
 // Number of fixed endpoints
 #define FIXED_ENDPOINT_COUNT (3)
