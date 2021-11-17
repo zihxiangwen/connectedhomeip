@@ -96,12 +96,55 @@ void DeviceCallbacks::OnInternetConnectivityChange(const ChipDeviceEvent * event
     }
 }
 
+void DeviceCallbacks::OnSessionEstablished(const ChipDeviceEvent * event)
+{
+     if (event->SessionEstablished.IsCommissioner)
+     {
+         printf("Commissioner detected!");
+     }
+}
 
- void DeviceCallbacks::OnSessionEstablished(const ChipDeviceEvent * event)
- {
-      if (event->SessionEstablished.IsCommissioner)
-      {
-          printf("Commissioner detected!");
-      }
- }
+void DeviceCallbacks::PostAttributeChangeCallback(EndpointId endpointId, ClusterId clusterId, AttributeId attributeId, uint8_t mask,
+                                                  uint8_t type, uint16_t size, uint8_t * value)
+{
+    switch (clusterId)
+    {
+        case ZCL_IDENTIFY_CLUSTER_ID:
+            OnIdentifyPostAttributeChangeCallback(endpointId, attributeId, value);
+            break;
 
+        default:
+            ChipLogProgress(Zcl, "Unknown cluster ID: " ChipLogFormatMEI, ChipLogValueMEI(clusterId));
+            break;
+    }
+}
+
+void IdentifyTimerHandler(Layer * systemLayer, void * appState)
+{
+    //statusLED1.Animate();
+
+    if (identifyTimerCount)
+    {
+        systemLayer->StartTimer(Clock::Milliseconds32(kIdentifyTimerDelayMS), IdentifyTimerHandler, appState);
+        // Decrement the timer count.
+        identifyTimerCount--;
+    }
+}
+
+void DeviceCallbacks::OnIdentifyPostAttributeChangeCallback(EndpointId endpointId, AttributeId attributeId, uint8_t * value)
+{
+    VerifyOrExit(attributeId == ZCL_IDENTIFY_TIME_ATTRIBUTE_ID,
+                 ChipLogError(DeviceLayer, "[%s] Unhandled Attribute ID: '0x%04x", TAG, attributeId));
+    VerifyOrExit(endpointId == 1, ChipLogError(DeviceLayer, "[%s] Unexpected EndPoint ID: `0x%02x'", TAG, endpointId));
+
+    // timerCount represents the number of callback executions before we stop the timer.
+    // value is expressed in seconds and the timer is fired every 250ms, so just multiply value by 4.
+    // Also, we want timerCount to be odd number, so the ligth state ends in the same state it starts.
+    identifyTimerCount = (*value) * 4;
+
+    DeviceLayer::SystemLayer().CancelTimer(IdentifyTimerHandler, this);
+    DeviceLayer::SystemLayer().StartTimer(Clock::Milliseconds32(kIdentifyTimerDelayMS), IdentifyTimerHandler, this);
+
+exit:
+    return;
+}

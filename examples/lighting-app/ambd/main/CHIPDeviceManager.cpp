@@ -94,7 +94,10 @@ CHIP_ERROR CHIPDeviceManager::Init(CHIPDeviceManagerCallbacks * cb)
 
 void MatterPostAttributeChangeCallback(const chip::app::ConcreteAttributePath & attributePath, uint8_t mask, uint8_t type, uint16_t size,
                                        uint8_t * value)
-{
+{ 
+    chip::DeviceManager::CHIPDeviceManagerCallbacks * cb =
+        chip::DeviceManager::CHIPDeviceManager::GetInstance().GetCHIPDeviceManagerCallbacks();
+
     EndpointId endpointId     = attributePath.mEndpointId;
     ClusterId clusterId     = attributePath.mClusterId;
     AttributeId attributeId = attributePath.mAttributeId;
@@ -155,6 +158,10 @@ void MatterPostAttributeChangeCallback(const chip::app::ConcreteAttributePath & 
     {
         if (attributeId == ZCL_IDENTIFY_TIME_ATTRIBUTE_ID)
         {
+            if (cb != nullptr)
+            {
+                cb->PostAttributeChangeCallback(endpointId, clusterId, attributeId, mask, type, size, value);
+            }
             ChipLogProgress(Zcl, "ZCL_IDENTIFY_TIME_ATTRIBUTE_ID value: %u ", *value);
         }
     }
