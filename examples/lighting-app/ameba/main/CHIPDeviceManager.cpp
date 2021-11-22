@@ -121,7 +121,7 @@ void MatterPostAttributeChangeCallback(const chip::app::ConcreteAttributePath & 
         }
         if (size == 1)
         {
-            ChipLogProgress(Zcl, "New level: %u ", *value);
+            //ChipLogProgress(Zcl, "New level: %u ", *value);
         }
         else
         {
@@ -167,7 +167,7 @@ void MatterPostAttributeChangeCallback(const chip::app::ConcreteAttributePath & 
     }
     else
     {
-        ChipLogProgress(Zcl, "Unknown cluster ID: %" PRIx32, clusterId);
+        //ChipLogProgress(Zcl, "Unknown cluster ID: %" PRIx32, clusterId);
         return;
     }
 }
