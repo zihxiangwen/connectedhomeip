@@ -82,7 +82,7 @@ std::string createSetupPayload()
         printf("Couldn't get discriminator: %s\r\n", ErrorStr(err));
         return result;
     }
-    printf("Setup discriminator: %u (0x%x)\r\n", discriminator, discriminator);
+    printf("Setup discriminator: %d (0x%x)\r\n", discriminator, discriminator);
 
     uint32_t setupPINCode;
     err = ConfigurationMgr().GetSetupPinCode(setupPINCode);
@@ -91,7 +91,7 @@ std::string createSetupPayload()
         printf("Couldn't get setupPINCode: %s\r\n", ErrorStr(err));
         return result;
     }
-    printf("Setup PIN code: %u (0x%x)\r\n", setupPINCode, setupPINCode);
+    printf("Setup PIN code: %lu (0x%lx)\r\n", setupPINCode, setupPINCode);
 
     uint16_t vendorId;
     err = ConfigurationMgr().GetVendorId(vendorId);
@@ -164,82 +164,18 @@ std::string createSetupPayload()
 
     if (err != CHIP_NO_ERROR)
     {
-        printf("Couldn't get payload string %\r\n" CHIP_ERROR_FORMAT, err.Format());
+        printf("Couldn't get payload string %lu\r\n" CHIP_ERROR_FORMAT, err.Format());
     }
     return result;
 };
 
-extern "C" void DCTTest(void)
-{
-    chip::DeviceLayer::Internal::AMBDConfig ttest;
-
-    char buf[10];
-    uint8_t barray[100],carray[100];
-    size_t outLen;
-    uint32_t val1 = 555, val2=0;
-    bool a=1,b=0, _exist=0;
-    int8_t i = 0;
-
-    // string
-    printf("===== string ===== \n");
-    ttest.WriteConfigValueStr(ttest.kConfigKey_SerialNum,"aaabbbccc");
-    ttest.ReadConfigValueStr(ttest.kConfigKey_SerialNum,buf, sizeof(buf),outLen);
-    printf("buf = %s, outLen=%d \n",buf, outLen);
-
-    // u32
-    printf("===== u32 ===== \n");
-    ttest.WriteConfigValue(ttest.kConfigKey_SerialNum,val1);
-    printf("val2=%lu\n",val2);
-    ttest.ReadConfigValue(ttest.kConfigKey_SerialNum,val2);
-    printf("val2=%lu\n",val2);
-    _exist = ttest.ConfigValueExists(ttest.kConfigKey_SerialNum);
-    printf("SerialNum exist = %d\n",_exist);
-
-    // bool
-    printf("===== bool ===== \n");
-    printf("b=%d\n",b);
-    ttest.WriteConfigValue(ttest.kConfigKey_MfrDeviceId,a);
-    ttest.ReadConfigValue(ttest.kConfigKey_MfrDeviceId,b);
-    printf("b=%d\n",b);
-
-    // binary
-    printf("===== binary ===== \n");
-    for(i=0;i<100;i++){
-        barray[i]=i;
-        carray[i]=0;
-    }
-
-    printf("array=\n");
-    for(i=0;i<100;i++)
-        printf("%d ",carray[i]);
-    printf("\n");
-
-    ttest.WriteConfigValueBin(ttest.kConfigKey_MfrDeviceId,barray,sizeof(barray));
-    ttest.ReadConfigValueBin(ttest.kConfigKey_MfrDeviceId,carray,sizeof(carray),outLen);
-
-    printf("outlen = %d\n",outLen);
-    printf("array=\n");
-    for(i=0;i<100;i++)
-        printf("%d ",carray[i]);
-    printf("\n");
-
-    _exist = ttest.ConfigValueExists(ttest.kConfigKey_MfrDeviceId);
-    printf("MfrDeviceId exist = %d\n",_exist);
-    printf("delete kConfigKey_MfrDeviceId\n");
-    ttest.ClearConfigValue(ttest.kConfigKey_MfrDeviceId);
-    _exist = ttest.ConfigValueExists(ttest.kConfigKey_MfrDeviceId);
-    printf("MfrDeviceId exist = %d\n",_exist);
-}
-
 extern "C" void ChipTest(void)
 {
-    printf("In ChipTest()\r\n");
     CHIP_ERROR err = CHIP_NO_ERROR;
 
-    printf("initPrefr\n");
-    initPref();
+    printf("In ChipTest()\r\n");
 
-    //DCTTest();
+    initPref();
 
     CHIPDeviceManager &deviceMgr = CHIPDeviceManager::GetInstance();
     err = deviceMgr.Init(&EchoCallbacks);
@@ -258,20 +194,19 @@ extern "C" void ChipTest(void)
 
     SetupPretendDevices();
 
-    std::string qrCodeText = createSetupPayload();
-    //ESP_LOGI(TAG, "QR CODE Text: '%s'", qrCodeText.c_str());
-    printf("QR CODE Text: '%s'\r\n", qrCodeText.c_str());
-
+    if(RTW_SUCCESS != wifi_is_connected_to_ap())
     {
+        std::string qrCodeText = createSetupPayload();
+        printf("QR CODE Text: '%s'\r\n", qrCodeText.c_str());
+
         std::vector<char> qrCode(3 * qrCodeText.size() + 1);
         err = EncodeQRCodeToUrl(qrCodeText.c_str(), qrCodeText.size(), qrCode.data(), qrCode.max_size());
         if (err == CHIP_NO_ERROR)
         {
-            //ESP_LOGI(TAG, "Copy/paste the below URL in a browser to see the QR CODE:\n\t%s?data=%s", QRCODE_BASE_URL, qrCode.data());
             printf("Copy/paste the below URL in a browser to see the QR CODE:\n\t%s?data=%s", QRCODE_BASE_URL, qrCode.data());
         }
+        printf("\n\n");
     }
-    printf("\n\n");
 
     statusLED1.Init(STATUS_LED_GPIO_NUM);
 
