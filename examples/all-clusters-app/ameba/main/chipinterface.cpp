@@ -212,9 +212,6 @@ extern "C" void ChipTest(void)
     if(RTW_SUCCESS != wifi_is_connected_to_ap())
     {
         std::string qrCodeText = createSetupPayload();
-        printf("QR CODE Text: '%s'\r\n", qrCodeText.c_str());
-
-        std::string qrCodeText = createSetupPayload();
         ChipLogProgress(DeviceLayer, "QR CODE Text: '%s'\r\n", qrCodeText.c_str());
 
         std::vector<char> qrCode(3 * qrCodeText.size() + 1);
