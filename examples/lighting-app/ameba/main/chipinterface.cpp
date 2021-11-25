@@ -69,7 +69,7 @@ std::string createSetupPayload()
         printf("Couldn't get discriminator: %s\r\n", ErrorStr(err));
         return result;
     }
-    printf("Setup discriminator: %u (0x%x)\r\n", discriminator, discriminator);
+    printf("Setup discriminator: %d (0x%x)\r\n", discriminator, discriminator);
 
     uint32_t setupPINCode;
     err = ConfigurationMgr().GetSetupPinCode(setupPINCode);
@@ -78,7 +78,7 @@ std::string createSetupPayload()
         printf("Couldn't get setupPINCode: %s\r\n", ErrorStr(err));
         return result;
     }
-    printf("Setup PIN code: %u (0x%x)\r\n", setupPINCode, setupPINCode);
+    printf("Setup PIN code: %lu (0x%lx)\r\n", setupPINCode, setupPINCode);
 
     uint16_t vendorId;
     err = ConfigurationMgr().GetVendorId(vendorId);
@@ -151,7 +151,7 @@ std::string createSetupPayload()
 
     if (err != CHIP_NO_ERROR)
     {
-        printf("Couldn't get payload string %\r\n" CHIP_ERROR_FORMAT, err.Format());
+        printf("Couldn't get payload string %lu\r\n" CHIP_ERROR_FORMAT, err.Format());
     }
     return result;
 };
@@ -217,19 +217,19 @@ extern "C" void ChipTest(void)
     // Initialize device attestation config
     SetDeviceAttestationCredentialsProvider(Examples::GetExampleDACProvider());
 
-    std::string qrCodeText = createSetupPayload();
-
-    printf("QR CODE Text: '%s'\r\n", qrCodeText.c_str());
-
+    if(RTW_SUCCESS != wifi_is_connected_to_ap())
     {
+        std::string qrCodeText = createSetupPayload();
+        ChipLogProgress(DeviceLayer, "QR CODE Text: '%s'\r\n", qrCodeText.c_str());
+
         std::vector<char> qrCode(3 * qrCodeText.size() + 1);
         err = EncodeQRCodeToUrl(qrCodeText.c_str(), qrCodeText.size(), qrCode.data(), qrCode.max_size());
         if (err == CHIP_NO_ERROR)
         {
-            printf("Copy/paste the below URL in a browser to see the QR CODE:\n\t%s?data=%s", QRCODE_BASE_URL, qrCode.data());
+            ChipLogProgress(DeviceLayer, "Copy/paste the below URL in a browser to see the QR CODE:\n\t%s?data=%s \r\n",
+                            QRCODE_BASE_URL, qrCode.data());
         }
     }
-    printf("\n\n");
 
     statusLED1.Init(STATUS_LED_GPIO_NUM);
 
