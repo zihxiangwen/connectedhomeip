@@ -2413,7 +2413,7 @@ extern const char CHIP_NON_PRODUCTION_MARKER[];
  * @brief Defines the maximum number of ReadHandler, limits the number of active read transactions on server.
  */
 #ifndef CHIP_IM_MAX_NUM_READ_HANDLER
-#define CHIP_IM_MAX_NUM_READ_HANDLER 4
+#define CHIP_IM_MAX_NUM_READ_HANDLER 8
 #endif
 
 /**
@@ -2431,7 +2431,7 @@ extern const char CHIP_NON_PRODUCTION_MARKER[];
  * @brief Defines the maximum number of Reports, limits the traffic of read and subscription transactions.
  */
 #ifndef CHIP_IM_MAX_REPORTS_IN_FLIGHT
-#define CHIP_IM_MAX_REPORTS_IN_FLIGHT 4
+#define CHIP_IM_MAX_REPORTS_IN_FLIGHT 8
 #endif
 
 /**
