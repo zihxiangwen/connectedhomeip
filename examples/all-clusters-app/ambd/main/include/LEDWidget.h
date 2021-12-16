@@ -149,6 +149,7 @@ public:
     void Set(bool state);
 
 private:
+	gpio_t gpio_led;
 	PinName mGPIONum;
 	bool mState;
     void DoSet(bool state);

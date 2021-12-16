@@ -141,6 +141,8 @@ void DeviceCallbacks::OnOnOffPostAttributeChangeCallback(EndpointId endpointId, 
 
     // At this point we can assume that value points to a bool value.
     statusLED1.Set(*value);
+    statusRedLED.Set(*value);
+    statusGreenLED.Set(!*value);
 
     exit:
         return;

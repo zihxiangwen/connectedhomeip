@@ -50,6 +50,8 @@ namespace
 #define STATUS_LED_GPIO_NUM PB_5
 #elif defined(CONFIG_PLATFORM_8710C)
 #define STATUS_LED_GPIO_NUM PA_20
+#define STATUS_MEROSS_RED_LED_GPIO_NUM PA_13
+#define STATUS_MEROSS_GREEN_LED_GPIO_NUM PA_14
 #else
 #define STATUS_LED_GPIO_NUM NC
 #endif
@@ -209,6 +211,10 @@ extern "C" void ChipTest(void)
     }
 
     statusLED1.Init(STATUS_LED_GPIO_NUM);
+#ifdef STATUS_MEROSS_GREEN_LED_GPIO_NUM
+    statusRedLED.Init(STATUS_MEROSS_RED_LED_GPIO_NUM);
+    statusGreenLED.Init(STATUS_MEROSS_GREEN_LED_GPIO_NUM);
+#endif
 
     while(true)
         vTaskDelay( pdMS_TO_TICKS(50) );

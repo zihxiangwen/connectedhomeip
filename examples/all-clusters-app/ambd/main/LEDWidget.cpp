@@ -25,21 +25,30 @@
 
 #include "LEDWidget.h"
 
-gpio_t gpio_led;
+//gpio_t gpio_led;
 
 void LEDWidget::Init(PinName gpioNum)
 {
 
     mGPIONum = gpioNum;
-    mState   = false;
 
-    if (gpioNum != (PinName)NC)
+    if (gpioNum != (PinName)NC && gpioNum != (PinName)PA_14)
     {
+        mState = false;
         // Init LED control pin
         gpio_init(&gpio_led, gpioNum);
         gpio_dir(&gpio_led, PIN_OUTPUT);    // Direction: Output
         gpio_mode(&gpio_led, PullNone);     // No pull
         gpio_write(&gpio_led, mState);
+    }
+    else if (gpioNum == (PinName)PA_14) // true: off / false: on
+    {
+        mState = true;
+        // Init Meross green status LED control pin
+        gpio_init(&gpio_led, gpioNum);
+        gpio_dir(&gpio_led, PIN_OUTPUT);    // Direction: Output
+        gpio_mode(&gpio_led, PullNone);     // No pull
+        gpio_write(&gpio_led, mState);     
     }
 }
 

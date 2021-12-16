@@ -20,3 +20,5 @@
 #include "LEDWidget.h"
 
 extern LEDWidget statusLED1;
+extern LEDWidget statusRedLED;
+extern LEDWidget statusGreenLED;
