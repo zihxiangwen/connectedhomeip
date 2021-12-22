@@ -147,9 +147,8 @@ class LEDWidget
 public:
     void Init(PinName gpioNum);
     void Set(bool state);
-
+    gpio_t gpio_led;
 private:
-	gpio_t gpio_led;
 	PinName mGPIONum;
 	bool mState;
     void DoSet(bool state);

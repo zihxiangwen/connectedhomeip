@@ -38,6 +38,7 @@
 #include <support/CodeUtils.h>
 #include <support/logging/CHIPLogging.h>
 #include <support/logging/Constants.h>
+#include <matter_task/example_matter.h>
 
 static const char * TAG = "app-devicecallbacks";
 
@@ -141,8 +142,9 @@ void DeviceCallbacks::OnOnOffPostAttributeChangeCallback(EndpointId endpointId, 
 
     // At this point we can assume that value points to a bool value.
     statusLED1.Set(*value);
-    statusRedLED.Set(*value);
-    statusGreenLED.Set(!*value);
+    gpio_write(&gpio_meross_power, *value);
+    gpio_write(&gpio_meross_red_LED, *value); 
+    gpio_write(&gpio_meross_green_LED, !*value);
 
     exit:
         return;

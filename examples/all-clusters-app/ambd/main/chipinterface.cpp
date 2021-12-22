@@ -210,12 +210,6 @@ extern "C" void ChipTest(void)
         printf("\n\n");
     }
 
-    statusLED1.Init(STATUS_LED_GPIO_NUM);
-#ifdef STATUS_MEROSS_GREEN_LED_GPIO_NUM
-    statusRedLED.Init(STATUS_MEROSS_RED_LED_GPIO_NUM);
-    statusGreenLED.Init(STATUS_MEROSS_GREEN_LED_GPIO_NUM);
-#endif
-
     while(true)
         vTaskDelay( pdMS_TO_TICKS(50) );
 }
